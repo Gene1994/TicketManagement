@@ -2,16 +2,20 @@ package pers.gene.ticketmanagement.web;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import pers.gene.ticketmanagement.domain.Customer;
 import pers.gene.ticketmanagement.service.CustomerService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
-
-@RestController
+//这个注解导致返回字符串
+//@RestController
+//@ResponseBody
+@Controller
 @RequestMapping("/customer")
 public class CustomerController {
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerController.class);
@@ -38,7 +42,7 @@ public class CustomerController {
 
     @RequestMapping("/go")
     public String go(){
-        return "hello world";
+        return "index";
     }
 
 //    @RequestMapping("/list")

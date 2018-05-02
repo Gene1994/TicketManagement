@@ -33,7 +33,7 @@ public class CustomerService {
     public void regist(Customer customer){
         if (checkUserName(customer.getUsername()) && checkEmail(customer.getEmail()) && checkMobileNumber(customer.getCellphone())){
             //验证成功 添加至数据库
-            customerMapper.insert(customer);
+            customerMapper.insert(customer.getId(), customer.getUsername(), customer.getPassword(), customer.getEmail(), customer.getCellphone(), customer.getFrom(), customer.getTo(), customer.getStartTime(), customer.getEndTime());
         }
     }
 

@@ -2,6 +2,7 @@ package pers.gene.ticketmanagement.repository;
 import org.apache.ibatis.annotations.*;
 import pers.gene.ticketmanagement.domain.Customer;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -34,16 +35,16 @@ public interface CustomerMapper {
             @Result(property = "startTime", column = "starttime"),
             @Result(property = "endTime", column = "endtime")
     })
-    Customer findById(String id);
+    Customer findById(@Param("id") String id);
 
     //@Insert 插入数据库使用，直接传入实体类会自动解析属性到对应的值
-    @Insert("INSERT INTO customer(id,username,password,email,cellphone,from,to,starttime,endtime) VALUES(#{id}, #{userName}, #{passWord}, #{email}, #{cellphone}, #{from}, #{to}, #{starttime}, #{endtime})")
-    void insert(Customer customer);
+    @Insert("INSERT INTO customer(id,username,password,email,cellphone,from,to,starttime,endtime) VALUES(#{id}, #{userName}, #{passWord}, #{email}, #{cellphone}, #{from}, #{to}, #{startTime}, #{endTime})")
+    void insert(@Param("id") String id, @Param("username") String username, @Param("password") String password, @Param("email") String email, @Param("cellphone") String cellphone, @Param("from") String from, @Param("to") String to, @Param("startTime") Date startTime, @Param("endTime") Date endTime);
 
     @Update("UPDATE customer SET username=#{username},password=#{password},email=#{email},cellphone=#{cellphone},from=#{from},to=#{to},starttime=#{starttime},endtime=#{endtime} WHERE id =#{id}")
-    void update(Customer customer);
+    void update(@Param("id") String id, @Param("username") String username, @Param("password") String password, @Param("email") String email, @Param("cellphone") String cellphone, @Param("from") String from, @Param("to") String to, @Param("startTime") Date startTime, @Param("endTime") Date endTime);;
 
-    @Delete("DELETE FROM customer WHERE id =#{id}")
-    void delete(String id);
+    @Delete("DELETE FROM customer WHERE id=#{id}")
+    void delete(@Param("id") String id);
 }
 
