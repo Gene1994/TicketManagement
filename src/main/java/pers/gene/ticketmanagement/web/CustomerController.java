@@ -50,28 +50,9 @@ public class CustomerController {
 
     @RequestMapping("/login")
     public String login(HttpServletRequest request){
-
-        if (checkEmailFormat(request.getParameter("username"))){
-            //用邮箱登录
-            String email = request.getParameter("username");
-            String password = request.getParameter("password");
-            return customerService.loginByEmail(email, password);
-        }else {
-            //用用户名登录
             String userName = request.getParameter("username");
             String password = request.getParameter("password");
-            return customerService.loginByUserName(userName, password);
-        }
-    }
-    //验证邮箱格式
-    boolean checkEmailFormat(String email){
-        Pattern emailPattern = Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
-        Matcher matcher = emailPattern.matcher(email);
-
-        if(matcher.find()){
-            return true;
-        }
-        return false;
+            return customerService.login(userName, password);
     }
 
 //    @RequestMapping("/list")

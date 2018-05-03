@@ -95,37 +95,41 @@ public class CustomerService {
         return flag;
     }
 
-    public String loginByEmail(String email, String password){
-        if (getAllEmailAdress().contains(email)){
-            Customer customer = customerMapper.findByEmail(email);
-            if (password.equals(customer.getPassword())){
-                //登录成功
-                return "homepage";
-            }else {
-                //密码错误
+    public String login(String userName, String password){
+        if (checkEmailFormat(userName)){
+            //邮箱登录
+            if (getAllEmailAdress().contains(userName)){
+                Customer customer = customerMapper.findByEmail(userName);
+                if (password.equals(customer.getPassword())){
+                    //登录成功
+                    return "homepage";
+                }else {
+                    //密码错误
+                    return "index";
+                }
+            }else{
+                //该邮箱不存在
                 return "index";
             }
         }else{
-            //该邮箱不存在
-            return "index";
+            //用户名登录
+            if (getAllUserName().contains(userName)){
+                Customer customer = customerMapper.findByUserName(userName);
+                if (password.equals(customer.getPassword())){
+                    //登录成功
+                    return "homepage";
+                }else {
+                    //密码错误
+                    return "index";
+                }
+            }else{
+                //用户名不存在
+                return "index";
+            }
         }
+
     }
 
-    public String loginByUserName(String userName, String password){
-        if (getAllUserName().contains(userName)){
-            Customer customer = customerMapper.findByUserName(userName);
-            if (password.equals(customer.getPassword())){
-                //登录成功
-                return "homepage";
-            }else {
-                //密码错误
-                return "index";
-            }
-        }else{
-            //用户名不存在
-            return "index";
-        }
-    }
     public void logout(){
 
     }
