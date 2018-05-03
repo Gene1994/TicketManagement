@@ -28,6 +28,10 @@ public class CustomerService {
         return customerMapper.findById(id);
     }
 
+    public Customer getCustomerByUserName(String userName){ return  customerMapper.findByUserName(userName); }
+
+    public Customer getCustomerByEmail(String email){ return  customerMapper.findByEmail(email); }
+
 
     public void regist(Customer customer){
         if (checkUserName(customer.getUserName()) && checkEmailFormat(customer.getEmail()) && checkEmailAddress(customer.getEmail()) && checkMobileNumber(customer.getCellphone())){
@@ -99,7 +103,7 @@ public class CustomerService {
         if (checkEmailFormat(userName)){
             //邮箱登录
             if (getAllEmailAdress().contains(userName)){
-                Customer customer = customerMapper.findByEmail(userName);
+                Customer customer = getCustomerByEmail(userName);
                 if (password.equals(customer.getPassword())){
                     //登录成功
                     return "homepage";
@@ -114,7 +118,7 @@ public class CustomerService {
         }else{
             //用户名登录
             if (getAllUserName().contains(userName)){
-                Customer customer = customerMapper.findByUserName(userName);
+                Customer customer = getCustomerByUserName(userName);
                 if (password.equals(customer.getPassword())){
                     //登录成功
                     return "homepage";

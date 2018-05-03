@@ -11,6 +11,7 @@ import pers.gene.ticketmanagement.domain.Customer;
 import pers.gene.ticketmanagement.service.CustomerService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -52,9 +53,25 @@ public class CustomerController {
     public String login(HttpServletRequest request){
             String userName = request.getParameter("username");
             String password = request.getParameter("password");
+            if (checkEmailFormat(userName)){
+                request.getSession().setAttribute("customer", customerService.getCustomerByEmail(userName));
+            }else{
+                request.getSession().setAttribute("customer", customerService.getCustomerByUserName(userName));
+            }
+
             return customerService.login(userName, password);
     }
 
+    //验证邮箱格式
+    boolean checkEmailFormat(String email){
+        Pattern emailPattern = Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
+        Matcher matcher = emailPattern.matcher(email);
+
+        if(matcher.find()){
+            return true;
+        }
+        return false;
+    }
 //    @RequestMapping("/list")
 //    public List<Customer> getCustomer(){
 //        LOGGER.info("从数据库读取Custom集合");
