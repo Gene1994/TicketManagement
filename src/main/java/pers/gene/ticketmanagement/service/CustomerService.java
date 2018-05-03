@@ -10,12 +10,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Service("customerService")
+@Service
 public class CustomerService {
 
     //自动绑定mapper
-
-
     @Autowired
     private CustomerMapper customerMapper;
 //    查询数据
@@ -31,9 +29,9 @@ public class CustomerService {
 
 
     public void regist(Customer customer){
-        if (checkUserName(customer.getUsername()) && checkEmail(customer.getEmail()) && checkMobileNumber(customer.getCellphone())){
+        if (checkUserName(customer.getUserName()) && checkEmail(customer.getEmail()) && checkMobileNumber(customer.getCellphone())){
             //验证成功 添加至数据库
-            customerMapper.insert(customer.getId(), customer.getUsername(), customer.getPassword(), customer.getEmail(), customer.getCellphone(), customer.getFrom(), customer.getTo(), customer.getStartTime(), customer.getEndTime());
+            customerMapper.insert(customer.getId(), customer.getUserName(), customer.getPassword(), customer.getEmail(), customer.getCellphone(), customer.getCheckin(), customer.getCheckout(), customer.getStartTime(), customer.getEndTime());
         }
     }
 
@@ -43,14 +41,14 @@ public class CustomerService {
      * @return
      */
     boolean checkUserName(String userNameSignup){
-        if (getUserName().contains(userNameSignup)) return false;
+        if (getAllUserName().contains(userNameSignup)) return false;
         return true;
     }
 
-    List<String> getUserName(){
+    List<String> getAllUserName(){
         List<String> nameList = new ArrayList<>();
         for (Customer customer : customerMapper.findAll()){
-            nameList.add(customer.getUsername());
+            nameList.add(customer.getUserName());
         }
         return nameList;
     }

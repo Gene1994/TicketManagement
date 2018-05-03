@@ -4,12 +4,12 @@ import java.util.Date;
 
 public class Customer {
     String id;
-    String username;
+    String userName;
     String password;
     String email;
     String cellphone;
-    String from;
-    String to;
+    String checkin;
+    String checkout;
     Date startTime;
     Date endTime;
 
@@ -21,12 +21,12 @@ public class Customer {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -53,20 +53,20 @@ public class Customer {
         this.cellphone = cellphone;
     }
 
-    public String getFrom() {
-        return from;
+    public String getCheckin() {
+        return checkin;
     }
 
-    public void setFrom(String from) {
-        this.from = from;
+    public void setCheckin(String checkin) {
+        this.checkin = checkin;
     }
 
-    public String getTo() {
-        return to;
+    public String getCheckout() {
+        return checkout;
     }
 
-    public void setTo(String to) {
-        this.to = to;
+    public void setCheckout(String checkout) {
+        this.checkout = checkout;
     }
 
     public Date getStartTime() {

@@ -32,13 +32,7 @@
                 <div class="clr"></div>
             </div><!--/ Codrops top bar -->
             <header>
-                <h1>Login and Registration Form <span>with HTML5 and CSS3</span></h1>
-				<nav class="codrops-demos">
-					<span>Click <strong>"Join us"</strong> to see the form switch</span>
-					<a href="index.html" class="current-demo">Demo 1</a>
-					<a href="index2.html">Demo 2</a>
-					<a href="index3.html">Demo 3</a>
-				</nav>
+                <h1>在线票务模拟系统</h1>
             </header>
             <section>				
                 <div id="container_demo" >
@@ -72,15 +66,11 @@
                         </div>
 
                         <div id="register" class="animate form">
-                            <form  action="mysuperscript.php" autocomplete="on"> 
+                            <form  action="/customer/register" autocomplete="on" method="post">
                                 <h1> Sign up </h1> 
                                 <p> 
                                     <label for="usernamesignup" class="uname" data-icon="u">Your username</label>
                                     <input id="usernamesignup" name="usernamesignup" required="required" type="text" placeholder="mysuperusername690" />
-                                </p>
-                                <p> 
-                                    <label for="emailsignup" class="youmail" data-icon="e" > Your email</label>
-                                    <input id="emailsignup" name="emailsignup" required="required" type="email" placeholder="mysupermail@mail.com"/> 
                                 </p>
                                 <p> 
                                     <label for="passwordsignup" class="youpasswd" data-icon="p">Your password </label>
@@ -89,6 +79,14 @@
                                 <p> 
                                     <label for="passwordsignup_confirm" class="youpasswd" data-icon="p">Please confirm your password </label>
                                     <input id="passwordsignup_confirm" name="passwordsignup_confirm" required="required" type="password" placeholder="eg. X8df!90EO"/>
+                                </p>
+                                <p>
+                                    <label for="emailsignup" class="youmail" data-icon="e" > Your email</label>
+                                    <input id="emailsignup" name="emailsignup" required="required" type="email" placeholder="mysupermail@mail.com"/>
+                                </p>
+                                <p>
+                                    <label for="usernamesignup" class="uname" data-icon="u" > Your Cell Phone</label>
+                                    <input id="cellphonesignup" name="cellphonesignup" required="required" type="text" placeholder="18*********"/>
                                 </p>
                                 <p class="signin button"> 
 									<input type="submit" value="Sign up"/> 

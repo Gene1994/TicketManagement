@@ -24,19 +24,21 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    @RequestMapping(value="/index",method= RequestMethod.POST)
-    public Customer regist(HttpServletRequest request){
+    @RequestMapping(value="/register",method= RequestMethod.POST)
+    public String  regist(HttpServletRequest request){
 //        CustomerService service = new CustomerService();
-//        if (request.getParameter("passwordsignup").equals(request.getParameter("passwordsignup_confirm"))){
+        if (request.getParameter("passwordsignup").equals(request.getParameter("passwordsignup_confirm"))){
             Customer customer = new Customer();
             customer.setId(UUID.randomUUID().toString());
-            customer.setUsername(request.getParameter("usernamesignup"));
+            customer.setUserName(request.getParameter("usernamesignup"));
             customer.setPassword(request.getParameter("passwordsignup"));
             customer.setEmail(request.getParameter("emailsignup"));
-            customer.setCellphone("");
+            customer.setCellphone(request.getParameter("cellphonesignup"));
             customerService.regist(customer);
-            return customer;
-//        }
+            return "success";
+        }else {
+            return "passwordfail";
+        }
 
     }
 
