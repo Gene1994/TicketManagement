@@ -6,6 +6,7 @@ import pers.gene.ticketmanagement.repository.CustomerMapper;
 import pers.gene.ticketmanagement.domain.Customer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,7 +30,7 @@ public class CustomerService {
 
 
     public void regist(Customer customer){
-        if (checkUserName(customer.getUserName()) && checkEmail(customer.getEmail()) && checkMobileNumber(customer.getCellphone())){
+        if (checkUserName(customer.getUserName()) && checkEmailFormat(customer.getEmail()) && checkEmailAddress(customer.getEmail()) && checkMobileNumber(customer.getCellphone())){
             //验证成功 添加至数据库
             customerMapper.insert(customer.getId(), customer.getUserName(), customer.getPassword(), customer.getEmail(), customer.getCellphone(), customer.getCheckin(), customer.getCheckout(), customer.getStartTime(), customer.getEndTime());
         }
@@ -45,6 +46,22 @@ public class CustomerService {
         return true;
     }
 
+    boolean checkEmailAddress(String email){
+        if (getAllEmailAdress().contains(email)) return false;
+        return true;
+    }
+
+    //验证邮箱格式
+    boolean checkEmailFormat(String email){
+        Pattern emailPattern = Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
+        Matcher matcher = emailPattern.matcher(email);
+
+        if(matcher.find()){
+            return true;
+        }
+        return false;
+    }
+
     List<String> getAllUserName(){
         List<String> nameList = new ArrayList<>();
         for (Customer customer : customerMapper.findAll()){
@@ -53,14 +70,12 @@ public class CustomerService {
         return nameList;
     }
 
-    //验证邮箱格式
-    boolean checkEmail(String email){
-        Pattern emailPattern = Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
-        Matcher matcher = emailPattern.matcher(email);
-        if(matcher.find()){
-            return true;
+    List<String> getAllEmailAdress(){
+        List<String> emailList = new ArrayList<>();
+        for (Customer customer : customerMapper.findAll()){
+            emailList.add(customer.getEmail());
         }
-        return false;
+        return emailList;
     }
 
     /**
@@ -68,7 +83,7 @@ public class CustomerService {
      * @param mobileNumber
      * @return
      */
-    public static boolean checkMobileNumber(String mobileNumber){
+    boolean checkMobileNumber(String mobileNumber){
         boolean flag = false;
         try{
             Pattern regex = Pattern.compile("^(((13[0-9])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8})|(0\\d{2}-\\d{8})|(0\\d{3}-\\d{7})$");
@@ -80,8 +95,36 @@ public class CustomerService {
         return flag;
     }
 
-    public void login(){
+    public String loginByEmail(String email, String password){
+        if (getAllEmailAdress().contains(email)){
+            Customer customer = customerMapper.findByEmail(email);
+            if (password.equals(customer.getPassword())){
+                //登录成功
+                return "homepage";
+            }else {
+                //密码错误
+                return "index";
+            }
+        }else{
+            //该邮箱不存在
+            return "index";
+        }
+    }
 
+    public String loginByUserName(String userName, String password){
+        if (getAllUserName().contains(userName)){
+            Customer customer = customerMapper.findByUserName(userName);
+            if (password.equals(customer.getPassword())){
+                //登录成功
+                return "homepage";
+            }else {
+                //密码错误
+                return "index";
+            }
+        }else{
+            //用户名不存在
+            return "index";
+        }
     }
     public void logout(){
 

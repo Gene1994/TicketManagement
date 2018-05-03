@@ -3,51 +3,51 @@ package pers.gene.ticketmanagement.domain;
 import java.util.Date;
 
 public class Ticket {
-    String tId;
-    String tFrom;
-    String tTo;
-    Date tStatTTime;
-    Date tEndTime;
+    String id;
+    String checkin;
+    String checkout;
+    Date startTime;
+    Date endTime;
     int amount;
 
-    public String gettId() {
-        return tId;
+    public String getId() {
+        return id;
     }
 
-    public void settId(String tId) {
-        this.tId = tId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String gettFrom() {
-        return tFrom;
+    public String getCheckin() {
+        return checkin;
     }
 
-    public void settFrom(String tFrom) {
-        this.tFrom = tFrom;
+    public void setCheckin(String checkin) {
+        this.checkin = checkin;
     }
 
-    public String gettTo() {
-        return tTo;
+    public String getCheckout() {
+        return checkout;
     }
 
-    public void settTo(String tTo) {
-        this.tTo = tTo;
+    public void setCheckout(String checkout) {
+        this.checkout = checkout;
     }
 
-    public Date gettStatTTime() {
-        return tStatTTime;
+    public Date getStartTime() {
+        return startTime;
     }
 
-    public void settStatTTime(Date tStatTTime) {
-        this.tStatTTime = tStatTTime;
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
     }
 
-    public Date gettEndTime() {
-        return tEndTime;
+    public Date getEndTime() {
+        return endTime;
     }
 
-    public void settEndTime(Date tEndTime) {
-        this.tEndTime = tEndTime;
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     public int getAmount() {

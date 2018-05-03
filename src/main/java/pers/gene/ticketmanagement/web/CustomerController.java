@@ -11,7 +11,12 @@ import pers.gene.ticketmanagement.domain.Customer;
 import pers.gene.ticketmanagement.service.CustomerService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 //这个注解导致返回字符串
 //@RestController
 //@ResponseBody
@@ -35,16 +40,38 @@ public class CustomerController {
             customer.setEmail(request.getParameter("emailsignup"));
             customer.setCellphone(request.getParameter("cellphonesignup"));
             customerService.regist(customer);
-            return "success";
+//            confirm("注册成功")；
+            return "index";
         }else {
             return "passwordfail";
         }
 
     }
 
-    @RequestMapping("/go")
-    public String go(){
-        return "index";
+    @RequestMapping("/login")
+    public String login(HttpServletRequest request){
+
+        if (checkEmailFormat(request.getParameter("username"))){
+            //用邮箱登录
+            String email = request.getParameter("username");
+            String password = request.getParameter("password");
+            return customerService.loginByEmail(email, password);
+        }else {
+            //用用户名登录
+            String userName = request.getParameter("username");
+            String password = request.getParameter("password");
+            return customerService.loginByUserName(userName, password);
+        }
+    }
+    //验证邮箱格式
+    boolean checkEmailFormat(String email){
+        Pattern emailPattern = Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
+        Matcher matcher = emailPattern.matcher(email);
+
+        if(matcher.find()){
+            return true;
+        }
+        return false;
     }
 
 //    @RequestMapping("/list")
