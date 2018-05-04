@@ -70,9 +70,9 @@ public interface CustomerMapper {
     void insert(@Param("id") String id, @Param("userName") String userName, @Param("password") String password, @Param("email") String email, @Param("cellphone") String cellphone, @Param("checkin") String checkin, @Param("checkout") String checkout, @Param("startTime") Date startTime, @Param("endTime") Date endTime);
 
     @Update("UPDATE customer SET username=#{userName},password=#{password},email=#{email},cellphone=#{cellphone},checkin=#{checkin},checkout=#{checkout},starttime=#{startTime},endtime=#{endTime} WHERE id =#{id}")
-    void update(@Param("id") String id, @Param("userName") String userName, @Param("password") String password, @Param("email") String email, @Param("cellphone") String cellphone, @Param("checkin") String checkin, @Param("checkout") String checkout, @Param("startTime") Date startTime, @Param("endTime") Date endTime);;
+    void updateById(@Param("id") String id, @Param("userName") String userName, @Param("password") String password, @Param("email") String email, @Param("cellphone") String cellphone, @Param("checkin") String checkin, @Param("checkout") String checkout, @Param("startTime") Date startTime, @Param("endTime") Date endTime);;
 
     @Delete("DELETE FROM customer WHERE id=#{id}")
-    void delete(@Param("id") String id);
+    void deleteById(@Param("id") String id);
 }
 

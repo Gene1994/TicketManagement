@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+</head>
+<body>
+<form  action="/ticket/search" autocomplete="on" method="post">
+    <h1>查询</h1>
+    <p>
+        <label > 始发站 </label>
+        <input id="checkin" name="checkin" required="required" type="text"/>
+    </p>
+    <p>
+        <label>目的地 </label>
+        <input id="checkout" name="checkout" required="required" type="text"/>
+    </p>
+    <p>
+        <label>时间</label>
+        <input type="date" id="startTime" value="2018-06-01">
+    </p>
+    <p>
+        <input type="submit" value="查询"/>
+    </p>
+
+</body>
+</html>

@@ -1,14 +1,18 @@
 package pers.gene.ticketmanagement.domain;
 
+import javax.swing.*;
 import java.util.Date;
 
 public class Ticket {
     String id;
+    String trainNumber;
     String checkin;
     String checkout;
     Date startTime;
     Date endTime;
-    int amount;
+    String  customerId;
+//    int amount;
+
 
     public String getId() {
         return id;
@@ -16,6 +20,22 @@ public class Ticket {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getTrainNumber() {
+        return trainNumber;
+    }
+
+    public void setTrainNumber(String trainNumber) {
+        this.trainNumber = trainNumber;
     }
 
     public String getCheckin() {
@@ -49,13 +69,4 @@ public class Ticket {
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
 }
