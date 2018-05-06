@@ -1,5 +1,7 @@
 package pers.gene.ticketmanagement.domain;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.swing.*;
 import java.util.Date;
 
@@ -8,10 +10,20 @@ public class Ticket {
     String trainNumber;
     String checkin;
     String checkout;
-    Date startTime;
+//    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    String startTime;
     Date endTime;
     String  customerId;
-//    int amount;
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    int amount;
 
 
     public String getId() {
@@ -54,11 +66,11 @@ public class Ticket {
         this.checkout = checkout;
     }
 
-    public Date getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 

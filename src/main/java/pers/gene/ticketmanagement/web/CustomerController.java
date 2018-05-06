@@ -5,15 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import pers.gene.ticketmanagement.domain.Customer;
 import pers.gene.ticketmanagement.service.CustomerService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,12 +37,16 @@ public class CustomerController {
             customer.setCellphone(request.getParameter("cellphonesignup"));
             customerService.regist(customer);
 //            confirm("注册成功")；
-            return "index";
+            return "success";
         }else {
             return "passwordfail";
         }
 
     }
+    @RequestMapping("/success")
+    public String success(){
+        return "success";
+}
 
     @RequestMapping("/login")
     public String login(HttpServletRequest request){
@@ -76,4 +75,8 @@ public class CustomerController {
 //        LOGGER.info("从数据库读取Custom集合");
 //        return customerService.getList();
 //    }
+    @RequestMapping("/a")
+    public String go(){
+        return "index";
+    }
 }

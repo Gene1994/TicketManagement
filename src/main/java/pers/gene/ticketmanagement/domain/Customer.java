@@ -1,7 +1,11 @@
 package pers.gene.ticketmanagement.domain;
 
+import org.springframework.context.annotation.Configuration;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
+@Configuration
 public class Customer {
     String id;
     String userName;

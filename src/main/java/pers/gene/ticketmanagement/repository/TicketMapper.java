@@ -42,14 +42,17 @@ public interface TicketMapper {
             @Result(property = "endTime", column = "endtime"),
             @Result(property = "customerId", column = "customerid")
     })
-    List<Ticket> findByChecckinCheckout(@Param("checkin") String checkin, @Param("checkout") String checkout, @Param("startTime") Date startTime);
+    List<Ticket> findByCheckinCheckout(@Param("checkin") String checkin, @Param("checkout") String checkout, @Param("startTime") String startTime);
 
     @Insert("INSERT INTO ticket (id,trainnumber,checkin,checkout,starttime,endtime,customerid) VALUES(#{id}, #{trainNumber}, #{checkin}, #{checkout}, #{startTime}, #{endTime}, #{customerId})")
     void insert(@Param("id") String id, @Param("trainNumber") String trainNumber, @Param("checkin") String checkin, @Param("checkout") String checkout, @Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("customerId") String customerId);
 
     @Update("UPDATE ticket SET trainNumber=#{trainNumber},checkin=#{checkin},checkout=#{checkout},starttime=#{startTime},endtime=#{endTime}, customerid = #{customerId} WHERE id =#{id}")
-    void updateById(@Param("id") String id, @Param("trainNumber") String trainNumber, @Param("checkin") String checkin, @Param("checkout") String checkout, @Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("customerId") String customerId);
+    void updateById(@Param("id") String id, @Param("trainNumber") String trainNumber, @Param("checkin") String checkin, @Param("checkout") String checkout, @Param("startTime") String startTime, @Param("endTime") Date endTime, @Param("customerId") String customerId);
 
     @Delete("DELETE FROM ticket WHERE id=#{id}")
     void delete(@Param("id") String id);
+
+    @Select("SELECT count(*) FROM TICKET  where checkin = #{checkin}  and checkout = #{checkout} and (starttime = #{startTime} or #{startTime} is null)")
+    Integer countByChecckinCheckout(@Param("checkin") String checkin, @Param("checkout") String checkout, @Param("startTime") String startTime);
 }
