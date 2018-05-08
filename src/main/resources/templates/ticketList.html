@@ -17,6 +17,15 @@ List<Ticket> items = request.getAttribute("items")
         <th>到达时间</th>
         <th>剩余数量</th>
     </tr>
+    <tr>
+    <script>
+        var tickets = request.getAttribLocation("ticketList");
+        for (var ticket in tickets){
+            eval("document.write("<tb>" +ticket.trainNumber + </tb>)")
+        }
+    </script>
+    </tr>
+</table>
 <!--
     <tr>
         <td id="id"></td>
