@@ -1,8 +1,11 @@
-<html>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <head>
     <title>ticket列表</title>
 </head>
 <body>
+<%
+List<Ticket> items = request.getAttribute("items")
+    %>
 <h3 align="center">ticket列表</h3>
 <table border="1" width="70%" align="center">
     <tr>
@@ -34,7 +37,6 @@
     PageBean pb = request.getAttribute("pageBean");
     %>
     -->
-
     <script>
         document.write("<tr>");
         var items= "${pageBean.items}";

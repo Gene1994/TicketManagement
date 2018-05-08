@@ -6,14 +6,20 @@ import javax.swing.*;
 import java.util.Date;
 
 public class Ticket {
-    String id;
+//    String id;
     String trainNumber;
     String checkin;
     String checkout;
-//    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    String startTime;
+    Date startTime;
     Date endTime;
-    String  customerId;
+    String seatType;
+    String seatNumber;
+    double price;
+    int amount;
+
+    public double getPrice() {
+        return price;
+    }
 
     public int getAmount() {
         return amount;
@@ -23,23 +29,8 @@ public class Ticket {
         this.amount = amount;
     }
 
-    int amount;
-
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public String getTrainNumber() {
@@ -66,11 +57,10 @@ public class Ticket {
         this.checkout = checkout;
     }
 
-    public String getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
-
-    public void setStartTime(String startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
@@ -80,5 +70,21 @@ public class Ticket {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public String getSeatType() {
+        return seatType;
+    }
+
+    public void setSeatType(String seatType) {
+        this.seatType = seatType;
+    }
+
+    public String getSeatNumber() {
+        return seatNumber;
+    }
+
+    public void setSeatNumber(String seatNumber) {
+        this.seatNumber = seatNumber;
     }
 }

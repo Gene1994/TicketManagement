@@ -36,7 +36,7 @@ public class CustomerService {
     public void regist(Customer customer){
         if (checkUserName(customer.getUserName()) && checkEmailFormat(customer.getEmail()) && checkEmailAddress(customer.getEmail()) && checkMobileNumber(customer.getCellphone())){
             //验证成功 添加至数据库
-            customerMapper.insert(customer.getId(), customer.getUserName(), customer.getPassword(), customer.getEmail(), customer.getCellphone(), customer.getCheckin(), customer.getCheckout(), customer.getStartTime(), customer.getEndTime());
+            customerMapper.insert(customer.getId(), customer.getUserName(), customer.getPassword(), customer.getEmail(), customer.getCellphone());
         }
     }
 

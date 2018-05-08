@@ -12,10 +12,10 @@ public class Customer {
     String password;
     String email;
     String cellphone;
-    String checkin;
-    String checkout;
-    Date startTime;
-    Date endTime;
+//    String checkin;
+//    String checkout;
+//    Date startTime;
+//    Date endTime;
 
     public String getId() {
         return id;
@@ -55,37 +55,5 @@ public class Customer {
 
     public void setCellphone(String cellphone) {
         this.cellphone = cellphone;
-    }
-
-    public String getCheckin() {
-        return checkin;
-    }
-
-    public void setCheckin(String checkin) {
-        this.checkin = checkin;
-    }
-
-    public String getCheckout() {
-        return checkout;
-    }
-
-    public void setCheckout(String checkout) {
-        this.checkout = checkout;
-    }
-
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
     }
 }
