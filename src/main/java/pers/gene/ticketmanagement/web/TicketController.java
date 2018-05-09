@@ -1,7 +1,6 @@
 package pers.gene.ticketmanagement.web;
 
 
-
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import pers.gene.ticketmanagement.domain.Ticket;
 import pers.gene.ticketmanagement.service.TicketService;
 
+import javax.jws.WebParam;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -37,10 +37,10 @@ public class TicketController {
 
     @RequestMapping("/search")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    public @ResponseBody String search(@RequestParam(required=true,defaultValue="1") Integer page, HttpServletRequest request, Ticket ticket){
+    public String search(@RequestParam(required = true, defaultValue = "1") Integer page, HttpServletRequest request, Ticket ticket, Model model) {
         String checkin = ticket.getCheckin();
         String checkout = ticket.getCheckout();
-            //表单提交自动把date 类型转为String
+        //表单提交自动把date 类型转为String
         Date startTime = ticket.getStartTime();
 //        Integer coount =
 //        convert(startTime);
@@ -49,41 +49,14 @@ public class TicketController {
 
         PageHelper.startPage(page, 10);
         List<Ticket> ticketList = ticketService.search(checkin, checkout, startTime, theNextDay(startTime));
-        PageInfo<Ticket> p=new PageInfo<>(ticketList);
-//        request.setAttribute("items", items);
-//        JSONArray ticketInfo = new JSONArray();
-//        for(Ticket ticketObject : ticketList){
-//            JSONObject jo = new JSONObject();
-////            jo.put("id", ticketObject.getId());
-//            jo.put("trainNumber", ticketObject.getTrainNumber());
-//            jo.put("checkin", ticketObject.getCheckin());
-//            jo.put("checkout", ticketObject.getCheckout());
-//            jo.put("startTime", ticketObject.getStartTime());
-//            jo.put("endTime", ticketObject.getEndTime());
-//            jo.put("seatType", ticketObject.getSeatType());
-//            jo.put("seatNumber", ticketObject.getSeatNumber());
-//            jo.put("price", ticketObject.getPrice());
-//            jo.put("amount", ticketObject.getAmount());
-//            ticketInfo.put(jo);
-//        }
-//        model.addAttribute("page", p);
-//        model.addAttribute("ticketList",ticketList);
-        //for(Ticket ticket : items)
-        ObjectMapper objectMapper = new ObjectMapper();
-        String list4Json = null;
-        try{
-            list4Json = objectMapper.writeValueAsString(ticketList);
-        }catch (JsonGenerationException e){
-            e.printStackTrace();
-        }catch (JsonMappingException e){
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        request.setAttribute("ticketList", list4Json);
-        return list4Json;
+        PageInfo<Ticket> p = new PageInfo<>(ticketList);
+        request.setAttribute("ticketList", ticketList);
+        request.setAttribute("pageBean", p);
+        model.addAttribute("list", ticketList);
+        return "ticketList";
     }
-    private Date theNextDay(Date date){
+
+    private Date theNextDay(Date date) {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         c.add(Calendar.DAY_OF_MONTH, 1);// 今天+1天

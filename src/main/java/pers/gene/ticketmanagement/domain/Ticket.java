@@ -16,6 +16,24 @@ public class Ticket {
     String seatNumber;
     double price;
     int amount;
+    boolean isOrdered;
+    String customerId;
+
+    public boolean isOrdered() {
+        return isOrdered;
+    }
+
+    public void setOrdered(boolean ordered) {
+        isOrdered = ordered;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
 
     public double getPrice() {
         return price;

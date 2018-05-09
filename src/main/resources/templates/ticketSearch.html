@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
 </head>
 <body>
-<form  action="/ticket/search" autocomplete="on" method="post">
+<form action="/ticket/search" autocomplete="on" method="post">
     <h1>查询</h1>
     <p>
-        <label > 始发站 </label>
+        <label> 始发站 </label>
         <input id="checkin" name="checkin" required="required" type="text"/>
     </p>
     <p>
@@ -16,22 +16,57 @@
     </p>
     <p>
         <label>时间</label>
-        <input type="date" name="startTime" id="startTime" value="2018-06-01">
+        <input type="date" name="startTime" id="startTime" value="2018-05-07">
     </p>
     <p>
-        <input type="submit" value="查询"/>
+        <input type="submit" value="查询" />
     </p>
 </form>
-<table border="1" width="70%" align="center">
-    <tr>
-        <th>ID</th>
-        <th>列车班次</th>
-        <th>始发站</th>
-        <th>目的地</th>
-        <th>发车时间</th>
-        <th>到达时间</th>
-        <th>剩余数量</th>
-    </tr>
-</table>
+
+
+<!--<script>-->
+    <!--function search() {-->
+        <!--$.ajax({-->
+            <!--type: 'post',-->
+            <!--url: '/ticket/search',-->
+            <!--cache: 'false',-->
+            <!--data: {-->
+                <!--"checkin": formData['checkin'],-->
+                <!--"checkout": formData['checkout'],-->
+                <!--"startTime": formData['startTime']-->
+            <!--},-->
+            <!--dataType: 'text',-->
+            <!--//contentType : 'application/x-www-form-urlencoded;charset=UTF-8',-->
+            <!--headers: {-->
+                <!--'Content-Type': 'application/json;charset=utf-8'-->
+            <!--},-->
+            <!--success: function (result) {//result为后台返回的值,是json字符串的形式-->
+                <!--// alert(result);-->
+                <!--var obj = JSON.parse(result);//解析json字符串为json对象形式-->
+                <!--var trStr = '';//动态拼接table-->
+                <!--// var html = '';-->
+                <!--for (var i = 0; i < obj.length; i++) {//循环遍历出json对象中的每一个数据并显示在对应的td中-->
+                    <!--document.getElementById(trainNumberResult).innerHTML = obj[i].trainNumber;-->
+                    <!--// trStr += '<td width="15%" style="display:none" id="trainNumber">' + obj[i].trainNumber + '</td>';//数据表的主键值-->
+                    <!--// trStr += '<td width="15%" id="checkin">' + obj[i].checkin + '</td>';//对应数组表的字段值-->
+                    <!--// trStr += '<td width="15%">' + obj[i].checkout + '</td>';-->
+                    <!--// trStr += '<td width="15%">' + obj[i].startTime + '</td>';-->
+                    <!--// trStr += '<td>' + obj[i].endTime + '</td>';-->
+                    <!--// trStr += '<td>' + obj[i].seatType + '</td>';-->
+                    <!--// trStr += '<td>' + obj[i].seatNumber + '</td>';-->
+                    <!--// trStr += '<td>' + obj[i].price + '</td>';-->
+                    <!--// trStr += '<td>' + obj[i].amount + '</td>';-->
+                    <!--/*经典之处，要将主键对应的值以json的形式进行传递，才能在后台使用*/-->
+                    <!--// trStr += "<td><a href='#'style='text-decoration:none' onclick='Delete(\"" + obj[i].NVFID + "\")'>删除</a><td>";-->
+                    <!--// trStr += '</tr>';-->
+                <!--}-->
+                <!--// $("#tbody").html(trStr);//运用html方法将拼接的table添加到tbody中return;-->
+            <!--},-->
+            <!--error: function (error) {-->
+                <!--alert(error);-->
+            <!--}-->
+        <!--});-->
+    <!--}-->
+<!--</script>-->
 </body>
 </html>
