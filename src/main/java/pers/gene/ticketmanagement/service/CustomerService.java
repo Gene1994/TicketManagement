@@ -121,14 +121,14 @@ public class CustomerService {
                 Customer customer = getCustomerByUserName(userName);
                 if (password.equals(customer.getPassword())){
                     //登录成功
-                    return "homepage";
+                    return "index";
                 }else {
                     //密码错误
-                    return "index";
+                    return "login";
                 }
             }else{
                 //用户名不存在
-                return "index";
+                return "login";
             }
         }
 

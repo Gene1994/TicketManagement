@@ -1,4 +1,4 @@
-package pers.gene.ticketmanagement;
+package pers.gene.ticketmanagement.config;
 
 import com.github.pagehelper.PageHelper;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
