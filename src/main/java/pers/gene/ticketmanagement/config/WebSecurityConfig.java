@@ -2,7 +2,6 @@ package pers.gene.ticketmanagement.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,9 +10,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import pers.gene.ticketmanagement.service.CustomerService;
-import pers.gene.ticketmanagement.web.JWTAuthenticationFilter;
-import pers.gene.ticketmanagement.web.JWTLoginFilter;
+import pers.gene.ticketmanagement.service.CustomAuthenticationProvider;
+import pers.gene.ticketmanagement.web.filter.JWTAuthenticationFilter;
+import pers.gene.ticketmanagement.web.filter.JWTLoginFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -31,20 +30,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers("/index", "/customer/index").permitAll()
+                .antMatchers("/index","/customer/register","/customer/index").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTLoginFilter(authenticationManager()))
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-        //指定登录页的路径
-                .formLogin().loginPage("/customer/index")
-                //指定登录成功后跳转到/index页面
+//        //指定登录页的路径
+                .formLogin().loginPage("/customer/login")
+          //      指定登录成功后跳转到/index页面
                 .defaultSuccessUrl("/customer/success")
-                //指定登录失败后跳转到/login?error页面
+              // 指定登录失败后跳转到/login?error页面
                 .failureUrl("/customer/fail")
                 .permitAll()
                 .and()
-                //开启cookie储存用户信息，并设置有效期为14天，指定cookie中的密钥
+//                //开启cookie储存用户信息，并设置有效期为14天，指定cookie中的密钥
                 .rememberMe().tokenValiditySeconds(1209600).key("mykey")
                 .and()
                 .logout()
@@ -59,9 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         //并根据传入的AuthenticationManagerBuilder中的userDetailsService方法来接收我们自定义的认证方法。
         //且该方法必须要实现UserDetailsService这个接口。
-        auth.userDetailsService(userDetailsService)
-                //密码使用BCryptPasswordEncoder()方法验证，因为这里使用了BCryptPasswordEncoder()方法验证。所以在注册用户的时候在接收前台明文密码之后也需要使用BCryptPasswordEncoder().encode(明文密码)方法加密密码。
-                .passwordEncoder(bCryptPasswordEncoder);
+        auth.authenticationProvider(new CustomAuthenticationProvider(userDetailsService,bCryptPasswordEncoder));
 
     }
 

@@ -1,4 +1,4 @@
-package pers.gene.ticketmanagement.web;
+package pers.gene.ticketmanagement.web.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -7,6 +7,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.RequestMapping;
+import pers.gene.ticketmanagement.web.constant.ConstantKey;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -36,14 +39,14 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
 //        try {
 //            Customer customer = new ObjectMapper()
 //                    .readValue(req.getInputStream(), Customer.class);
-            return authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
+        return authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
 //                            customer.getUsername(),
 //                            customer.getPassword(),
-                            req.getParameter("username"),
-                            req.getParameter("password"),
-                            new ArrayList<>())
-            );
+                        req.getParameter("username"),
+                        req.getParameter("password"),
+                        new ArrayList<>())
+        );
 //        }
 //        catch (IOException e) {
 //            throw new RuntimeException(e);
@@ -56,13 +59,19 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
                                             HttpServletResponse res,
                                             FilterChain chain,
                                             Authentication auth) throws IOException, ServletException {
-
-        String token = Jwts.builder()
-                .setSubject(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername())
-                .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 24 * 1000))
-                .signWith(SignatureAlgorithm.HS512, "MyJwtSecret")
-                .compact();
-        res.addHeader("Authorization", "Bearer " + token);
+        // builder the token
+        String token = null;
+        try {
+            token = Jwts.builder()
+                    .setSubject(auth.getName())
+                    .setExpiration(new Date(System.currentTimeMillis() + 60 * 1000)) // 设置过期时间 60秒
+//                    .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 24 * 1000)) // 设置过期时间
+                    .signWith(SignatureAlgorithm.HS512, ConstantKey.SIGNING_KEY) //采用什么算法是可以自己选择的，不一定非要采用HS512
+                    .compact();
+            res.addHeader("Authorization", "Bearer " + token);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

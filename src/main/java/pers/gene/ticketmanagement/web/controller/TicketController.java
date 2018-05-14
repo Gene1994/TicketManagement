@@ -1,4 +1,4 @@
-package pers.gene.ticketmanagement.web;
+package pers.gene.ticketmanagement.web.controller;
 
 
 import com.fasterxml.jackson.core.JsonGenerationException;

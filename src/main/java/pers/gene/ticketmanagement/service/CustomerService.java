@@ -1,6 +1,9 @@
 package pers.gene.ticketmanagement.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pers.gene.ticketmanagement.repository.CustomerMapper;
 import pers.gene.ticketmanagement.domain.Customer;
@@ -11,8 +14,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.util.Collections.emptyList;
+
+//实现UserDetailsService接口 使用UserDetails验证登录
 @Service
-public class CustomerService {
+public class CustomerService implements UserDetailsService {
 
     //自动绑定mapper
     @Autowired
@@ -104,6 +110,13 @@ public class CustomerService {
         return flag;
     }
 
+    /**
+     * 登录
+     * @param userName
+     * @param password
+     * @return
+     */
+
     public String login(String userName, String password) {
         if (checkEmailFormat(userName)) {
             //邮箱登录
@@ -112,7 +125,7 @@ public class CustomerService {
                 if (customer != null) {
                     if (password.equals(customer.getPassword())) {
                         //登录成功
-                        return "homepage";
+                        return "success";
                     } else {
                         //密码错误
                         return "index";
@@ -145,5 +158,14 @@ public class CustomerService {
 
     public void logout(){
 
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Customer customer = customerMapper.findByUserName(username);
+        if (customer == null){
+            throw new UsernameNotFoundException(username);
+        }
+        return new org.springframework.security.core.userdetails.User(customer.getUserName(), customer.getPassword(), emptyList());
     }
 }

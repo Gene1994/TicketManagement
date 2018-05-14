@@ -1,10 +1,13 @@
-package pers.gene.ticketmanagement.web;
+package pers.gene.ticketmanagement.web.filter;
 
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import pers.gene.ticketmanagement.web.constant.ConstantKey;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -20,6 +23,7 @@ import java.util.ArrayList;
  * 如果校验通过，就认为这是一个取得授权的合法请求
  */
 public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
+    private static final Logger logger = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
 
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
@@ -28,35 +32,48 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String header = request.getHeader("Authorization");
-
         if (header == null || !header.startsWith("Bearer ")) {
             chain.doFilter(request, response);
             return;
         }
-
         UsernamePasswordAuthenticationToken authentication = getAuthentication(request);
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(request, response);
-
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         if (token != null) {
             // parse the token.
-            String user = Jwts.parser()
-                    .setSigningKey("MyJwtSecret")
-                    .parseClaimsJws(token.replace("Bearer ", ""))
-                    .getBody()
-                    .getSubject();
-
-            if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+            String user = null;
+            try {
+                user = Jwts.parser()
+                        .setSigningKey(ConstantKey.SIGNING_KEY)
+                        .parseClaimsJws(token.replace("Bearer ", ""))
+                        .getBody()
+                        .getSubject();
+                if (user != null) {
+                    return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+                }
+            } catch (ExpiredJwtException e) {
+                logger.error("Token已过期: {} " + e);
+                e.printStackTrace();
+            } catch (UnsupportedJwtException e) {
+                logger.error("Token格式错误: {} " + e);
+                e.printStackTrace();
+            } catch (MalformedJwtException e) {
+                logger.error("Token没有被正确构造: {} " + e);
+                e.printStackTrace();
+            } catch (SignatureException e) {
+                logger.error("签名失败: {} " + e);
+                e.printStackTrace();
+            } catch (IllegalArgumentException e) {
+                logger.error("非法参数异常: {} " + e);
+                e.printStackTrace();
             }
-            return null;
         }
         return null;
     }
+
 
 }
