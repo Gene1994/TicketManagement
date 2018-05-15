@@ -30,14 +30,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers("/index","/customer/register","/customer/index").permitAll()
+                .antMatchers("/index","/customer/register","/customer/index","/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTLoginFilter(authenticationManager()))
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
 //        //指定登录页的路径
-                .formLogin().loginPage("/customer/login")
-          //      指定登录成功后跳转到/index页面
+                .formLogin().loginPage("/customer/index")
+                .loginProcessingUrl("/customer/login")
+//                指定登录成功后跳转到/index页面
                 .defaultSuccessUrl("/customer/success")
               // 指定登录失败后跳转到/login?error页面
                 .failureUrl("/customer/fail")

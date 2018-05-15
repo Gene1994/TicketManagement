@@ -62,11 +62,6 @@ public class CustomerController {
     }
 
 
-    /**
-     * 登录
-     * @param request
-     * @return
-     */
 //    @RequestMapping("/login")
 //    public String login(HttpServletRequest request) {
 //        String userName = request.getParameter("username");

@@ -35,6 +35,11 @@ public class TicketController {
     @Autowired
     TicketService ticketService;
 
+    @RequestMapping("/index")
+    public String index(){
+        return "ticketSearch";
+    }
+
     @RequestMapping("/search")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     public String search(@RequestParam(required = true, defaultValue = "1") Integer page, HttpServletRequest request, Ticket ticket, Model model) {
