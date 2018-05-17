@@ -81,6 +81,7 @@
 			<version>3.0</version>
 		</dependency>
 
+		<!--热启动：每自修改后， 程序自动启动spring Application上下文。 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -129,6 +130,12 @@
 			<groupId>com.vaadin.external.google</groupId>
 			<artifactId>android-json</artifactId>
 			<version>0.0.20131108.vaadin1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.20</version>
 		</dependency>
 
 	</dependencies>

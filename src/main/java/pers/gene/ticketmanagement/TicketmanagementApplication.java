@@ -1,5 +1,6 @@
 package pers.gene.ticketmanagement;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -12,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 //@ComponentScan(basePackages = {"pers.gene.ticketmanagement"})
 
 
-
-@SpringBootApplication
 //使用redis实现session共享
 //@EnableRedisHttpSession
+@SpringBootApplication
+@Slf4j
 public class TicketmanagementApplication {
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -26,8 +27,8 @@ public class TicketmanagementApplication {
 	public String index(){
 		return "index";
 	}
-
 	public static void main(String[] args) {
+		log.info("开始运行springboot");
 		SpringApplication.run(TicketmanagementApplication.class, args);
 	}
 }

@@ -73,5 +73,4 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
             e.printStackTrace();
         }
     }
-
 }
