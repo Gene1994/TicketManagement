@@ -2,6 +2,7 @@ package pers.gene.ticketmanagement.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pers.gene.ticketmanagement.domain.Order;
 import pers.gene.ticketmanagement.domain.Ticket;
 import pers.gene.ticketmanagement.repository.TicketMapper;
 
@@ -25,4 +26,11 @@ public class TicketService {
 //        return ticketMapper.countByChecckinCheckout(checkin, checkout, startTime, theNextDay);
 //    }
 
+    public List<Ticket> findByTrainNumberStartTime(String ticketNumber, Date startTime){
+        return ticketMapper.findByTrainNumberStartTime(ticketNumber, startTime);
+    }
+
+    public void setIsOrdered(Order ordered){
+        ticketMapper.setIsOrdered(ordered.getTicket().getId());
+    }
 }

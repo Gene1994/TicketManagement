@@ -85,10 +85,41 @@
 								</p>
                             </form>
                         </div>
-						
                     </div>
                 </div>  
             </section>
         </div>
+<script>
+    $(function () {
+        //调用api站点的登录接口,接口在登录成功后返回一个token。
+        $("#login").on("click", function () {
+            $.ajax({
+                url: "http://localhost:8080/login",
+                data: $("form").serialize(),
+                method: "post",
+                success: function (data) {
+                    if (data.Success) {
+                        //为简单起见，将token保存在全局变量中。
+                        window.token = data.Token;
+                        alert("登录成功");
+                    } else {
+                        alert("登录失败:" + data.Message);
+                    }
+                }
+            });
+        });
+        //调用api站点的获取数据的接口，该接口要求身份验证。
+        $("#invoke").on("click", function () {
+            $.ajax({
+                url: "http://localhost:8080/customer/success",
+                method: "get",
+                headers: { "auth": window.token },//通过请求头来发送token，放弃了通过cookie的发送方式
+                complete: function (jqXHR,textStatus) {
+                    alert(jqXHR.responseText);
+                },
+            });
+        });
+    });
+</script>
     </body>
 </html>

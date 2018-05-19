@@ -5,6 +5,7 @@ import java.util.Date;
 
 @Data
 public class Order {
+    String id;
     Ticket ticket;
     Customer customer;
     Date orderTime;

@@ -40,6 +40,8 @@ public class TicketController {
         return "ticketSearch";
     }
 
+    List<Ticket> ticketList = null;
+
     @RequestMapping("/search")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     public String search(@RequestParam(required = true, defaultValue = "1") Integer page, HttpServletRequest request, Ticket ticket, Model model) {
@@ -53,11 +55,12 @@ public class TicketController {
         //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
 
         PageHelper.startPage(page, 10);
-        List<Ticket> ticketList = ticketService.search(checkin, checkout, startTime, theNextDay(startTime));
-        PageInfo<Ticket> p = new PageInfo<>(ticketList);
+        ticketList = ticketService.search(checkin, checkout, startTime, theNextDay(startTime));
+        PageInfo<Ticket> pageInfo = new PageInfo<>(ticketList);
         request.setAttribute("ticketList", ticketList);
-        request.setAttribute("pageBean", p);
+        request.setAttribute("pageInfo", pageInfo);
         model.addAttribute("list", ticketList);
+        model.addAttribute("pageInfo",pageInfo);
         return "ticketList";
     }
 
@@ -69,8 +72,9 @@ public class TicketController {
     }
 
     //关键：将前端input type date类型时间格式化为"yyyy-MM-dd 00:00:00"转给后端Date类型
+    //Converter类型转换，它支持从一个Object转为另一个Object。
     @Bean
-    public Converter<String, Date> addNewConvert() {
+    public Converter<String, Date> addNewConvert() {//String转Date
         return new Converter<String, Date>() {
             @Override
             public Date convert(String source) {

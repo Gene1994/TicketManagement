@@ -5,6 +5,7 @@ import java.util.Date;
 
 @Data
 public class Ticket {
+    String id;
     String trainNumber;
     String checkin;
     String checkout;
@@ -14,6 +15,6 @@ public class Ticket {
     String seatNumber;
     double price;
     int amount;
-    boolean isOrdered;
+    boolean isOrdered = false;//数据库中 1代表TRUE,0代表FALSE
     String customerId;
 }

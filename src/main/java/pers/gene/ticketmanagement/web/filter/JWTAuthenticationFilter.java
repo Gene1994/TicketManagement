@@ -31,6 +31,7 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+        //重点：前端获取login成功时的res.addHeader("Authorization", "Bearer " + token);。前端发送请求时在header中带有Authorization信息，后端抓取该hear做验证
         String header = request.getHeader("Authorization");
         if (header == null || !header.startsWith("Bearer ")) {
             chain.doFilter(request, response);

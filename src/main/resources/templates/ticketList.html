@@ -30,8 +30,62 @@
             <td th:text="${ticket.seatNumber}"></td>
             <td th:text="${ticket.price}"></td>
             <td th:text="${ticket.amount}"></td>
+            <td><a href="" th:href="@{/order/new(trainNumber=${ticket.trainNumber}, startTime=${ticket.startTime})}">订票</a>
+            </td>
         </tr>
         </tbody>
     </table>
+    <br />
+    <th:center>
+        第<h3 th:text="${pageInfo.pageNum}"/>页/共<h3 th:text="${pageInfo.pages}"/>页 <a href="" th:href="${pageInfo.firstPage}">首页</a>
+        <h3 th:if="${pageInfo.pageNum} gt '1'">
+            <th:then>
+            <a href="" th:href="${pageInfo.prePage}">上一页</a>
+            </th:then>
+        </h3>
+<!--
+        <c:choose>
+            <c:when test="${pb.tp<=10}">
+                <c:set var="begin" value="1" />
+                <c:set var="end" value="${pb.tp}" />
+            </c:when>
+            <c:otherwise>
+                <c:set var="begin" value="${pb.pc-5}" />
+                <c:set var="end" value="${pb.pc+4}" />
+                <%--头溢出--%>
+                <c:if test="${begin<1}">
+                    <c:set var="begin" value="1" />
+                    <c:set var="end" value="10" />
+                </c:if>
+                <%--尾溢出--%>
+                <c:if test="${end>pb.tp}">
+                    <c:set var="end" value="${pb.tp}" />
+                    <c:set var="begin" value="${pb.tp-9}" />
+                </c:if>
+            </c:otherwise>
+        </c:choose>
+
+        <%--循环遍历页码列表--%>
+        <c:forEach var="i" begin="${begin}" end="${end}">
+            <c:choose>
+                <c:when test="${i eq pb.pc}">
+                    [${i}]
+                </c:when>
+                <c:otherwise>
+                    <a href="${pb.url}&pc=${i}">[${i}]</a>
+                </c:otherwise>
+            </c:choose>
+
+        </c:forEach>
+-->
+
+        <h3 th:if ="${pageInfo.pageNum} lt ${pageInfo.lastPage}">
+            <th:then>
+            <a href="" th:herf ="${pageInfo.nextPage}">下一页</a>
+            </th:then>
+        </h3>
+        <a href="" th:herf="${pageInfo.lastPage}">尾页</a>
+
+    </th:center>
 </body>
 </html>
