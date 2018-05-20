@@ -9,5 +9,8 @@ public class Order {
     Ticket ticket;
     Customer customer;
     Date orderTime;
+
     int amount;//订票数量
+
+
 }

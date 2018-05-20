@@ -66,9 +66,30 @@ public class OrderController {
              order.setId(UUID.randomUUID().toString());
              order.setCustomer(customer);
              order.setTicket(ticket);
+             ticket.setCustomerId(customer.getId());
              orderService.newOrder(order);
              ticketService.setIsOrdered(order);
+
          }
         return "success";
+    }
+
+    @RequestMapping("/MyOrder")
+    public String MyOrder(HttpServletRequest request){
+        String header = request.getHeader("Authorization");
+        if (header == null){
+            //未登录，请先登录
+            return "login";
+        }
+        String userName = Jwts.parser()
+                .setSigningKey(ConstantKey.SIGNING_KEY)
+                .parseClaimsJws(header.replace("Bearer ", ""))
+                .getBody()
+                .getSubject();
+        Customer customer = customerService.getCustomerByUserName(userName);
+        List<Order> orderList = orderService.findOrderByCustomer(customer);
+        for (Order order : orderList){
+
+        }
     }
 }
