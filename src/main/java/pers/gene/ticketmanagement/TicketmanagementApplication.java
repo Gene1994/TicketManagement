@@ -23,12 +23,11 @@ public class TicketmanagementApplication {
 		return new BCryptPasswordEncoder();
 	}
 
-	@RequestMapping("/index")
-	public String index(){
-		return "index";
-	}
+//	@RequestMapping("/index")
+//	public String index(){
+//		return "index";
+//	}
 	public static void main(String[] args) {
-		log.info("开始运行springboot");
 		SpringApplication.run(TicketmanagementApplication.class, args);
 	}
 }

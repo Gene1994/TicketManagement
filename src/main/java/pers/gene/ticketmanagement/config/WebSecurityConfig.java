@@ -30,30 +30,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers("/index","/customer/register","/customer/index","/customer/login").permitAll()
+                .antMatchers("/index","/customer/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTLoginFilter(authenticationManager()))
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-//        //指定登录页的路径
                 .formLogin()
-                .loginPage("/login").permitAll()
-                .loginProcessingUrl("/login")
-//                指定登录成功后跳转到/index页面
-                .defaultSuccessUrl("/customer/index").permitAll()
-//               指定登录失败后跳转到/login?error页面
+                .loginPage("/customer/login").permitAll()
+                .loginProcessingUrl("/customer/login")
                 .failureUrl("/customer/fail")
-                .permitAll()
-                .and()
-//                //开启cookie储存用户信息，并设置有效期为14天，指定cookie中的密钥
-                .rememberMe().tokenValiditySeconds(1209600).key("mykey")
-                .and()
-                .logout()
+                .defaultSuccessUrl("/customer/success");
+//                .and()
+//                .rememberMe().tokenValiditySeconds(1209600).key("mykey")
+//                .and()
+//                .logout()
                 //指定登出的url
-                .logoutUrl("/api/user/logout")
-                //指定登场成功之后跳转的url
-                .logoutSuccessUrl("/index")
-                .permitAll();
+//                .logoutUrl("/api/user/logout")
+                //指定登出成功之后跳转的url
+//                .logoutSuccessUrl("/index")
+//                .permitAll();
     }
 
     @Autowired

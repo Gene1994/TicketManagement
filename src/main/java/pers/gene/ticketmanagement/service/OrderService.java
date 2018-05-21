@@ -19,6 +19,6 @@ public class OrderService {
     }
 
     public List<Order> findOrderByCustomer(Customer customer){
-        orderMapper.findOrderByCustomerId(customer.getId());
+        return orderMapper.findOrderByCustomerId(customer.getId());
     }
 }

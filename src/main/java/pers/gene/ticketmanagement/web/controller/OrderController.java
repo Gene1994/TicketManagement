@@ -1,10 +1,15 @@
 package pers.gene.ticketmanagement.web.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import pers.gene.ticketmanagement.domain.Customer;
 import pers.gene.ticketmanagement.domain.Order;
 import pers.gene.ticketmanagement.domain.Ticket;
@@ -75,7 +80,7 @@ public class OrderController {
     }
 
     @RequestMapping("/MyOrder")
-    public String MyOrder(HttpServletRequest request){
+    public String MyOrder(@RequestParam(required = true, defaultValue = "1") Integer page, HttpServletRequest request, Model model){
         String header = request.getHeader("Authorization");
         if (header == null){
             //未登录，请先登录
@@ -88,8 +93,23 @@ public class OrderController {
                 .getSubject();
         Customer customer = customerService.getCustomerByUserName(userName);
         List<Order> orderList = orderService.findOrderByCustomer(customer);
-        for (Order order : orderList){
-
-        }
+        PageHelper.startPage(page, 10);
+        PageInfo<Order> pageInfo = new PageInfo<>(orderList);
+        request.setAttribute("orderList", orderList);
+        request.setAttribute("pageInfo", pageInfo);
+        model.addAttribute("orderList", orderList);
+        model.addAttribute("pageInfo",pageInfo);
+        return "myOrder";
+//        for (Order order : orderList){
+//            model.addAttribute("orderId", order.getId());
+//            model.addAttribute("trainNumber", order.getTicket().getTrainNumber());
+//            model.addAttribute("checkin", order.getTicket().getCheckin());
+//            model.addAttribute("checkout", order.getTicket().getCheckout());
+//            model.addAttribute("startTime", order.getTicket().getStartTime());
+//            model.addAttribute("endTime", order.getTicket().getEndTime());
+//            model.addAttribute("seatType", order.getTicket().getSeatType());
+//            model.addAttribute("seatNumber", order.getTicket().getSeatNumber());
+//            model.addAttribute("price", order.getTicket().getPrice());
+//        }
     }
 }
