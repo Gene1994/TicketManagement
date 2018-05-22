@@ -15,6 +15,6 @@ public class Ticket {
     String seatNumber;
     double price;
     int amount;
-    boolean isOrdered = false;//数据库中 1代表TRUE,0代表FALSE
+    boolean isOrdered = false;//数据库中 Y代表TRUE,N代表FALSE
     String customerId;
 }

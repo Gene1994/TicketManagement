@@ -30,7 +30,11 @@ public class TicketService {
         return ticketMapper.findByTrainNumberStartTime(ticketNumber, startTime);
     }
 
-    public void setIsOrdered(Order ordered){
-        ticketMapper.setIsOrdered(ordered.getTicket().getId());
+    public void setIsOrdered(Order ordered, String orderInfo){
+        ticketMapper.setIsOrdered(ordered.getTicket().getId(), orderInfo);
+    }
+
+    public Ticket findById(String ticketId){
+        return ticketMapper.findById(ticketId);
     }
 }

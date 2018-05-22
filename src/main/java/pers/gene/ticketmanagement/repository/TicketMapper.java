@@ -54,8 +54,8 @@ public interface TicketMapper {
     @Insert("INSERT INTO ticket (trainnumber,checkin,checkout,starttime,endtime,seattype,seatnumber,price) VALUES(#{trainNumber}, #{checkin}, #{checkout}, #{startTime}, #{endTime}, #{seatType}, #{seatNumber}, #{price})")
     void insert(@Param("trainNumber") String trainNumber, @Param("checkin") String checkin, @Param("checkout") String checkout, @Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("seatType") String seatType, @Param("seatNumber") String seatNumber, @Param("price")double price);
 
-    @Update("UPDATE ticket SET isordered = 'Y' WHERE id =#{id}")
-    void setIsOrdered(@Param("id") String id);
+    @Update("UPDATE ticket SET isordered = '#{orderInfo}' WHERE id =#{id}")
+    void setIsOrdered(@Param("id") String id, @Param("orderInfo") String orderInfo);
 
 //    @Delete("DELETE FROM ticket WHERE id=#{id}")
 //    void delete(@Param("id") String id);

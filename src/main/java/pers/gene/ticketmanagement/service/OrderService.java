@@ -21,4 +21,12 @@ public class OrderService {
     public List<Order> findOrderByCustomer(Customer customer){
         return orderMapper.findOrderByCustomerId(customer.getId());
     }
+
+    public Order findById(String orderId){
+        return orderMapper.findById(orderId);
+    }
+
+    public void deleteById(String orderId){
+        orderMapper.deleteById(orderId);
+    }
 }

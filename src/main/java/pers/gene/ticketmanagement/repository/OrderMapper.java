@@ -2,6 +2,7 @@ package pers.gene.ticketmanagement.repository;
 
 import com.sun.org.apache.xpath.internal.operations.Or;
 import org.apache.ibatis.annotations.*;
+import org.springframework.security.core.parameters.P;
 import pers.gene.ticketmanagement.domain.Order;
 import pers.gene.ticketmanagement.util.myBooleanTypeHandler;
 
@@ -30,4 +31,24 @@ public interface OrderMapper {
             @Result(property = "ticket.price", column = "price"),
     })
     List<Order> findOrderByCustomerId(@Param("customerId") String customerId);
+
+    @Select("SELECT * FROM orderform WHERE orderid = #{orderId}")
+    @Results({
+            @Result(property = "orderId", column = "orderid"),
+            @Result(property = "customer.id", column = "customerid"),
+            @Result(property = "customer.userName", column = "username"),
+            @Result(property = "ticket.id", column = "ticketid"),
+            @Result(property = "ticket.trainNumber", column = "trainnumber"),
+            @Result(property = "ticket.checkin", column = "checkin"),
+            @Result(property = "ticket.checkout", column = "checkout"),
+            @Result(property = "ticket.startTime", column = "starttime"),
+            @Result(property = "ticket.endTime", column = "endtime"),
+            @Result(property = "ticket.seatType", column = "seattype"),
+            @Result(property = "ticket.seatNumber", column = "seatnumber"),
+            @Result(property = "ticket.price", column = "price"),
+    })
+    Order findById(@Param("orderId") String orderId);
+
+    @Delete("DELETE FROM orderform WHERE orderid=#{orderId}")
+    void deleteById(@Param("orderId") String orderId);
 }

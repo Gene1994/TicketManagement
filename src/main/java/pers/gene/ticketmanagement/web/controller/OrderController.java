@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pers.gene.ticketmanagement.domain.Customer;
@@ -72,14 +71,14 @@ public class OrderController {
              order.setCustomer(customer);
              order.setTicket(ticket);
              ticket.setCustomerId(customer.getId());
+             ticket.setOrdered(true);
              orderService.newOrder(order);
-             ticketService.setIsOrdered(order);
-
+             ticketService.setIsOrdered(order, "Y");
          }
         return "success";
     }
 
-    @RequestMapping("/MyOrder")
+    @RequestMapping("/myOrder")
     public String MyOrder(@RequestParam(required = true, defaultValue = "1") Integer page, HttpServletRequest request, Model model){
         String header = request.getHeader("Authorization");
         if (header == null){
@@ -111,5 +110,24 @@ public class OrderController {
 //            model.addAttribute("seatNumber", order.getTicket().getSeatNumber());
 //            model.addAttribute("price", order.getTicket().getPrice());
 //        }
+    }
+
+    /**
+     * 取消订单、退票
+     * @param request
+     * @return
+     */
+    @RequestMapping("/roll")
+    @Transactional
+    public String roll(HttpServletRequest request){
+        String orderId = request.getAttribute("orderId").toString();
+        Order order = orderService.findById(orderId);
+        String ticketId = order.getTicket().getId();
+        Ticket ticket = ticketService.findById(ticketId);
+        ticket.setOrdered(false);
+        ticket.setCustomerId(null);
+        ticketService.setIsOrdered(order, "N");
+        orderService.deleteById(orderId);
+        return "orderList";
     }
 }
