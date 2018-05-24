@@ -12,11 +12,6 @@
     <meta charset="UTF-8"/>
     <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  -->
     <title>在线票务模拟系统</title>
-    <!-- jQuery
-    <script src="/templates/js/jquery-3.3.1.js"></script>
-    -->
-    <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js">
-    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Login and Registration Form with HTML5 and CSS3"/>
     <meta name="keywords" content="html5, css3, form, switch, animation, :target, pseudo-class"/>
@@ -25,6 +20,11 @@
     <link rel="stylesheet" type="text/css" href="../static/css/demo.css"/>
     <link rel="stylesheet" type="text/css" href="../static/css/style.css"/>
     <link rel="stylesheet" type="text/css" href="../static/css/animate-custom.css"/>
+    <script src="../static/js/jquery-3.3.1.js"></script>
+    <!--
+    <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+    -->
+    <script type="text/javascript" src="../static/js/login.js"></script>
 </head>
 <body>
 <div class="container">
@@ -55,7 +55,7 @@
                             <label for="loginkeeping">Keep me logged in</label>
                         </p>
                         <p class="login button">
-                            <input type="button" value="Login" onclick="login()"/>
+                            <input type="button" value="Login" onclick="login1()"/>
                         </p>
                         <p class="change_link">
                             Not a member yet ?
@@ -106,34 +106,6 @@
         </div>
     </section>
 </div>
-<script type="text/javascript">
-    function login() {
-        $.ajax({
-            url: 'http://localhost:8080/login',
-            type: 'POST',
-            data: {
-                username: $('#username').val(),
-                password: $('#password').val()
-            },
-            complete: function (xhr, status) {
-                var authorization = xhr.getResponseHeader('Authorization')
-                $.ajax({
-                    url: 'http://localhost:8080/customer/login',
-                    type: 'POST',
-                    headers: {
-                        "Authorization" : authorization
-                    },
-                    data: {
-                        username: $('#username').val(),
-                        password: $('#password').val()
-                    },
-                    success: function (result) {
-                        $('html').html(result)
-                    }
-                })
-            }
-        })
-    }
-</script>
+
 </body>
 </html>

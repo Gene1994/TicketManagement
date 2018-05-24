@@ -30,8 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers("/index","/customer/register").permitAll()
                 .anyRequest().authenticated()
+                .antMatchers("/index","/customer/register").permitAll()
                 .and()
                 .addFilter(new JWTLoginFilter(authenticationManager()))
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/customer/login").permitAll()
                 .loginProcessingUrl("/customer/login")
                 .failureUrl("/customer/fail")
-                .defaultSuccessUrl("/customer/success");
+                .defaultSuccessUrl("/customer/index");
 //                .and()
 //                .rememberMe().tokenValiditySeconds(1209600).key("mykey")
 //                .and()
@@ -62,6 +62,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         //解决静态资源被拦截的问题
-        web.ignoring().antMatchers("/static/css/**", "/static/css/fronts/**", "/static/images/**");
+        web.ignoring().antMatchers("/static/css/**", "/static/css/fronts/**", "/static/images/**","/static/js/**");
     }
 }

@@ -1,10 +1,12 @@
 package pers.gene.ticketmanagement.service;
 
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 
 /**
  * 权限类型，负责存储权限和角色
  */
+
 public class GrantedAuthorityImpl implements GrantedAuthority {
 
     private String authority;
