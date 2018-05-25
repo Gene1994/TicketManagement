@@ -14,6 +14,9 @@ import org.springframework.util.DigestUtils;
 
 import java.util.ArrayList;
 
+/**
+ * 认证：用户登录后，接下来一段时间不用重复登录
+ */
 public class CustomAuthenticationProvider implements AuthenticationProvider {
     private UserDetailsService userDetailsService;
 

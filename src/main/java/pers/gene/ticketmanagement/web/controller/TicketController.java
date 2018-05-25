@@ -47,9 +47,6 @@ public class TicketController {
         String checkout = ticket.getCheckout();
         //表单提交自动把date 类型转为String
         Date startTime = ticket.getStartTime();
-//        Integer coount =
-//        convert(startTime);
-//        Customer customer = (Customer) request.getSession().getAttribute("customer");
         //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
         PageHelper.startPage(page, 10);
         List<Ticket> ticketList = ticketService.search(checkin, checkout, startTime, theNextDay(startTime));

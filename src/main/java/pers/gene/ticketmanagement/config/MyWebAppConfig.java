@@ -36,20 +36,5 @@ public class MyWebAppConfig extends WebMvcConfigurerAdapter {
         return pageHelper;
     }
 
-    /**
-     * spring-mybatis整合
-     * @return
-     */
-    @Bean
-    public MapperScannerConfigurer mapperScannerConfigurer() {
-        MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
-        mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
-        mapperScannerConfigurer.setBasePackage("pers.gene.ticketmanagement.repository");
-//        Properties properties = new Properties();
-//        properties.setProperty("mappers", "pers.gene.ticketmanagement.repository");
-//        properties.setProperty("notEmpty", "false");
-//        properties.setProperty("IDENTITY", "MYSQL");
-//        mapperScannerConfigurer.setProperties(properties);
-        return mapperScannerConfigurer;
-    }
+
 }
