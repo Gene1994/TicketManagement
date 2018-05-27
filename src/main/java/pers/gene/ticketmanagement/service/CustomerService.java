@@ -166,6 +166,7 @@ public class CustomerService implements UserDetailsService {
         if (customer == null){
             throw new UsernameNotFoundException(username);
         }
+        //验证，获取用户后应该添加对应的权限列表 而不是emptyList()
         return new org.springframework.security.core.userdetails.User(customer.getUserName(), customer.getPassword(), emptyList());
     }
 
