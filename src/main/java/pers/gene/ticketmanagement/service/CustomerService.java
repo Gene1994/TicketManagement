@@ -168,4 +168,5 @@ public class CustomerService implements UserDetailsService {
         }
         return new org.springframework.security.core.userdetails.User(customer.getUserName(), customer.getPassword(), emptyList());
     }
+
 }
