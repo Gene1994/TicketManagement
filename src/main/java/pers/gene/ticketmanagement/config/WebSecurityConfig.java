@@ -1,6 +1,5 @@
 package pers.gene.ticketmanagement.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -10,7 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import pers.gene.ticketmanagement.service.CustomAuthenticationProvider;
+import pers.gene.ticketmanagement.service.CustomerAuthenticationProvider;
 import pers.gene.ticketmanagement.service.CustomerService;
 import pers.gene.ticketmanagement.web.filter.JWTAuthenticationFilter;
 import pers.gene.ticketmanagement.web.filter.JWTLoginFilter;
@@ -19,26 +18,20 @@ import pers.gene.ticketmanagement.web.filter.JWTLoginFilter;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private UserDetailsService userDetailsService;
+//    private UserDetailsService userDetailsService;
     private CustomerService customerService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public WebSecurityConfig(UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userDetailsService = userDetailsService;
+    public WebSecurityConfig(CustomerService customerService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.customerService = customerService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    //HTTP请求安全处理
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .cors()
-                .and()
-                .csrf().disable()
-                .authorizeRequests()
+        http.cors().and().csrf().disable().authorizeRequests()
 
                 .antMatchers("/index","/customer/register").permitAll()
-
                 //以 "/admin/" 开头的URL只能让拥有 "ROLE_ADMIN"角色的用户访问。
                 .antMatchers("/admin/**").hasRole("ADMIN")
 
@@ -50,21 +43,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 //尚未匹配的任何URL都要求用户进行身份验证
                 .anyRequest().authenticated()
-
                 .and()
                 .addFilter(new JWTLoginFilter(authenticationManager()))
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-
                 .formLogin()
-                .loginPage("/customer/login")
+                .loginPage("/customer/login").permitAll()
                 .loginProcessingUrl("/customer/login")
-                .failureUrl("/customer/fail").permitAll()
-                .defaultSuccessUrl("/customer/index")
-
-                .and()
-                //开启cookie储存用户信息，并设置有效期为14天，指定cookie中的密钥
-                .rememberMe().tokenValiditySeconds(1209600).key("mykey");
-
+                .failureUrl("/customer/fail")
+                .defaultSuccessUrl("/customer/success");
+//                .and()
+//                .rememberMe().tokenValiditySeconds(1209600).key("mykey")
 //                .and()
 //                .logout()
                 //指定登出的url
@@ -74,19 +62,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .permitAll();
     }
 
-    //身份验证管理生成器
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
         //并根据传入的AuthenticationManagerBuilder中的userDetailsService方法来接收我们自定义的认证方法。
         //且该方法必须要实现UserDetailsService这个接口。
-        auth.userDetailsService(new CustomerService())
-                //密码使用BCryptPasswordEncoder()方法验证，因为这里使用了BCryptPasswordEncoder()方法验证。所以在注册用户的时候在接收前台明文密码之后也需要使用BCryptPasswordEncoder().encode(明文密码)方法加密密码。
-                .passwordEncoder(new BCryptPasswordEncoder());;
-
+        auth.authenticationProvider(new CustomerAuthenticationProvider(customerService,bCryptPasswordEncoder));
 
     }
 
-    //WEB安全
     @Override
     public void configure(WebSecurity web) throws Exception {
         //解决静态资源被拦截的问题

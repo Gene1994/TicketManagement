@@ -1,5 +1,6 @@
 package pers.gene.ticketmanagement.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,32 +12,43 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.DigestUtils;
+import pers.gene.ticketmanagement.domain.Customer;
 
 import java.util.ArrayList;
 
 /**
  * 认证：用户登录后，接下来一段时间不用重复登录
+ * 只有在login时候使用到了该类
+ * 获取用户名密码和数据库中进行比较 正确，赋予权限。
  */
-public class CustomAuthenticationProvider implements AuthenticationProvider {
-    private UserDetailsService userDetailsService;
-
+public class CustomerAuthenticationProvider implements AuthenticationProvider {
+//    private UserDetailsService userDetailsService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private CustomerService customerService;
 
-    public CustomAuthenticationProvider(UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder){
-        this.userDetailsService = userDetailsService;
+    public CustomerAuthenticationProvider(CustomerService customerService, BCryptPasswordEncoder bCryptPasswordEncoder){
+        this.customerService = customerService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
+    /**
+     * 自定义认证过程
+     * @param authentication
+     * @return
+     * @throws AuthenticationException
+     */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         // 获取认证的用户名 & 密码
         String name = authentication.getName();
         String password = authentication.getCredentials().toString();
         // 认证逻辑
-        UserDetails userDetails = userDetailsService.loadUserByUsername(name);
-        if(null != userDetails){
+//        UserDetails userDetails = userDetailsService.loadUserByUsername(name);
+        Customer customer = customerService.getCustomerByUserName(name);
+        if(null != customer){
             String encodePassword = DigestUtils.md5DigestAsHex((password).getBytes());
-            if(userDetails.getPassword().equals(encodePassword)){
+            if(customer.getPassword().equals(encodePassword)){
                 // 这里设置权限和角色
                 ArrayList<GrantedAuthority> authorities = new ArrayList<>();
                 authorities.add( new GrantedAuthorityImpl("ROLE_ADMIN") );

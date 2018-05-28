@@ -84,7 +84,7 @@ public class CustomerController {
         return false;
     }
 
-    @RequestMapping("/a")
+    @RequestMapping("/index")
     public String go() {
         return "index";
     }
