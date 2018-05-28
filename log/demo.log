@@ -1,5 +1,0 @@
-2018-05-25 17:38:47,694 INFO (StartupInfoLogger.java:59)- Started TicketmanagementApplication in 2.473 seconds (JVM running for 2.979)
-2018-05-25 21:44:07,427 INFO (StartupInfoLogger.java:50)- Starting TicketmanagementApplication on DESKTOP-AD1EN9D with PID 8812 (F:\Ideaworkspace\TicketManagement\target\classes started by JJBOOM in F:\Ideaworkspace\TicketManagement)
-2018-05-25 21:44:07,429 DEBUG (StartupInfoLogger.java:53)- Running with Spring Boot v2.0.0.RELEASE, Spring v5.0.4.RELEASE
-2018-05-25 21:44:07,430 INFO (SpringApplication.java:652)- No active profile set, falling back to default profiles: default
-2018-05-25 21:44:11,128 INFO (StartupInfoLogger.java:59)- Started TicketmanagementApplication in 4.088 seconds (JVM running for 5.444)
