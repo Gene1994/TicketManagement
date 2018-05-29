@@ -9,4 +9,5 @@ public class Customer{
     String password;
     String email;
     String cellphone;
+    String avatarUrl;//头像
 }

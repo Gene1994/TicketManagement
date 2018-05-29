@@ -144,6 +144,13 @@
 			<version>1.16.20</version>
 		</dependency>
 
+		<!--上传文件用
+		<dependency>
+			<groupId>servlets.com</groupId>
+			<artifactId>cos</artifactId>
+			<version>05Nov2002</version>
+		</dependency>
+-->
 	</dependencies>
 
 	<build>
