@@ -80,17 +80,8 @@ public class OrderController {
 
     @RequestMapping("/myOrder")
     public String MyOrder(@RequestParam(required = true, defaultValue = "1") Integer page, HttpServletRequest request, Model model){
-        String header = request.getHeader("Authorization");
-        if (header == null){
-            //未登录，请先登录
-            return "login";
-        }
-        String userName = Jwts.parser()
-                .setSigningKey(ConstantKey.SIGNING_KEY)
-                .parseClaimsJws(header.replace("Bearer ", ""))
-                .getBody()
-                .getSubject();
-        Customer customer = customerService.getCustomerByUserName(userName);
+        String jwt = request.getHeader("Authorization");
+        Customer customer = customerService.getCustomerByJWT(jwt);
         List<Order> orderList = orderService.findOrderByCustomer(customer);
         PageHelper.startPage(page, 10);
         PageInfo<Order> pageInfo = new PageInfo<>(orderList);

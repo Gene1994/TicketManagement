@@ -59,5 +59,9 @@ public interface CustomerMapper {
 
     @Delete("DELETE FROM customer WHERE id=#{id}")
     void deleteById(@Param("id") String id);
+
+    //根据用户ID插入用户头像URL
+    @Update("UPDATE customer SET avatar_url = (#{avatarUrl}) WHERE id = #{id}")
+    void setAvatarUrl(@Param("id") String id, @Param("avatarUrl") String avatarUrl);
 }
 

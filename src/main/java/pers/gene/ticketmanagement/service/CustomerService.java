@@ -1,5 +1,6 @@
 package pers.gene.ticketmanagement.service;
 
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -7,7 +8,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pers.gene.ticketmanagement.repository.CustomerMapper;
 import pers.gene.ticketmanagement.domain.Customer;
+import pers.gene.ticketmanagement.web.constant.ConstantKey;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -169,6 +174,30 @@ public class CustomerService implements UserDetailsService {
         //验证，获取用户后应该添加对应的权限列表 而不是emptyList()
         //再根据用户名在数据库中读取用户权限
         return new org.springframework.security.core.userdetails.User(customer.getUserName(), customer.getPassword(), emptyList());
+    }
+
+    public void uploadAvatar(byte[] file, String filePath, String fileName) throws IOException{
+        File targetFile = new File(filePath);
+        if(!targetFile.exists()){
+            targetFile.mkdirs();
+        }
+        FileOutputStream out = new FileOutputStream(filePath+fileName);
+        out.write(file);
+        out.flush();
+        out.close();
+    }
+
+    public Customer getCustomerByJWT(String jwt){
+        if (jwt == null){
+            //未登录，请先登录
+
+        }
+        String userName = Jwts.parser()
+                .setSigningKey(ConstantKey.SIGNING_KEY)
+                .parseClaimsJws(jwt.replace("Bearer ", ""))
+                .getBody()
+                .getSubject();
+        return getCustomerByUserName(userName);
     }
 
 }

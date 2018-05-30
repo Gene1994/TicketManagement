@@ -41,11 +41,11 @@ public class CustomerAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         // 获取认证的用户名 & 密码
-        String name = authentication.getName();
+        String username = authentication.getName();
         String password = authentication.getCredentials().toString();
         // 认证逻辑
 //        UserDetails userDetails = userDetailsService.loadUserByUsername(name);
-        Customer customer = customerService.getCustomerByUserName(name);
+        Customer customer = customerService.getCustomerByUserName(username);
         if(null != customer){
             String encodePassword = DigestUtils.md5DigestAsHex((password).getBytes());
             if(customer.getPassword().equals(encodePassword)){
@@ -54,7 +54,7 @@ public class CustomerAuthenticationProvider implements AuthenticationProvider {
                 authorities.add( new GrantedAuthorityImpl("ROLE_ADMIN") );
                 authorities.add( new GrantedAuthorityImpl("AUTH_WRITE") );
                 // 生成令牌 这里令牌里面存入了:name,password,authorities, 当然你也可以放其他内容
-                Authentication auth = new UsernamePasswordAuthenticationToken(name, password, authorities);
+                Authentication auth = new UsernamePasswordAuthenticationToken(username, password, authorities);
                 return auth;
             }else {
                 throw new BadCredentialsException("密码错误");

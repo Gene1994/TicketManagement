@@ -1,4 +1,6 @@
 package pers.gene.ticketmanagement.web.controller;
+
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import pers.gene.ticketmanagement.domain.Customer;
+import pers.gene.ticketmanagement.repository.CustomerMapper;
 import pers.gene.ticketmanagement.service.CustomerService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,14 +42,19 @@ public class CustomerController {
     private CustomerService customerService;
 
     @Autowired
+    private CustomerMapper customerMapper;
+
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(HttpServletRequest request) {
         return "login";
     }
+
     /**
      * 注册
+     *
      * @param request
      * @return
      */
@@ -66,7 +74,7 @@ public class CustomerController {
 //            confirm("注册成功")；
             return "success";
         } else {
-            return "passwordfail";
+            return "fail";
         }
     }
 
@@ -84,14 +92,14 @@ public class CustomerController {
 //    }
 
     //验证邮箱格式
-    boolean checkEmailFormat(String email) {
-        Pattern emailPattern = Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
-        Matcher matcher = emailPattern.matcher(email);
-        if (matcher.find()) {
-            return true;
-        }
-        return false;
-    }
+//    boolean checkEmailFormat(String email) {
+//        Pattern emailPattern = Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
+//        Matcher matcher = emailPattern.matcher(email);
+//        if (matcher.find()) {
+//            return true;
+//        }
+//        return false;
+//    }
 
     @RequestMapping("/index")
     public String go() {
@@ -105,38 +113,34 @@ public class CustomerController {
     }
 
     @RequestMapping("/fail")
-    public String fail(){
+    public String fail() {
         return "fail";
     }
 
     @RequestMapping("myProfile")
-    public String myProfile(){
+    public String myProfile() {
         return "myProfile";
     }
+
+    /**
+     * 上传头像
+     * @param file
+     * @param request
+     * @return
+     */
     @RequestMapping("/uploadAvatar")
-    public String uploadAvatar(@RequestParam("file") MultipartFile file,
-                               HttpServletRequest request) throws IOException{
-        String contentType = file.getContentType();
-        String fileName = file.getOriginalFilename();
-        /*System.out.println("fileName-->" + fileName);
-        System.out.println("getContentType-->" + contentType);*/
-        String filePath = request.getSession().getServletContext().getRealPath("imgupload/");
+    public String uploadAvatar(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+        Customer customer = customerService.getCustomerByJWT(request.getHeader("Authorization"));
+//        String contentType = file.getContentType();
+        String fileName = new Date().getTime() + "_" + file.getOriginalFilename();//文件名+上传时的时间戳 避免重名
+//        String filePath = request.getSession().getServletContext().getRealPath("imgupload/");
+        String filePath = "D:\\TicketManagement\\customer\\avatar\\";
         try {
-            uploadFile(file.getBytes(), filePath, fileName);
+            customerService.uploadAvatar(file.getBytes(), filePath, fileName);
         } catch (Exception e) {
-            // TODO: handle exception
         }
+        customer.setAvatarUrl(filePath + fileName);
+        customerMapper.setAvatarUrl(customer.getId(), filePath + fileName);
         return "success";
     }
-    void uploadFile(byte[] file, String filePath, String fileName) throws Exception {
-        File targetFile = new File(filePath);
-        if(!targetFile.exists()){
-            targetFile.mkdirs();
-        }
-        FileOutputStream out = new FileOutputStream(filePath+fileName);
-        out.write(file);
-        out.flush();
-        out.close();
-    }
-
 }
