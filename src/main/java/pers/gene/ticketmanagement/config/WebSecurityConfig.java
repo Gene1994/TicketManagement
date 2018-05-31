@@ -73,6 +73,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         //解决静态资源被拦截的问题
-        web.ignoring().antMatchers("/static/css/**", "/static/css/fronts/**", "/static/images/**","/static/js/**");
+        web.ignoring().antMatchers("/static/css/**", "/static/css/fronts/**", "/static/images/**","/static/js/**", "D:\\TicketManagement\\customer\\avatar\\**");
     }
 }

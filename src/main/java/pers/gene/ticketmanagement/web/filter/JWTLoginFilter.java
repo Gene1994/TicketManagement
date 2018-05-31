@@ -3,12 +3,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pers.gene.ticketmanagement.domain.Customer;
+import pers.gene.ticketmanagement.repository.CustomerMapper;
+import pers.gene.ticketmanagement.service.CustomerService;
 import pers.gene.ticketmanagement.web.constant.ConstantKey;
 
 import javax.servlet.FilterChain;
@@ -30,6 +36,11 @@ import java.util.Date;
 public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
+
+    @Bean
+    public CustomerService getCustomerService(){
+        return new CustomerService();
+    }
 
     public JWTLoginFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;

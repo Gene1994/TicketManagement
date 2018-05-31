@@ -90,17 +90,7 @@ public class OrderController {
         model.addAttribute("orderList", orderList);
         model.addAttribute("pageInfo",pageInfo);
         return "myOrder";
-//        for (Order order : orderList){
-//            model.addAttribute("orderId", order.getId());
-//            model.addAttribute("trainNumber", order.getTicket().getTrainNumber());
-//            model.addAttribute("checkin", order.getTicket().getCheckin());
-//            model.addAttribute("checkout", order.getTicket().getCheckout());
-//            model.addAttribute("startTime", order.getTicket().getStartTime());
-//            model.addAttribute("endTime", order.getTicket().getEndTime());
-//            model.addAttribute("seatType", order.getTicket().getSeatType());
-//            model.addAttribute("seatNumber", order.getTicket().getSeatNumber());
-//            model.addAttribute("price", order.getTicket().getPrice());
-//        }
+
     }
 
     /**

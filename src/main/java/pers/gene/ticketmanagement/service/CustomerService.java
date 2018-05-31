@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 import static java.util.Collections.emptyList;
 
 //实现UserDetailsService接口 使用UserDetails验证登录
-@Service
+@Service("Customer")
 public class CustomerService implements UserDetailsService {
 
     //自动绑定mapper
@@ -190,7 +190,7 @@ public class CustomerService implements UserDetailsService {
     public Customer getCustomerByJWT(String jwt){
         if (jwt == null){
             //未登录，请先登录
-
+            return null;
         }
         String userName = Jwts.parser()
                 .setSigningKey(ConstantKey.SIGNING_KEY)

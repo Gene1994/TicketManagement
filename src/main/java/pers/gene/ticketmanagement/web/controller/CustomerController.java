@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,9 +19,7 @@ import pers.gene.ticketmanagement.service.CustomerService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,8 +46,11 @@ public class CustomerController {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(HttpServletRequest request) {
+
+    @RequestMapping(value = "/login")
+    public String login(HttpServletRequest request, HttpServletResponse response) {
+//        String jwt = request.getHeader("Authorization");
+//        response.addHeader("AvatarUrl", customerService.getCustomerByJWT(jwt).getAvatarUrl());
         return "login";
     }
 
@@ -107,8 +109,12 @@ public class CustomerController {
     }
 
 
+    /**
+     * 登录成功 将用户头像url传至response header中 返回至index
+     * @return
+     */
     @RequestMapping("/success")
-    public String success() {
+    public String success(HttpServletRequest request, HttpServletResponse response) {
         return "success";
     }
 
@@ -141,6 +147,29 @@ public class CustomerController {
         }
         customer.setAvatarUrl(filePath + fileName);
         customerMapper.setAvatarUrl(customer.getId(), filePath + fileName);
+        return "success";
+    }
+
+    @RequestMapping("/showAvatar")
+    public String showAvatar(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
+        String avatarUrl = customerService.getCustomerByJWT(request.getHeader("Authorization")).getAvatarUrl();
+//        try {
+//            FileInputStream hFile=new FileInputStream(avatarUrl);
+//            int i = hFile.available();
+//            byte data[]=new byte[i];
+//            hFile.read(data);
+//            hFile.close();
+//            response.setContentType("image/*");
+//            OutputStream toClient=response.getOutputStream();
+//            toClient.write(data);
+//            toClient.close();
+//        }catch (IOException e){
+//            PrintWriter toClient=response.getWriter();
+//            response.setContentType("text/html;charset=gb2312");
+//            toClient.write("无法打开图片");
+//            toClient.close();
+//        }
+        model.addAttribute("avatarUrl", avatarUrl);
         return "success";
     }
 }

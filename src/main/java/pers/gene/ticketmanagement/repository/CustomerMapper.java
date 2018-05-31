@@ -1,6 +1,7 @@
 package pers.gene.ticketmanagement.repository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
 import pers.gene.ticketmanagement.domain.Customer;
 
 import java.util.Date;
@@ -17,6 +18,7 @@ public interface CustomerMapper {
             @Result(property = "password", column = "password"),
             @Result(property = "email", column = "email"),
             @Result(property = "cellphone", column = "cellphone"),
+            @Result(property = "avatarUrl", column = "avatar_url")
     })
     List<Customer> findAll();
 
@@ -27,6 +29,7 @@ public interface CustomerMapper {
             @Result(property = "password", column = "password"),
             @Result(property = "email", column = "email"),
             @Result(property = "cellphone", column = "cellphone"),
+            @Result(property = "avatarUrl", column = "avatar_url")
     })
     Customer findById(@Param("id") String id);
 
@@ -37,6 +40,7 @@ public interface CustomerMapper {
             @Result(property = "password", column = "password"),
             @Result(property = "email", column = "email"),
             @Result(property = "cellphone", column = "cellphone"),
+            @Result(property = "avatarUrl", column = "avatar_url")
     })
     Customer findByEmail(@Param("email") String email);
 
@@ -47,6 +51,7 @@ public interface CustomerMapper {
             @Result(property = "password", column = "password"),
             @Result(property = "email", column = "email"),
             @Result(property = "cellphone", column = "cellphone"),
+            @Result(property = "avatarUrl", column = "avatar_url")
     })
     Customer findByUserName(@Param("userName") String userName);
 

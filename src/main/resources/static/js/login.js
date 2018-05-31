@@ -1,5 +1,5 @@
 var authorization = null;
-function login1() {
+function login() {
     $.ajax({
         url: 'http://localhost:8080/login',
         type: 'POST',
