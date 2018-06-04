@@ -1,7 +1,6 @@
-# TicketManagement
-模拟在线票务管理系统
+## [Spring Boot入门]模拟在线票务管理系统
 
-最近在学习Spring Boot,看网上有说最好的学习方法就是自己动手编程，有人推荐尝试自己开发一个模拟在线票务管理系统。
+本项目可作为Spring Boot初学者入门非常实用的练手项目。
 
 本项目使用了Spring Boot + Mybatis实现了模拟在线票务管理系统，集成Spring Security实现用户的认证和授权。
 
@@ -13,16 +12,18 @@
 
 根据始发站、目的地和出发日查找可购买的车次信息
 
-购票、退票、查看“我的订单”。*
+购票、退票、查看“我的订单”。*（数据库事务）
 
 Version 0.9主要实现了以上的主要功能。
 
 Version 1.0集成了Spring Security，使用JWT实现用户的认证和授权。
-认证原理为：向/login地址发送POST请求，提交包含用户名密码的表单，进入`JWTLoginFilter`的`attemptAuthentication`方法，接收并解析用户凭证。
+认证原理为：向/login地址发送POST请求，提交包含用户名密码的表单，程序进入`JWTLoginFilter`的`attemptAuthentication`方法，接收并解析用户凭证。
 然后进入`CustomerAuthenticationProvider`的`authenticate`方法将接受到的用户信息与数据库中信息做比较，
 如果一致，生成令牌并进入`JWTLoginFilter`的`successfulAuthentication`方法，在该方法中生成JWT并将JWT作为response的header返回至前端。
 
 在之后的请求中只要将JWT设置为request header的“Authorization”字段传给后端，后端就可以解析该header获取用户信息。
+
+用户信息中包含了登录时间，
 
 ####数据库结构：
 
