@@ -118,9 +118,20 @@ public class CustomerController {
         return "fail";
     }
 
-    @RequestMapping("myProfile")
-    public String myProfile() {
-        return "myProfile";
+    /**
+     * 我的信息
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/myProfile")
+    public Customer myProfile(HttpServletRequest request, HttpServletResponse response) {
+        Customer customer = customerService.getCustomerByJWT(request.getHeader("Authorization "));
+        response.setHeader("username", customer.getUserName());
+        response.setHeader("email", customer.getEmail());
+        response.setHeader("cellphone", customer.getCellphone());
+        response.setHeader("avatarUrl",customer.getAvatarUrl());
+        return customer;
     }
 
     /**
@@ -142,29 +153,6 @@ public class CustomerController {
         }
         customer.setAvatarUrl(filePath + fileName);
         customerMapper.setAvatarUrl(customer.getId(), filePath + fileName);
-        return "success";
-    }
-
-    @RequestMapping("/showAvatar")
-    public String showAvatar(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
-        String avatarUrl = customerService.getCustomerByJWT(request.getHeader("Authorization")).getAvatarUrl();
-//        try {
-//            FileInputStream hFile=new FileInputStream(avatarUrl);
-//            int i = hFile.available();
-//            byte data[]=new byte[i];
-//            hFile.read(data);
-//            hFile.close();
-//            response.setContentType("image/*");
-//            OutputStream toClient=response.getOutputStream();
-//            toClient.write(data);
-//            toClient.close();
-//        }catch (IOException e){
-//            PrintWriter toClient=response.getWriter();
-//            response.setContentType("text/html;charset=gb2312");
-//            toClient.write("无法打开图片");
-//            toClient.close();
-//        }
-        model.addAttribute("avatarUrl", avatarUrl);
         return "success";
     }
 }

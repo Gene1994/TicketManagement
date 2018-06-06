@@ -51,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/customer/fail")
                 .defaultSuccessUrl("/customer/success");
 //                .and()
-//                .rememberMe().tokenValiditySeconds(1209600).key("mykey")
+//                .rememberMe.tokenValiditySeconds(1209600).key("mykey")
 //                .and()
 //                .logout()
                 //指定登出的url
