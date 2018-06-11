@@ -3,6 +3,7 @@ package com.genequ.ticketmanagement.web.controller;
 import com.genequ.ticketmanagement.domain.Customer;
 import com.genequ.ticketmanagement.mapper.CustomerMapper;
 import com.genequ.ticketmanagement.service.CustomerService;
+import com.genequ.ticketmanagement.service.MailService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +42,9 @@ public class CustomerController {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    private MailService mailService;
+
 
     @RequestMapping(value = "/login")
     public String login(HttpServletRequest request, HttpServletResponse response) {
@@ -69,6 +73,7 @@ public class CustomerController {
             customer.setCellphone(request.getParameter("cellphonesignup"));
             customerService.regist(customer);
 //            confirm("注册成功")；
+            mailService.sendSimpleMail(customer.getEmail(), "恭喜您成功注册TicketManagement","恭喜您成功注册TicketManagement！您的用户名为：" + customer.getUserName());
             return "success";
         } else {
             return "fail";
