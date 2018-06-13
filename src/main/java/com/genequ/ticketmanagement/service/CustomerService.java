@@ -4,6 +4,8 @@ import com.genequ.ticketmanagement.mapper.CustomerMapper;
 import com.genequ.ticketmanagement.web.constant.ConstantKey;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,10 +22,10 @@ import java.util.regex.Pattern;
 
 import static java.util.Collections.emptyList;
 
+
 //实现UserDetailsService接口 使用UserDetails验证登录
 @Service("Customer")
 public class CustomerService implements UserDetailsService {
-
     //自动绑定mapper
     @Autowired
     private CustomerMapper customerMapper;
@@ -55,7 +57,6 @@ public class CustomerService implements UserDetailsService {
 
     /**
      * 检查数据库中是否存在用户名，存在返回false，不存在返回true。
-     *
      * @param userNameSignup
      * @return
      */
@@ -98,7 +99,6 @@ public class CustomerService implements UserDetailsService {
 
     /**
      * 验证手机号码
-     *
      * @param mobileNumber
      * @return
      */
@@ -114,56 +114,6 @@ public class CustomerService implements UserDetailsService {
         return flag;
     }
 
-    /**
-     * 登录
-     * @param userName
-     * @param password
-     * @return
-     */
-
-    public String login(String userName, String password) {
-        if (checkEmailFormat(userName)) {
-            //邮箱登录
-            if (getAllEmailAdress().contains(userName)) {
-                Customer customer = getCustomerByEmail(userName);
-                if (customer != null) {
-                    if (password.equals(customer.getPassword())) {
-                        //登录成功
-                        return "success";
-                    } else {
-                        //密码错误
-                        return "index";
-                    }
-                } else {
-                    //该邮箱不存在
-                    return "index";
-                }
-            }
-        } else {
-            //用户名登录
-            if (getAllUserName().contains(userName)) {
-                Customer customer = getCustomerByUserName(userName);
-                if (customer != null) {
-                    if (password.equals(customer.getPassword())) {
-                        //登录成功
-                        return "index";
-                    } else {
-                        //密码错误
-                        return "login";
-                    }
-                } else {
-                    //用户名不存在
-                    return "login";
-                }
-            }
-        }
-        return null;
-    }
-
-    public void logout(){
-
-    }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Customer customer = customerMapper.findByUserName(username);
@@ -175,6 +125,13 @@ public class CustomerService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(customer.getUserName(), customer.getPassword(), emptyList());
     }
 
+    /**
+     * 上传头像
+     * @param file 头像文件
+     * @param filePath 头像在服务器路径
+     * @param fileName 头像在服务器名字
+     * @throws IOException
+     */
     public void uploadAvatar(byte[] file, String filePath, String fileName) throws IOException{
         File targetFile = new File(filePath);
         if(!targetFile.exists()){
@@ -186,6 +143,11 @@ public class CustomerService implements UserDetailsService {
         out.close();
     }
 
+    /**
+     * 根据JWT返回用户
+     * @param jwt
+     * @return
+     */
     public Customer getCustomerByJWT(String jwt){
         if (jwt == null){
             //未登录，请先登录
