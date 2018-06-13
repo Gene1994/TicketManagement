@@ -1,4 +1,4 @@
-package com.genequ.ticketmanagement.service;
+package com.genequ.ticketmanagement.service.impl;
 
 import com.genequ.ticketmanagement.domain.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +23,10 @@ public class CustomerAuthenticationProvider implements AuthenticationProvider {
 //    private UserDetailsService userDetailsService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
-    private CustomerService customerService;
+    private CustomerServiceImpl customerServiceImpl;
 
-    public CustomerAuthenticationProvider(CustomerService customerService, BCryptPasswordEncoder bCryptPasswordEncoder){
-        this.customerService = customerService;
+    public CustomerAuthenticationProvider(CustomerServiceImpl customerServiceImpl, BCryptPasswordEncoder bCryptPasswordEncoder){
+        this.customerServiceImpl = customerServiceImpl;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
@@ -43,7 +43,7 @@ public class CustomerAuthenticationProvider implements AuthenticationProvider {
         String password = authentication.getCredentials().toString();
         // 认证逻辑
 //        UserDetails userDetails = userDetailsService.loadUserByUsername(name);
-        Customer customer = customerService.getCustomerByUserName(username);
+        Customer customer = customerServiceImpl.getCustomerByUserName(username);
         if(null != customer){
             String encodePassword = DigestUtils.md5DigestAsHex((password).getBytes());
             if(customer.getPassword().equals(encodePassword)){

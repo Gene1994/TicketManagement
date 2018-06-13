@@ -2,7 +2,7 @@ package com.genequ.ticketmanagement.web.controller;
 
 import com.genequ.ticketmanagement.domain.Customer;
 import com.genequ.ticketmanagement.mapper.CustomerMapper;
-import com.genequ.ticketmanagement.service.CustomerService;
+import com.genequ.ticketmanagement.service.impl.CustomerServiceImpl;
 //import com.genequ.ticketmanagement.service.MailService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
 import java.util.Date;
 import java.util.UUID;
 
@@ -34,7 +32,7 @@ public class CustomerController {
 
 
     @Autowired
-    private CustomerService customerService;
+    private CustomerServiceImpl customerServiceImpl;
 
     @Autowired
     private CustomerMapper customerMapper;
@@ -49,7 +47,7 @@ public class CustomerController {
     @RequestMapping(value = "/login")
     public String login(HttpServletRequest request, HttpServletResponse response) {
 //        String jwt = request.getHeader("Authorization");
-//        response.addHeader("AvatarUrl", customerService.getCustomerByJWT(jwt).getAvatarUrl());
+//        response.addHeader("AvatarUrl", customerServiceImpl.getCustomerByJWT(jwt).getAvatarUrl());
         return "login";
     }
 
@@ -61,7 +59,7 @@ public class CustomerController {
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String regist(HttpServletRequest request) {
-//        CustomerService service = new CustomerService();
+//        CustomerServiceImpl service = new CustomerServiceImpl();
         if (request.getParameter("passwordsignup").equals(request.getParameter("passwordsignup_confirm"))) {
             Customer customer = new Customer();
             customer.setId(UUID.randomUUID().toString());
@@ -71,7 +69,7 @@ public class CustomerController {
             customer.setPassword(DigestUtils.md5DigestAsHex((request.getParameter("passwordsignup")).getBytes()));
             customer.setEmail(request.getParameter("emailsignup"));
             customer.setCellphone(request.getParameter("cellphonesignup"));
-            customerService.regist(customer);
+            customerServiceImpl.regist(customer);
 //            confirm("注册成功")；
 //            mailService.sendSimpleMail(customer.getEmail(), "恭喜您成功注册TicketManagement","恭喜您成功注册TicketManagement！您的用户名为：" + customer.getUserName());
             return "success";
@@ -86,11 +84,11 @@ public class CustomerController {
 //        String userName = request.getParameter("username");
 //        String password = request.getParameter("password");
 //        if (checkEmailFormat(userName)) {
-//            request.getSession().setAttribute("customer", customerService.getCustomerByEmail(userName));
+//            request.getSession().setAttribute("customer", customerServiceImpl.getCustomerByEmail(userName));
 //        } else {
-//            request.getSession().setAttribute("customer", customerService.getCustomerByUserName(userName));
+//            request.getSession().setAttribute("customer", customerServiceImpl.getCustomerByUserName(userName));
 //        }
-//        return customerService.login(userName, password);
+//        return customerServiceImpl.login(userName, password);
 //    }
 
     //验证邮箱格式
@@ -131,7 +129,7 @@ public class CustomerController {
      */
     @RequestMapping("/myProfile")
     public Customer myProfile(HttpServletRequest request, HttpServletResponse response) {
-        Customer customer = customerService.getCustomerByJWT(request.getHeader("Authorization "));
+        Customer customer = customerServiceImpl.getCustomerByJWT(request.getHeader("Authorization "));
         response.setHeader("username", customer.getUserName());
         response.setHeader("email", customer.getEmail());
         response.setHeader("cellphone", customer.getCellphone());
@@ -147,13 +145,13 @@ public class CustomerController {
      */
     @RequestMapping("/uploadAvatar")
     public String uploadAvatar(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
-        Customer customer = customerService.getCustomerByJWT(request.getHeader("Authorization"));
+        Customer customer = customerServiceImpl.getCustomerByJWT(request.getHeader("Authorization"));
 //        String contentType = file.getContentType();
         String fileName = new Date().getTime() + "_" + file.getOriginalFilename();//文件名+上传时的时间戳 避免重名
 //        String filePath = request.getSession().getServletContext().getRealPath("imgupload/");
         String filePath = "D:\\TicketManagement\\customer\\avatar\\";
         try {
-            customerService.uploadAvatar(file.getBytes(), filePath, fileName);
+            customerServiceImpl.uploadAvatar(file.getBytes(), filePath, fileName);
         } catch (Exception e) {
         }
         customer.setAvatarUrl(filePath + fileName);

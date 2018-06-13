@@ -8,8 +8,8 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import com.genequ.ticketmanagement.service.CustomerAuthenticationProvider;
-import com.genequ.ticketmanagement.service.CustomerService;
+import com.genequ.ticketmanagement.service.impl.CustomerAuthenticationProvider;
+import com.genequ.ticketmanagement.service.impl.CustomerServiceImpl;
 import com.genequ.ticketmanagement.web.filter.JWTAuthenticationFilter;
 import com.genequ.ticketmanagement.web.filter.JWTLoginFilter;
 
@@ -18,11 +18,11 @@ import com.genequ.ticketmanagement.web.filter.JWTLoginFilter;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //    private UserDetailsService userDetailsService;
-    private CustomerService customerService;
+    private CustomerServiceImpl customerServiceImpl;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public WebSecurityConfig(CustomerService customerService, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.customerService = customerService;
+    public WebSecurityConfig(CustomerServiceImpl customerServiceImpl, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.customerServiceImpl = customerServiceImpl;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
@@ -65,7 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         //并根据传入的AuthenticationManagerBuilder中的userDetailsService方法来接收我们自定义的认证方法。
         //且该方法必须要实现UserDetailsService这个接口。
-        auth.authenticationProvider(new CustomerAuthenticationProvider(customerService,bCryptPasswordEncoder));
+        auth.authenticationProvider(new CustomerAuthenticationProvider(customerServiceImpl,bCryptPasswordEncoder));
 
     }
 

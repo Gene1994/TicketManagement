@@ -12,7 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.genequ.ticketmanagement.domain.Ticket;
-import com.genequ.ticketmanagement.service.TicketService;
+import com.genequ.ticketmanagement.service.impl.TicketServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -24,7 +24,7 @@ import java.util.List;
 @RequestMapping("/ticket")
 public class TicketController {
     @Autowired
-    TicketService ticketService;
+    TicketServiceImpl ticketServiceImpl;
 
     @RequestMapping("/index")
     public String index(){
@@ -40,7 +40,7 @@ public class TicketController {
         Date startTime = ticket.getStartTime();
         //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
         PageHelper.startPage(page, 10);
-        List<Ticket> ticketList = ticketService.search(checkin, checkout, startTime, theNextDay(startTime));
+        List<Ticket> ticketList = ticketServiceImpl.search(checkin, checkout, startTime, theNextDay(startTime));
         PageInfo<Ticket> pageInfo = new PageInfo<>(ticketList);
         request.setAttribute("ticketList", ticketList);
         request.setAttribute("pageInfo", pageInfo);

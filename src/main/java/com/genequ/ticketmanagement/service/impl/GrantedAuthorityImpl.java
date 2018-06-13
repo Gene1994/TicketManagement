@@ -1,4 +1,4 @@
-package com.genequ.ticketmanagement.service;
+package com.genequ.ticketmanagement.service.impl;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

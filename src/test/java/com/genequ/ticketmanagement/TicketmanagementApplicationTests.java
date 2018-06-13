@@ -10,12 +10,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class TicketmanagementApplicationTests {
 
-	@Autowired
-	EmailService emailService;
-
 	@Test
 	public void main(String[] args){
-		emailService.sendSimpleMail("quzhe@hikvision.com","test","simple test");
 	}
 
 }

@@ -1,4 +1,5 @@
 package com.genequ.ticketmanagement.web.filter;
+import com.genequ.ticketmanagement.service.impl.CustomerServiceImpl;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +9,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import com.genequ.ticketmanagement.service.CustomerService;
 import com.genequ.ticketmanagement.web.constant.ConstantKey;
 
 import javax.servlet.FilterChain;
@@ -32,8 +32,8 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;
 
     @Bean
-    public CustomerService getCustomerService(){
-        return new CustomerService();
+    public CustomerServiceImpl getCustomerService(){
+        return new CustomerServiceImpl();
     }
 
     public JWTLoginFilter(AuthenticationManager authenticationManager) {
@@ -44,8 +44,8 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException {
 //        try {
-//            Customer customer = new ObjectMapper()
-//                    .readValue(req.getInputStream(), Customer.class);
+//            CustomerService customer = new ObjectMapper()
+//                    .readValue(req.getInputStream(), CustomerService.class);
         return authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
 //                            customer.getUsername(),
