@@ -41,7 +41,7 @@ public class OrderController {
 
     @RequestMapping("/new")
     @Transactional//数据库事务
-    public String  newOrder(HttpServletRequest request) throws ParseException {
+    public synchronized String newOrder(HttpServletRequest request) throws ParseException {
         //解析用户
          String header = request.getHeader("Authorization");
          if (header == null){
@@ -78,13 +78,13 @@ public class OrderController {
              order.setTicket(ticket);
              ticket.setCustomerId(customer.getId());
              ticket.setOrdered(true);
-             //同步？
              orderServiceImpl.newOrder(order);
              ticketServiceImpl.setIsOrdered(order, "Y");
          }
         return "success";
     }
 
+    //乐观锁（待实现）
     @RequestMapping("/myOrder")
     public String MyOrder(@RequestParam(required = true, defaultValue = "1") Integer page, HttpServletRequest request, Model model){
         String jwt = request.getHeader("Authorization");
@@ -106,7 +106,7 @@ public class OrderController {
      */
     @RequestMapping("/roll")
     @Transactional
-    public String roll(HttpServletRequest request){
+    public synchronized String roll(HttpServletRequest request){
         String orderId = request.getAttribute("orderId").toString();
         Order order = orderServiceImpl.findById(orderId);
         String ticketId = order.getTicket().getId();
