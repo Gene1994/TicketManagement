@@ -36,9 +36,13 @@ public class OrderController {
     @Autowired
     private OrderServiceImpl orderServiceImpl;
 
+//    @Autowired
+//    Order order;
+
     @RequestMapping("/new")
     @Transactional//数据库事务
-    public String newOrder(HttpServletRequest request) throws ParseException {
+    public String  newOrder(HttpServletRequest request) throws ParseException {
+        //解析用户
          String header = request.getHeader("Authorization");
          if (header == null){
              //未登录，请先登录
@@ -55,6 +59,7 @@ public class OrderController {
          SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
          String dstr = request.getParameter("startTime").toString();
          Date startTime = sdf.parse(dstr);
+         //获得符合条件的票集合
          List<Ticket> ticketList = ticketServiceImpl.findByTrainNumberStartTime(trainNumber, startTime);
 
          int ticketNumber = Integer.parseInt(request.getParameter("ticketNumber").toString());
@@ -66,12 +71,14 @@ public class OrderController {
          }
          for (int i = 0; i < ticketNumber; i++){
              Ticket ticket = ticketList.get(i);
+             //这里可以使用@Autowired吗？
              Order order = new Order();
              order.setId(UUID.randomUUID().toString());
              order.setCustomer(customer);
              order.setTicket(ticket);
              ticket.setCustomerId(customer.getId());
              ticket.setOrdered(true);
+             //同步？
              orderServiceImpl.newOrder(order);
              ticketServiceImpl.setIsOrdered(order, "Y");
          }
@@ -90,7 +97,6 @@ public class OrderController {
         model.addAttribute("orderList", orderList);
         model.addAttribute("pageInfo",pageInfo);
         return "myOrder";
-
     }
 
     /**

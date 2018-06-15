@@ -17,7 +17,9 @@ public interface TicketService {
      */
     List<Ticket> search(String checkin, String checkout, Date startTime, Date theNextDay);
 
+    String sell();
+
 //    void add(Ticket ticket);
-//    void sell();
+
 //    void roll();
 }
