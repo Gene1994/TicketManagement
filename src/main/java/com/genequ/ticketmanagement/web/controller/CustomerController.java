@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.DigestUtils;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 import java.util.UUID;
 
@@ -28,8 +30,7 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/customer")
 public class CustomerController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerController.class);
-
+//    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerController.class);
 
     @Autowired
     private CustomerServiceImpl customerServiceImpl;
@@ -37,19 +38,16 @@ public class CustomerController {
     @Autowired
     private CustomerMapper customerMapper;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+//    @Bean
+//    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
+//
+//    @Autowired
+//    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 //    @Autowired
 //    private MailService mailService;
-
-
-    @RequestMapping(value = "/login")
-    public String login(HttpServletRequest request, HttpServletResponse response) {
-//        String jwt = request.getHeader("Authorization");
-//        response.addHeader("AvatarUrl", customerServiceImpl.getCustomerByJWT(jwt).getAvatarUrl());
-        return "login";
-    }
 
     /**
      * 注册
@@ -58,7 +56,7 @@ public class CustomerController {
      * @return
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String regist(HttpServletRequest request) {
+    public String register(HttpServletRequest request) {
 //        CustomerServiceImpl service = new CustomerServiceImpl();
         if (request.getParameter("passwordsignup").equals(request.getParameter("passwordsignup_confirm"))) {
             Customer customer = new Customer();
@@ -69,7 +67,7 @@ public class CustomerController {
             customer.setPassword(DigestUtils.md5DigestAsHex((request.getParameter("passwordsignup")).getBytes()));
             customer.setEmail(request.getParameter("emailsignup"));
             customer.setCellphone(request.getParameter("cellphonesignup"));
-            customerServiceImpl.regist(customer);
+            customerServiceImpl.register(customer);
 //            confirm("注册成功")；
 //            mailService.sendSimpleMail(customer.getEmail(), "恭喜您成功注册TicketManagement","恭喜您成功注册TicketManagement！您的用户名为：" + customer.getUserName());
             return "success";
@@ -101,21 +99,19 @@ public class CustomerController {
 //        return false;
 //    }
 
-    @RequestMapping("/index")
-    public String index() {
-        return "index";
-    }
-
-
     /**
-     * 登录成功 将用户头像url传至response header中 返回至index
+     * 登录成功
      * @return
      */
     @RequestMapping("/success")
-    public String success(HttpServletRequest request, HttpServletResponse response) {
+    public String success() {
         return "success";
     }
 
+    /**
+     * 登录失败
+     * @return
+     */
     @RequestMapping("/fail")
     public String fail() {
         return "fail";
@@ -139,23 +135,17 @@ public class CustomerController {
 
     /**
      * 上传头像
-     * @param file
+     * @param avatar
      * @param request
      * @return
      */
     @RequestMapping("/uploadAvatar")
-    public String uploadAvatar(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+    public String uploadAvatar(@RequestParam("file") MultipartFile avatar, HttpServletRequest request) {
         Customer customer = customerServiceImpl.getCustomerByJWT(request.getHeader("Authorization"));
-//        String contentType = file.getContentType();
-        String fileName = new Date().getTime() + "_" + file.getOriginalFilename();//文件名+上传时的时间戳 避免重名
-//        String filePath = request.getSession().getServletContext().getRealPath("imgupload/");
-        String filePath = "D:\\TicketManagement\\customer\\avatar\\";
         try {
-            customerServiceImpl.uploadAvatar(file.getBytes(), filePath, fileName);
-        } catch (Exception e) {
+            customerServiceImpl.uploadAvatar(customer, avatar);
+        } catch (IOException e) {
         }
-        customer.setAvatarUrl(filePath + fileName);
-        customerMapper.setAvatarUrl(customer.getId(), filePath + fileName);
         return "success";
     }
 }

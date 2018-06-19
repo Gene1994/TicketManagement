@@ -1,12 +1,13 @@
 package com.genequ.ticketmanagement.service;
 
+import com.genequ.ticketmanagement.domain.Customer;
 import com.genequ.ticketmanagement.domain.Order;
+import com.genequ.ticketmanagement.domain.Ticket;
+
+import java.util.List;
 
 public interface OrderService {
 
-    /**
-     * 生成订单
-     * @param order
-     */
-    void newOrder(Order order);
+
+    void newOrder(List<Ticket> ticketList, int ticketNumber, Customer customer);
 }

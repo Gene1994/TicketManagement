@@ -12,11 +12,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.genequ.ticketmanagement.domain.Customer;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,7 +51,7 @@ public class CustomerServiceImpl implements UserDetailsService, CustomerService 
     }
 
     @Override
-    public void regist(Customer customer) {
+    public void register(Customer customer) {
         if (checkUserName(customer.getUserName()) && checkEmailFormat(customer.getEmail()) && checkEmailAddress(customer.getEmail()) && checkMobileNumber(customer.getCellphone())) {
             //验证成功 添加至数据库
             customerMapper.insert(customer.getId(), customer.getUserName(), customer.getPassword(), customer.getEmail(), customer.getCellphone());
@@ -127,15 +129,21 @@ public class CustomerServiceImpl implements UserDetailsService, CustomerService 
     }
 
     @Override
-    public void uploadAvatar(byte[] file, String filePath, String fileName) throws IOException{
+    public void uploadAvatar(Customer customer, MultipartFile avatar) throws IOException{
+//        String contentType = file.getContentType();
+        String fileName = new Date().getTime() + "_" + avatar.getOriginalFilename();//文件名+上传时的时间戳 避免重名
+//        String filePath = request.getSession().getServletContext().getRealPath("imgupload/");
+        String filePath = "D:\\TicketManagement\\customer\\avatar\\";//头像保存路径
         File targetFile = new File(filePath);
         if(!targetFile.exists()){
             targetFile.mkdirs();
         }
         FileOutputStream out = new FileOutputStream(filePath+fileName);
-        out.write(file);
+        out.write(avatar.getBytes());
         out.flush();
         out.close();
+        customer.setAvatarUrl(filePath + fileName);
+        customerMapper.setAvatarUrl(customer.getId(), filePath + fileName);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.genequ.ticketmanagement.service;
 
 import com.genequ.ticketmanagement.domain.Customer;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
@@ -10,13 +11,12 @@ public interface CustomerService {
      * 注册
      * @param customer
      */
-    void regist(Customer customer);
+    void register(Customer customer);
 
     /**
      * 上传头像
-     * @param file 头像文件
-     * @param filePath 头像在服务器路径
-     * @param fileName 头像在服务器名字
+     * @param file
+     * @throws IOException
      */
-    void uploadAvatar(byte[] file, String filePath, String fileName) throws IOException;
+    void uploadAvatar(Customer customer, MultipartFile avatar) throws IOException;
 }
