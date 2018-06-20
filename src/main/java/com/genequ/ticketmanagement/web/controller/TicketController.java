@@ -1,26 +1,22 @@
 package com.genequ.ticketmanagement.web.controller;
 
 
+import com.genequ.ticketmanagement.domain.Ticket;
+import com.genequ.ticketmanagement.service.impl.TicketServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.genequ.ticketmanagement.domain.Ticket;
-import com.genequ.ticketmanagement.service.impl.TicketServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.crypto.Data;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 @Controller
 @RequestMapping("/ticket")

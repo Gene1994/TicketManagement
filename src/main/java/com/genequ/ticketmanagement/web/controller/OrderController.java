@@ -4,25 +4,22 @@ import com.genequ.ticketmanagement.domain.Customer;
 import com.genequ.ticketmanagement.domain.Order;
 import com.genequ.ticketmanagement.domain.Ticket;
 import com.genequ.ticketmanagement.service.impl.CustomerServiceImpl;
+import com.genequ.ticketmanagement.service.impl.OrderServiceImpl;
 import com.genequ.ticketmanagement.service.impl.TicketServiceImpl;
-import com.genequ.ticketmanagement.web.constant.ConstantKey;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.genequ.ticketmanagement.service.impl.OrderServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/order")
@@ -71,7 +68,6 @@ public class OrderController {
 
     /**
      * 取消订单、退票
-     *
      * @param request
      * @return
      */

@@ -1,9 +1,8 @@
 package com.genequ.ticketmanagement.mapper;
 
-import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.*;
 import com.genequ.ticketmanagement.domain.Ticket;
 import com.genequ.ticketmanagement.util.myBooleanTypeHandler;
+import org.apache.ibatis.annotations.*;
 
 import java.util.Date;
 import java.util.List;
@@ -54,14 +53,6 @@ public interface TicketMapper {
     @Insert("INSERT INTO ticket (trainnumber,checkin,checkout,starttime,endtime,seattype,seatnumber,price) VALUES(#{trainNumber}, #{checkin}, #{checkout}, #{startTime}, #{endTime}, #{seatType}, #{seatNumber}, #{price})")
     void insert(@Param("trainNumber") String trainNumber, @Param("checkin") String checkin, @Param("checkout") String checkout, @Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("seatType") String seatType, @Param("seatNumber") String seatNumber, @Param("price")double price);
 
-
-
-
-
-
-
-
-
     @Update({"UPDATE ticket SET isordered = #{orderInfo} WHERE id =#{id}"})
     void setIsOrdered(@Param("id") String id, @Param("orderInfo") String orderInfo);
 
@@ -71,10 +62,9 @@ public interface TicketMapper {
 //    @Select("SELECT count(*) FROM TICKET  where checkin = #{checkin}  and checkout = #{checkout} and starttime >= #{startTime} and startTime < #{theNextDay}")
 //    Integer countByChecckinCheckout(@Param("checkin") String checkin, @Param("checkout") String checkout, @Param("startTime") Date startTime, @Param("theNextDay")Date theNextDay);
 
-    //分组查询
 
     /**
-     * 查询剩余票数量
+     * 根据出发地、目的地和出发时间查询可以预定的票并分组
      * @param checkin
      * @param checkout
      * @param startTime
@@ -96,6 +86,12 @@ public interface TicketMapper {
     List<Ticket> findByCheckinCheckout(@Param("checkin") String checkin, @Param("checkout") String checkout, @Param("startTime") Date startTime, @Param("theNextDay")Date theNextDay);
 
 
+    /**
+     * 根据列车号和出发时间查询，生成订单时用
+     * @param trainNumber
+     * @param startTime
+     * @return
+     */
     @Select("SELECT * FROM TICKET WHERE trainnumber = #{trainNumber} and starttime = #{startTime} and isordered = 'N'")
     @Results({
             @Result(property = "id", column = "id"),

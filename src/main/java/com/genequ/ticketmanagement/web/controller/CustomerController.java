@@ -3,13 +3,8 @@ package com.genequ.ticketmanagement.web.controller;
 import com.genequ.ticketmanagement.domain.Customer;
 import com.genequ.ticketmanagement.mapper.CustomerMapper;
 import com.genequ.ticketmanagement.service.impl.CustomerServiceImpl;
-//import com.genequ.ticketmanagement.service.MailService;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
 import java.util.UUID;
+
+//import com.genequ.ticketmanagement.service.MailService;
 
 //这个注解导致返回字符串
 //@RestController
