@@ -8,7 +8,7 @@ import java.util.List;
 public interface TicketService {
 
     /**
-     * 搜索
+     * 根据始发站、到达站和出发日期查询可以预定的票
      * @param checkin
      * @param checkout
      * @param startTime

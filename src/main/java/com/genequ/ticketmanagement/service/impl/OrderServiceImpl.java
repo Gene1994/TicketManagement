@@ -30,8 +30,11 @@ public class OrderServiceImpl implements OrderService {
             order.setTicket(ticket);
             ticket.setCustomerId(customer.getId());
             ticket.setOrdered(true);
+            orderMapper.insert(order.getId(), order.getCustomer().getId(), order.getCustomer().getUserName(),
+                    order.getTicket().getId(), order.getTicket().getTrainNumber(), order.getTicket().getCheckin(),
+                    order.getTicket().getCheckout(), order.getTicket().getStartTime(), order.getTicket().getEndTime(),
+                    order.getTicket().getSeatType(), order.getTicket().getSeatNumber(), order.getTicket().getPrice());
             ticketService.setIsOrdered(order, "Y");
-            orderMapper.insert(order.getId(), order.getCustomer().getId(), order.getCustomer().getUserName(), order.getTicket().getId(), order.getTicket().getTrainNumber(), order.getTicket().getCheckin(), order.getTicket().getCheckout(), order.getTicket().getStartTime(), order.getTicket().getEndTime(), order.getTicket().getSeatType(), order.getTicket().getSeatNumber(), order.getTicket().getPrice());
         }
     }
 
@@ -43,7 +46,13 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.findById(orderId);
     }
 
-    public void deleteById(String orderId) {
+    public void roll(String orderId) {
+        Order order = findById(orderId);
+        String ticketId = order.getTicket().getId();
+        Ticket ticket = ticketService.findById(ticketId);
+        ticket.setOrdered(false);
+        ticket.setCustomerId(null);
         orderMapper.deleteById(orderId);
+        ticketService.setIsOrdered(order, "N");
     }
 }

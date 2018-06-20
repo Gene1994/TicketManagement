@@ -30,7 +30,7 @@
             <td th:text="${ticket.seatNumber}"></td>
             <td th:text="${ticket.price}"></td>
             <td th:text="${ticket.amount}"></td>
-            <td><a href="" th:href="@{/order/new(trainNumber=${ticket.trainNumber}, startTime=${ticket.startTime})}">订票</a>
+            <td><a href="" th:href="@{/order/new}">订票</a>
             </td>
         </tr>
         </tbody>

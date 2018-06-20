@@ -1,5 +1,6 @@
 package com.genequ.ticketmanagement.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -17,7 +18,7 @@ import com.genequ.ticketmanagement.web.filter.JWTLoginFilter;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-//    private UserDetailsService userDetailsService;
+    //    private UserDetailsService userDetailsService;
     private CustomerServiceImpl customerServiceImpl;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -30,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
 
-                .antMatchers("/index","/customer/register").permitAll()
+                .antMatchers("/index", "/customer/register").permitAll()
                 //以 "/admin/" 开头的URL只能让拥有 "ROLE_ADMIN"角色的用户访问。
                 .antMatchers("/admin/**").hasRole("ADMIN")
 
@@ -54,24 +55,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .rememberMe.tokenValiditySeconds(1209600).key("mykey")
 //                .and()
 //                .logout()
-                //指定登出的url
+        //指定登出的url
 //                .logoutUrl("/api/user/logout")
-                //指定登出成功之后跳转的url
+        //指定登出成功之后跳转的url
 //                .logoutSuccessUrl("/index")
 //                .permitAll();
     }
+
+
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         //并根据传入的AuthenticationManagerBuilder中的userDetailsService方法来接收我们自定义的认证方法。
         //且该方法必须要实现UserDetailsService这个接口。
-        auth.authenticationProvider(new CustomerAuthenticationProvider(customerServiceImpl,bCryptPasswordEncoder));
+        auth.authenticationProvider(new CustomerAuthenticationProvider(customerServiceImpl, bCryptPasswordEncoder));
 
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
         //解决静态资源被拦截的问题
-        web.ignoring().antMatchers("/static/css/**", "/static/css/fronts/**", "/static/images/**","/static/js/**", "D:\\TicketManagement\\customer\\avatar\\**");
+        web.ignoring().antMatchers("/static/css/**", "/static/css/fronts/**", "/static/images/**", "/static/js/**", "D:\\TicketManagement\\customer\\avatar\\**");
     }
 }

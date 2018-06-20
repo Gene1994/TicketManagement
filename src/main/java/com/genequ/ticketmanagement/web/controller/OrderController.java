@@ -79,13 +79,7 @@ public class OrderController {
     @Transactional
     public synchronized String roll(HttpServletRequest request) {
         String orderId = request.getAttribute("orderId").toString();
-        Order order = orderServiceImpl.findById(orderId);
-        String ticketId = order.getTicket().getId();
-        Ticket ticket = ticketServiceImpl.findById(ticketId);
-        ticket.setOrdered(false);
-        ticket.setCustomerId(null);
-        ticketServiceImpl.setIsOrdered(order, "N");
-        orderServiceImpl.deleteById(orderId);
+        orderServiceImpl.roll(orderId);
         return "orderList";
     }
 }

@@ -18,6 +18,7 @@ public class TicketServiceImpl implements TicketService{
     @Autowired
     TicketMapper ticketMapper;
 
+
     @Override
     public List<Ticket> search(String checkin, String checkout, Date startTime, Date theNextDay){
         return ticketMapper.findByCheckinCheckout(checkin, checkout, startTime, theNextDay);

@@ -38,10 +38,7 @@ public class CustomerController {
     @Autowired
     private CustomerMapper customerMapper;
 
-//    @Bean
-//    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
+
 //
 //    @Autowired
 //    private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -74,6 +71,11 @@ public class CustomerController {
         } else {
             return "fail";
         }
+    }
+
+    @RequestMapping("/login")
+    public String login(){
+        return "login";
     }
 
 
