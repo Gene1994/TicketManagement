@@ -1,17 +1,16 @@
 package com.genequ.ticketmanagement.service.impl;
 
+import com.genequ.ticketmanagement.domain.Customer;
+import com.genequ.ticketmanagement.exception.RegisterException;
 import com.genequ.ticketmanagement.mapper.CustomerMapper;
 import com.genequ.ticketmanagement.service.CustomerService;
 import com.genequ.ticketmanagement.web.constant.ConstantKey;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import com.genequ.ticketmanagement.domain.Customer;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -51,8 +50,20 @@ public class CustomerServiceImpl implements UserDetailsService, CustomerService 
     }
 
     @Override
-    public void register(Customer customer) {
-        if (checkUserName(customer.getUserName()) && checkEmailFormat(customer.getEmail()) && checkEmailAddress(customer.getEmail()) && checkMobileNumber(customer.getCellphone())) {
+    public void register(Customer customer) throws RegisterException {
+        if (!checkUserName(customer.getUserName())){
+            throw new RegisterException("用户已存在", 1);
+        }
+        if (!checkEmailAddress(customer.getEmail())){
+            throw new RegisterException("邮箱已存在", 2);
+        }
+        if (!checkEmailFormat(customer.getEmail())){
+            throw new RegisterException("邮箱格式不正确", 3);
+        }
+        if (!checkCellphoneNumber(customer.getCellphone())){
+            throw new RegisterException("手机格式不正确", 4);
+        }
+        if (checkUserName(customer.getUserName()) && checkEmailFormat(customer.getEmail()) && checkEmailAddress(customer.getEmail()) && checkCellphoneNumber(customer.getCellphone())) {
             //验证成功 添加至数据库
             customerMapper.insert(customer.getId(), customer.getUserName(), customer.getPassword(), customer.getEmail(), customer.getCellphone());
         }
@@ -105,7 +116,7 @@ public class CustomerServiceImpl implements UserDetailsService, CustomerService 
      * @param mobileNumber
      * @return
      */
-    boolean checkMobileNumber(String mobileNumber) {
+    boolean checkCellphoneNumber(String mobileNumber) {
         boolean flag = false;
         try {
             Pattern regex = Pattern.compile("^(((13[0-9])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8})|(0\\d{2}-\\d{8})|(0\\d{3}-\\d{7})$");

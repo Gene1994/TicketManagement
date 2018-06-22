@@ -1,6 +1,7 @@
 package com.genequ.ticketmanagement.web.controller;
 
 import com.genequ.ticketmanagement.domain.Customer;
+import com.genequ.ticketmanagement.exception.RegisterException;
 import com.genequ.ticketmanagement.mapper.CustomerMapper;
 import com.genequ.ticketmanagement.service.impl.CustomerServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -60,7 +61,12 @@ public class CustomerController {
             customer.setPassword(DigestUtils.md5DigestAsHex((request.getParameter("passwordsignup")).getBytes()));
             customer.setEmail(request.getParameter("emailsignup"));
             customer.setCellphone(request.getParameter("cellphonesignup"));
-            customerServiceImpl.register(customer);
+            try {
+                customerServiceImpl.register(customer);
+            }catch (RegisterException e){
+                e.printStackTrace();
+            }
+
 //            confirm("注册成功")；
 //            mailService.sendSimpleMail(customer.getEmail(), "恭喜您成功注册TicketManagement","恭喜您成功注册TicketManagement！您的用户名为：" + customer.getUserName());
             return "success";
