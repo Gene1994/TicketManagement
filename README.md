@@ -33,7 +33,7 @@ Version 1.0集成了Spring Security，使用JWT实现用户的认证和授权。
 customer属性：
 - id  
 - username
-- password 
+- password
 - email
 - cellphone
 - avatar_url

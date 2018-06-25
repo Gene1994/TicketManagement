@@ -6,7 +6,6 @@ import com.genequ.ticketmanagement.service.impl.TicketServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,33 +24,29 @@ public class TicketController {
     TicketServiceImpl ticketServiceImpl;
 
     @RequestMapping("/index")
-    public String index(){
+    public String index() {
         return "ticketSearch";
     }
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date startTime;
-
     @RequestMapping("/search")
-    public String search(@RequestParam(required = true, defaultValue = "1") Integer page,HttpServletRequest request, Model model) {
+    public String search(@RequestParam(required = true, defaultValue = "1") Integer page, HttpServletRequest request, Model model) {
 //        String checkin = ticket.getCheckin();
 //        String checkout = ticket.getCheckout();
 //        startTime = ticket.getStartTime();
         String checkin = request.getParameter("checkin");
         String checkout = request.getParameter("checkout");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//SimpleDateFormat线程不安全，解决方法：将对象由共享变为局部私有
         try {
-            startTime = sdf.parse(request.getParameter("startTime"));
+            Date startTime = sdf.parse(request.getParameter("startTime"));
+            //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
+            PageHelper.startPage(page, 10);
+            List<Ticket> ticketList = ticketServiceImpl.search(checkin, checkout, startTime, theNextDay(startTime));
+            PageInfo<Ticket> pageInfo = new PageInfo<>(ticketList);
+            model.addAttribute("list", ticketList);
+            model.addAttribute("pageInfo", pageInfo);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
-        PageHelper.startPage(page, 10);
-        List<Ticket> ticketList = ticketServiceImpl.search(checkin, checkout, startTime, theNextDay(startTime));
-        PageInfo<Ticket> pageInfo = new PageInfo<>(ticketList);
-        model.addAttribute("list", ticketList);
-        model.addAttribute("pageInfo",pageInfo);
         return "ticketList";
     }
 
