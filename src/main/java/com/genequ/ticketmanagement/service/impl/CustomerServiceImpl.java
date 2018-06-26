@@ -51,26 +51,23 @@ public class CustomerServiceImpl implements UserDetailsService, CustomerService 
 
     @Override
     public void register(Customer customer) throws RegisterException {
-        if (!checkUserName(customer.getUserName())){
+        if (!checkUserName(customer.getUserName())) {
             throw new RegisterException("用户已存在", 1);
         }
-        if (!checkEmailAddress(customer.getEmail())){
+        if (!checkEmailAddress(customer.getEmail())) {
             throw new RegisterException("邮箱已存在", 2);
         }
-        if (!checkEmailFormat(customer.getEmail())){
+        if (!checkEmailFormat(customer.getEmail())) {
             throw new RegisterException("邮箱格式不正确", 3);
         }
-        if (!checkCellphoneNumber(customer.getCellphone())){
+        if (!checkCellphoneNumber(customer.getCellphone())) {
             throw new RegisterException("手机格式不正确", 4);
         }
-        if (checkUserName(customer.getUserName()) && checkEmailFormat(customer.getEmail()) && checkEmailAddress(customer.getEmail()) && checkCellphoneNumber(customer.getCellphone())) {
-            //验证成功 添加至数据库
-            customerMapper.insert(customer.getId(), customer.getUserName(), customer.getPassword(), customer.getEmail(), customer.getCellphone());
-        }
+        customerMapper.insert(customer.getId(), customer.getUserName(), customer.getPassword(), customer.getEmail(), customer.getCellphone());
     }
 
     /**
-     * 检查数据库中是否存在用户名，存在返回false，不存在返回true。
+     * 检查数据库中是否存在用户名
      * @param userNameSignup
      * @return
      */
@@ -79,12 +76,21 @@ public class CustomerServiceImpl implements UserDetailsService, CustomerService 
         return true;
     }
 
+    /**
+     * 检查数据库中是否存在重复邮箱名
+     * @param email
+     * @return
+     */
     boolean checkEmailAddress(String email) {
         if (getAllEmailAdress().contains(email)) return false;
         return true;
     }
 
-    //验证邮箱格式
+    /**
+     * 验证邮箱格式
+     * @param email
+     * @return
+     */
     boolean checkEmailFormat(String email) {
         Pattern emailPattern = Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
         Matcher matcher = emailPattern.matcher(email);
@@ -112,7 +118,7 @@ public class CustomerServiceImpl implements UserDetailsService, CustomerService 
     }
 
     /**
-     * 验证手机号码
+     * 验证手机号码格式
      * @param mobileNumber
      * @return
      */
@@ -131,7 +137,7 @@ public class CustomerServiceImpl implements UserDetailsService, CustomerService 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Customer customer = customerMapper.findByUserName(username);
-        if (customer == null){
+        if (customer == null) {
             throw new UsernameNotFoundException(username);
         }
         //验证，获取用户后应该添加对应的权限列表 而不是emptyList()
@@ -140,16 +146,16 @@ public class CustomerServiceImpl implements UserDetailsService, CustomerService 
     }
 
     @Override
-    public void uploadAvatar(Customer customer, MultipartFile avatar) throws IOException{
+    public void uploadAvatar(Customer customer, MultipartFile avatar) throws IOException {
 //        String contentType = file.getContentType();
         String fileName = new Date().getTime() + "_" + avatar.getOriginalFilename();//文件名+上传时的时间戳 避免重名
 //        String filePath = request.getSession().getServletContext().getRealPath("imgupload/");
         String filePath = "D:\\TicketManagement\\customer\\avatar\\";//头像保存路径
         File targetFile = new File(filePath);
-        if(!targetFile.exists()){
+        if (!targetFile.exists()) {
             targetFile.mkdirs();
         }
-        FileOutputStream out = new FileOutputStream(filePath+fileName);
+        FileOutputStream out = new FileOutputStream(filePath + fileName);
         out.write(avatar.getBytes());
         out.flush();
         out.close();
@@ -159,11 +165,12 @@ public class CustomerServiceImpl implements UserDetailsService, CustomerService 
 
     /**
      * 根据JWT返回用户
+     *
      * @param jwt
      * @return
      */
-    public Customer getCustomerByJWT(String jwt){
-        if (jwt == null){
+    public Customer getCustomerByJWT(String jwt) {
+        if (jwt == null) {
             //未登录，请先登录
             return null;
         }

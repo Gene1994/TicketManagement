@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface OrderService {
 
-    void newOrder(List<Ticket> ticketList, int ticketNumber, Customer customer);
+    boolean newOrder(List<Ticket> ticketList, int ticketNumber, Customer customer);
 
-    void roll(String orderId);
+    boolean roll(String orderId);
 }

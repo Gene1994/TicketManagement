@@ -43,11 +43,10 @@ public class OrderController {
         //获得符合条件的票集合
         List<Ticket> ticketList = ticketServiceImpl.findByTrainNumberStartTime(trainNumber, startTime);
         int ticketNumber = Integer.parseInt(request.getParameter("ticketNumber").toString());
-        if (ticketNumber > ticketList.size()) {
-            //没有这么多票
+
+        if (!orderServiceImpl.newOrder(ticketList, ticketNumber, customer)) {
             return "fail";
         }
-        orderServiceImpl.newOrder(ticketList, ticketNumber, customer);
         return "success";
     }
 
@@ -75,7 +74,9 @@ public class OrderController {
     @Transactional
     public synchronized String roll(HttpServletRequest request) {
         String orderId = request.getAttribute("orderId").toString();
-        orderServiceImpl.roll(orderId);
-        return "orderList";
+        if (orderServiceImpl.roll(orderId)){
+            return "orderList";
+        }
+        return "fail";
     }
 }

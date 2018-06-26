@@ -20,7 +20,10 @@ public class OrderServiceImpl implements OrderService {
     TicketServiceImpl ticketService;
 
     @Override
-    public void newOrder(List<Ticket> ticketList, int ticketNumber, Customer customer) {
+    public boolean newOrder(List<Ticket> ticketList, int ticketNumber, Customer customer) {
+        if (ticketList != null || ticketList.size() < 1 || ticketNumber < 1 || ticketNumber > ticketList.size() || customer != null){
+            return false;
+        }
 //选择数量->订票->跳转信息填写页面（评审是否需要）->订票成功 （数据库事务）
         for (int i = 0; i < ticketNumber; i++) {
             Ticket ticket = ticketList.get(i);
@@ -30,12 +33,11 @@ public class OrderServiceImpl implements OrderService {
             order.setTicket(ticket);
             ticket.setCustomerId(customer.getId());
             ticket.setOrdered(true);
-            orderMapper.insert(order.getId(), order.getCustomer().getId(), order.getCustomer().getUserName(),
-                    order.getTicket().getId(), order.getTicket().getTrainNumber(), order.getTicket().getCheckin(),
-                    order.getTicket().getCheckout(), order.getTicket().getStartTime(), order.getTicket().getEndTime(),
-                    order.getTicket().getSeatType(), order.getTicket().getSeatNumber(), order.getTicket().getPrice());
+            orderMapper.insert(order.getId(), customer.getId(), customer.getUserName(), ticket.getId(), ticket.getTrainNumber(), ticket.getCheckin(),
+                    ticket.getCheckout(), ticket.getStartTime(), ticket.getEndTime(), ticket.getSeatType(), ticket.getSeatNumber(), ticket.getPrice());
             ticketService.setIsOrdered(order, "Y");
         }
+        return true;
     }
 
     public List<Order> findOrderByCustomer(Customer customer) {
@@ -46,13 +48,17 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.findById(orderId);
     }
 
-    public void roll(String orderId) {
+    public boolean roll(String orderId) {
         Order order = findById(orderId);
+        if (order == null){
+            return false;
+        }
         String ticketId = order.getTicket().getId();
         Ticket ticket = ticketService.findById(ticketId);
         ticket.setOrdered(false);
         ticket.setCustomerId(null);
         orderMapper.deleteById(orderId);
         ticketService.setIsOrdered(order, "N");
+        return true;
     }
 }
