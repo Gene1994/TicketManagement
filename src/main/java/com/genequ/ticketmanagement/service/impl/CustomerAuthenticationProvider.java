@@ -9,7 +9,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.DigestUtils;
 
 import java.util.ArrayList;
@@ -20,18 +19,16 @@ import java.util.ArrayList;
  * 获取用户名密码和数据库中进行比较 正确，赋予权限。
  */
 public class CustomerAuthenticationProvider implements AuthenticationProvider {
-//    private UserDetailsService userDetailsService;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private CustomerServiceImpl customerServiceImpl;
 
-    public CustomerAuthenticationProvider(CustomerServiceImpl customerServiceImpl, BCryptPasswordEncoder bCryptPasswordEncoder){
+    public CustomerAuthenticationProvider(CustomerServiceImpl customerServiceImpl) {
         this.customerServiceImpl = customerServiceImpl;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     /**
      * 自定义认证过程
+     *
      * @param authentication
      * @return
      * @throws AuthenticationException
@@ -42,28 +39,28 @@ public class CustomerAuthenticationProvider implements AuthenticationProvider {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
         // 认证逻辑
-//        UserDetails userDetails = userDetailsService.loadUserByUsername(name);
         Customer customer = customerServiceImpl.getCustomerByUserName(username);
-        if(null != customer){
+        if (null != customer) {
             String encodePassword = DigestUtils.md5DigestAsHex((password).getBytes());
-            if(customer.getPassword().equals(encodePassword)){
+            if (customer.getPassword().equals(encodePassword)) {
                 // 这里设置权限和角色
                 ArrayList<GrantedAuthority> authorities = new ArrayList<>();
-                authorities.add( new GrantedAuthorityImpl("ROLE_ADMIN") );
-                authorities.add( new GrantedAuthorityImpl("AUTH_WRITE") );
+                authorities.add(new GrantedAuthorityImpl("ROLE_ADMIN"));
+                authorities.add(new GrantedAuthorityImpl("AUTH_WRITE"));
                 // 生成令牌 这里令牌里面存入了:name,password,authorities, 当然你也可以放其他内容
                 Authentication auth = new UsernamePasswordAuthenticationToken(username, password, authorities);
                 return auth;
-            }else {
+            } else {
                 throw new BadCredentialsException("密码错误");
             }
-        }else {
+        } else {
             throw new UsernameNotFoundException("用户不存在");
         }
     }
 
     /**
      * 是否可以提供输入类型的认证服务
+     *
      * @param authentication
      * @return
      */

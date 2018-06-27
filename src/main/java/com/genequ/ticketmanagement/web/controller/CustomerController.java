@@ -30,7 +30,7 @@ public class CustomerController {
 //    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerController.class);
 
     @Autowired
-    private CustomerServiceImpl customerServiceImpl;
+    private CustomerServiceImpl customerService;
 
     @Autowired
     private CustomerMapper customerMapper;
@@ -61,22 +61,27 @@ public class CustomerController {
             customer.setPassword(DigestUtils.md5DigestAsHex((request.getParameter("passwordsignup")).getBytes()));
             customer.setEmail(request.getParameter("emailsignup"));
             customer.setCellphone(request.getParameter("cellphonesignup"));
-            try {
-                customerServiceImpl.register(customer);
-            }catch (RegisterException e){
-                e.printStackTrace();
-            }
 
+            try {
+                if (customerService.register(customer)) {
 //            confirm("注册成功")；
 //            mailService.sendSimpleMail(customer.getEmail(), "恭喜您成功注册TicketManagement","恭喜您成功注册TicketManagement！您的用户名为：" + customer.getUserName());
-            return "success";
+                    return "success";
+                } else {
+                    return "fail";
+                }
+            } catch (RegisterException e) {
+                e.printStackTrace();
+                return "fail";
+            }
         } else {
+            //两次输入密码不一样
             return "fail";
         }
     }
 
-    @RequestMapping("/login")
-    public String login(){
+    @RequestMapping(value = "/login",method = RequestMethod.GET)
+    public String login() {
         return "login";
     }
 
@@ -105,6 +110,7 @@ public class CustomerController {
 
     /**
      * 登录成功
+     *
      * @return
      */
     @RequestMapping("/success")
@@ -114,6 +120,7 @@ public class CustomerController {
 
     /**
      * 登录失败
+     *
      * @return
      */
     @RequestMapping("/fail")
@@ -123,33 +130,40 @@ public class CustomerController {
 
     /**
      * 我的信息
+     *
      * @param request
      * @param response
      * @return
      */
     @RequestMapping("/myProfile")
     public Customer myProfile(HttpServletRequest request, HttpServletResponse response) {
-        Customer customer = customerServiceImpl.getCustomerByJWT(request.getHeader("Authorization "));
+        Customer customer = customerService.getCustomerByJWT(request.getHeader("Authorization "));
         response.setHeader("username", customer.getUserName());
         response.setHeader("email", customer.getEmail());
         response.setHeader("cellphone", customer.getCellphone());
-        response.setHeader("avatarUrl",customer.getAvatarUrl());
+        response.setHeader("avatarUrl", customer.getAvatarUrl());
         return customer;
     }
 
     /**
      * 上传头像
+     *
      * @param avatar
      * @param request
      * @return
      */
     @RequestMapping("/uploadAvatar")
     public String uploadAvatar(@RequestParam("file") MultipartFile avatar, HttpServletRequest request) {
-        Customer customer = customerServiceImpl.getCustomerByJWT(request.getHeader("Authorization"));
+        Customer customer = customerService.getCustomerByJWT(request.getHeader("Authorization"));
         try {
-            customerServiceImpl.uploadAvatar(customer, avatar);
+            customerService.uploadAvatar(customer, avatar);
         } catch (IOException e) {
         }
         return "success";
     }
+
+//    @RequestMapping("/logout")
+//    public String logout(){
+//        return "logout";
+//    }
 }

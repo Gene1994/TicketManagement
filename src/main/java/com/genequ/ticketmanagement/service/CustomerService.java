@@ -12,12 +12,14 @@ public interface CustomerService {
      * 注册
      * @param customer
      */
-    void register(Customer customer) throws RegisterException;
+    boolean register(Customer customer) throws RegisterException;
 
     /**
      * 上传头像
-     * @param file
+     * @param customer
+     * @param avatar
      * @throws IOException
      */
-    void uploadAvatar(Customer customer, MultipartFile avatar) throws IOException;
+    boolean uploadAvatar(Customer customer, MultipartFile avatar) throws IOException;
+
 }

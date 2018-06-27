@@ -1,4 +1,5 @@
 var authorization = null;
+
 function login() {
     $.ajax({
         url: 'http://localhost:8080/login',
@@ -7,20 +8,13 @@ function login() {
             username: $('#username').val(),
             password: $('#password').val()
         },
-        complete: function (xhr, status) {
-            authorization = xhr.getResponseHeader('Authorization')
+        success: function (xhr, status) {
+            authorization = xhr.getResponseHeader('Authorization'
             $.ajax({
-                url: 'http://localhost:8080/customer/login',
-                type: 'POST',
+                url: 'http://localhost:8080/customer/success',
+                type: 'GET',
                 headers: {
-                    "Authorization" : authorization
-                },
-                data: {
-                    username: $('#username').val(),
-                    password: $('#password').val()
-                },
-                success: function (result) {
-                    $('html').html(result)
+                    "Authorization": authorization
                 }
             })
         }

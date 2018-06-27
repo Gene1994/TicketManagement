@@ -50,7 +50,7 @@ public class CustomerServiceImpl implements UserDetailsService, CustomerService 
     }
 
     @Override
-    public void register(Customer customer) throws RegisterException {
+    public boolean register(Customer customer) throws RegisterException {
         if (!checkUserName(customer.getUserName())) {
             throw new RegisterException("用户已存在", 1);
         }
@@ -64,6 +64,7 @@ public class CustomerServiceImpl implements UserDetailsService, CustomerService 
             throw new RegisterException("手机格式不正确", 4);
         }
         customerMapper.insert(customer.getId(), customer.getUserName(), customer.getPassword(), customer.getEmail(), customer.getCellphone());
+        return true;
     }
 
     /**
@@ -146,7 +147,7 @@ public class CustomerServiceImpl implements UserDetailsService, CustomerService 
     }
 
     @Override
-    public void uploadAvatar(Customer customer, MultipartFile avatar) throws IOException {
+    public boolean uploadAvatar(Customer customer, MultipartFile avatar) throws IOException {
 //        String contentType = file.getContentType();
         String fileName = new Date().getTime() + "_" + avatar.getOriginalFilename();//文件名+上传时的时间戳 避免重名
 //        String filePath = request.getSession().getServletContext().getRealPath("imgupload/");
@@ -161,7 +162,9 @@ public class CustomerServiceImpl implements UserDetailsService, CustomerService 
         out.close();
         customer.setAvatarUrl(filePath + fileName);
         customerMapper.setAvatarUrl(customer.getId(), filePath + fileName);
+        return true;
     }
+
 
     /**
      * 根据JWT返回用户

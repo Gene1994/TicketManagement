@@ -1,15 +1,16 @@
 package com.genequ.ticketmanagement.web.filter;
+
 import com.genequ.ticketmanagement.service.impl.CustomerServiceImpl;
+import com.genequ.ticketmanagement.web.constant.ConstantKey;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import com.genequ.ticketmanagement.web.constant.ConstantKey;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -24,17 +25,14 @@ import java.util.Date;
  * 该类继承自UsernamePasswordAuthenticationFilter，重写了其中的2个方法
  * attemptAuthentication ：接收并解析用户凭证。
  * successfulAuthentication ：用户成功登录后，这个方法会被调用，我们在这个方法里生成token。
- *
  */
 @Slf4j
 public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
 
-    @Bean
-    public CustomerServiceImpl getCustomerService(){
-        return new CustomerServiceImpl();
-    }
+    @Autowired
+    CustomerServiceImpl customerService;
 
     public JWTLoginFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -43,21 +41,9 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
     // 接收并解析用户凭证
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException {
-//        try {
-//            CustomerService customer = new ObjectMapper()
-//                    .readValue(req.getInputStream(), CustomerService.class);
         return authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-//                            customer.getUsername(),
-//                            customer.getPassword(),
-                        req.getParameter("username"),
-                        req.getParameter("password"),
-                        new ArrayList<>())
+                new UsernamePasswordAuthenticationToken(req.getParameter("username"), req.getParameter("password"), new ArrayList<>())
         );
-//        }
-//        catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
     }
 
     // 用户成功登录后，这个方法会被调用，我们在这个方法里生成token

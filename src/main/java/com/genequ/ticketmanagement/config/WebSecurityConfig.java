@@ -1,6 +1,9 @@
 package com.genequ.ticketmanagement.config;
 
-import org.springframework.context.annotation.Bean;
+import com.genequ.ticketmanagement.service.impl.CustomerAuthenticationProvider;
+import com.genequ.ticketmanagement.service.impl.CustomerServiceImpl;
+import com.genequ.ticketmanagement.web.filter.JWTAuthenticationFilter;
+import com.genequ.ticketmanagement.web.filter.JWTLoginFilter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -8,30 +11,23 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import com.genequ.ticketmanagement.service.impl.CustomerAuthenticationProvider;
-import com.genequ.ticketmanagement.service.impl.CustomerServiceImpl;
-import com.genequ.ticketmanagement.web.filter.JWTAuthenticationFilter;
-import com.genequ.ticketmanagement.web.filter.JWTLoginFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    //    private UserDetailsService userDetailsService;
     private CustomerServiceImpl customerServiceImpl;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public WebSecurityConfig(CustomerServiceImpl customerServiceImpl, BCryptPasswordEncoder bCryptPasswordEncoder) {
+
+    public WebSecurityConfig(CustomerServiceImpl customerServiceImpl) {
         this.customerServiceImpl = customerServiceImpl;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
 
-                .antMatchers("/index", "/customer/register").permitAll()
+                .antMatchers("/index", "/customer/register","/customer/login").permitAll()
                 //以 "/admin/" 开头的URL只能让拥有 "ROLE_ADMIN"角色的用户访问。
                 .antMatchers("/admin/**").hasRole("ADMIN")
 
@@ -45,30 +41,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTLoginFilter(authenticationManager()))
-                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-                .formLogin()
-                .loginPage("/customer/login").permitAll()
-                .loginProcessingUrl("/customer/login")
-                .failureUrl("/customer/fail")
-                .defaultSuccessUrl("/customer/success");
-//                .and()
-//                .rememberMe.tokenValiditySeconds(1209600).key("mykey")
-//                .and()
+                .addFilter(new JWTAuthenticationFilter(authenticationManager()));
 //                .logout()
-        //指定登出的url
-//                .logoutUrl("/api/user/logout")
-        //指定登出成功之后跳转的url
+//        //指定登出的url
+//                .logoutUrl("/customer/logout")
+//        //指定登出成功之后跳转的url
 //                .logoutSuccessUrl("/index")
 //                .permitAll();
     }
-
-
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         //并根据传入的AuthenticationManagerBuilder中的userDetailsService方法来接收我们自定义的认证方法。
         //且该方法必须要实现UserDetailsService这个接口。
-        auth.authenticationProvider(new CustomerAuthenticationProvider(customerServiceImpl, bCryptPasswordEncoder));
+        auth.authenticationProvider(new CustomerAuthenticationProvider(customerServiceImpl));
 
     }
 
