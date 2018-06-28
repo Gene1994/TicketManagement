@@ -18,9 +18,9 @@ Version 0.9主要实现了以上的主要功能。
 
 Version 1.0集成了Spring Security，使用JWT实现用户的认证和授权。
 
-认证原理为：向/login地址发送POST请求，提交包含用户名密码的表单，程序进入`JWTLoginFilter`的`attemptAuthentication`方法，接收并解析用户凭证。
+认证原理：向Spring Security默认登录URL(/login)地址发送POST请求，提交包含用户名密码的表单，程序进入`JWTLoginFilter`的`attemptAuthentication`方法，接收并解析用户凭证。
 然后进入`CustomerAuthenticationProvider`的`authenticate`方法将接受到的用户信息与数据库中信息做比较，
-如果一致，生成令牌并进入`JWTLoginFilter`的`successfulAuthentication`方法，在该方法中生成JWT并将JWT作为response的header返回至前端。
+如果一致，生成令牌，令牌中保存了用户名、密码、用户角色信息。之后，进入`JWTLoginFilter`的`successfulAuthentication`方法，在该方法中根据生成的令牌生成JWT，JWT中包含了用户信息并设置了过期时间。最后，将JWT作为response的header返回至前端。
 
 在之后的请求中只要将JWT设置为request header的“Authorization”字段传给后端，后端就可以解析该header获取用户信息。
 
