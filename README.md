@@ -6,7 +6,7 @@
 
 希望可以有一起在学习Spring Boot的朋友可以一起来完善该项目。
 
-目前已完成功能：
+提供API：
 
 *用户注册(/customer/register)、登录(/customer/login)、查看用户资料(/customer/myProfile)、上传头像(/customer/uploadAvatar)
 
@@ -25,48 +25,4 @@ Version 1.0集成了Spring Security，使用JWT实现用户的认证和授权。
 在之后的请求中只要将JWT设置为request header的“Authorization”字段传给后端，后端进入JWTAuthenticationFilter解析该header获取用户信息。
 
 *用户信息中包含了登录时间，
-
-####数据库结构：
-
-包含3张表:customer、orderform(order为sql关键字)、ticket
-
-customer属性：
-- id  
-- username
-- password
-- email
-- cellphone
-- avatar_url
-
-orderform属性:
-
-- orderid
-- customerid
-- username
-- ticketid
-- trainnumber
-- checkin
-- checkout
-- starttime
-- endtime
-- seattype
-- seatnumber
-- price
-
-ticket属性:
-
-- id
-- trainnumber
-- checkin
-- checkout
-- starttime
-- endtime
-- seattype
-- seatnumber
-- price
-- isordered
-
-数据库操作在mapper包中
-
-SQL还有许多优化的地方，由于作者SQL知识还不是很充分，希望大家可以多提一些SQL优化的建议。
 

@@ -49,6 +49,7 @@ public class CustomerController {
      * @param request
      * @return
      */
+
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(HttpServletRequest request) {
 //        CustomerServiceImpl service = new CustomerServiceImpl();
