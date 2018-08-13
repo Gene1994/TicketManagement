@@ -1,7 +1,6 @@
 package com.genequ.ticketmanagement.config;
 
-import com.genequ.ticketmanagement.service.impl.CustomerAuthenticationProvider;
-import com.genequ.ticketmanagement.service.impl.CustomerServiceImpl;
+import com.genequ.ticketmanagement.service.impl.UserServiceImpl;
 import com.genequ.ticketmanagement.web.filter.JWTAuthenticationFilter;
 import com.genequ.ticketmanagement.web.filter.JWTLoginFilter;
 import org.springframework.context.annotation.Configuration;
@@ -16,10 +15,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private CustomerServiceImpl customerServiceImpl;
+    private UserServiceImpl customerServiceImpl;
 
 
-    public WebSecurityConfig(CustomerServiceImpl customerServiceImpl) {
+    public WebSecurityConfig(UserServiceImpl customerServiceImpl) {
         this.customerServiceImpl = customerServiceImpl;
     }
 
@@ -27,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
 
-                .antMatchers("/index", "/customer/register","/customer/login").permitAll()
+                .antMatchers("/index", "/user/register","/user/login").permitAll()
                 //以 "/admin/" 开头的URL只能让拥有 "ROLE_ADMIN"角色的用户访问。
                 .antMatchers("/admin/**").hasRole("ADMIN")
 
@@ -44,23 +43,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()));
 //                .logout()
 //        //指定登出的url
-//                .logoutUrl("/customer/logout")
+//                .logoutUrl("/user/logout")
 //        //指定登出成功之后跳转的url
 //                .logoutSuccessUrl("/index")
 //                .permitAll();
     }
 
     @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+    public void configure(AuthenticationManagerBuilder auth) {
         //并根据传入的AuthenticationManagerBuilder中的userDetailsService方法来接收我们自定义的认证方法。
         //且该方法必须要实现UserDetailsService这个接口。
-        auth.authenticationProvider(new CustomerAuthenticationProvider(customerServiceImpl));
+//        auth.authenticationProvider(new CustomerAuthenticationProvider(customerServiceImpl));
 
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         //解决静态资源被拦截的问题
-        web.ignoring().antMatchers("/static/css/**", "/static/css/fronts/**", "/static/images/**", "/static/js/**", "D:\\TicketManagement\\customer\\avatar\\**");
+        web.ignoring().antMatchers("/static/css/**", "/static/css/fronts/**", "/static/images/**", "/static/js/**", "D:\\TicketManagement\\user\\avatar\\**");
     }
 }

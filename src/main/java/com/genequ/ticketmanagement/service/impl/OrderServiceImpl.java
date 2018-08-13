@@ -1,8 +1,8 @@
 package com.genequ.ticketmanagement.service.impl;
 
-import com.genequ.ticketmanagement.domain.Customer;
-import com.genequ.ticketmanagement.domain.Order;
-import com.genequ.ticketmanagement.domain.Ticket;
+import com.genequ.ticketmanagement.pojo.User;
+import com.genequ.ticketmanagement.pojo.Order;
+import com.genequ.ticketmanagement.pojo.Ticket;
 import com.genequ.ticketmanagement.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +20,8 @@ public class OrderServiceImpl implements OrderService {
     TicketServiceImpl ticketService;
 
     @Override
-    public boolean newOrder(List<Ticket> ticketList, int ticketNumber, Customer customer) {
-        if (ticketList != null || ticketList.size() < 1 || ticketNumber < 1 || ticketNumber > ticketList.size() || customer != null){
+    public boolean newOrder(List<Ticket> ticketList, int ticketNumber, User user) {
+        if (ticketList != null || ticketList.size() < 1 || ticketNumber < 1 || ticketNumber > ticketList.size() || user != null){
             return false;
         }
 //选择数量->订票->跳转信息填写页面（评审是否需要）->订票成功 （数据库事务）
@@ -29,19 +29,19 @@ public class OrderServiceImpl implements OrderService {
             Ticket ticket = ticketList.get(i);
             Order order = new Order();
             order.setId(UUID.randomUUID().toString());
-            order.setCustomer(customer);
+            order.setUser(user);
             order.setTicket(ticket);
-            ticket.setCustomerId(customer.getId());
+            ticket.setCustomerId(user.getId());
             ticket.setOrdered(true);
-            orderMapper.insert(order.getId(), customer.getId(), customer.getUserName(), ticket.getId(), ticket.getTrainNumber(), ticket.getCheckin(),
+            orderMapper.insert(order.getId(), user.getId(), user.getUserName(), ticket.getId(), ticket.getTrainNumber(), ticket.getCheckin(),
                     ticket.getCheckout(), ticket.getStartTime(), ticket.getEndTime(), ticket.getSeatType(), ticket.getSeatNumber(), ticket.getPrice());
             ticketService.setIsOrdered(order, "Y");
         }
         return true;
     }
 
-    public List<Order> findOrderByCustomer(Customer customer) {
-        return orderMapper.findOrderByCustomerId(customer.getId());
+    public List<Order> findOrderByCustomer(User user) {
+        return orderMapper.findOrderByCustomerId(user.getId());
     }
 
     public Order findById(String orderId) {

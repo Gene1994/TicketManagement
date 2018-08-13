@@ -1,6 +1,6 @@
 package com.genequ.ticketmanagement.mapper;
 
-import com.genequ.ticketmanagement.domain.Order;
+import com.genequ.ticketmanagement.pojo.Order;
 import org.apache.ibatis.annotations.*;
 
 import java.util.Date;
@@ -14,8 +14,8 @@ public interface OrderMapper {
     @Results({
             //设置属性的属性 Mybatis
             @Result(property = "orderId", column = "orderid"),
-            @Result(property = "customer.id", column = "customerid"),
-            @Result(property = "customer.userName", column = "username"),
+            @Result(property = "user.id", column = "customerid"),
+            @Result(property = "user.userName", column = "username"),
             @Result(property = "ticket.id", column = "ticketid"),
             @Result(property = "ticket.trainNumber", column = "trainnumber"),
             @Result(property = "ticket.checkin", column = "checkin"),
@@ -31,8 +31,8 @@ public interface OrderMapper {
     @Select("SELECT * FROM orderform WHERE orderid = #{orderId}")
     @Results({
             @Result(property = "orderId", column = "orderid"),
-            @Result(property = "customer.id", column = "customerid"),
-            @Result(property = "customer.userName", column = "username"),
+            @Result(property = "user.id", column = "customerid"),
+            @Result(property = "user.userName", column = "username"),
             @Result(property = "ticket.id", column = "ticketid"),
             @Result(property = "ticket.trainNumber", column = "trainnumber"),
             @Result(property = "ticket.checkin", column = "checkin"),

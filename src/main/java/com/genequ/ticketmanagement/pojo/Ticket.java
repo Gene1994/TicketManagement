@@ -1,4 +1,4 @@
-package com.genequ.ticketmanagement.domain;
+package com.genequ.ticketmanagement.pojo;
 
 import lombok.Data;
 import java.util.Date;

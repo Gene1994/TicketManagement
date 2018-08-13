@@ -1,4 +1,4 @@
-package com.genequ.ticketmanagement.domain;
+package com.genequ.ticketmanagement.pojo;
 
 import lombok.Data;
 import java.util.Date;
@@ -7,7 +7,7 @@ import java.util.Date;
 public class Order {
     String id;
     Ticket ticket;
-    Customer customer;
+    User user;
     Date orderTime;
 
     int amount;//订票数量

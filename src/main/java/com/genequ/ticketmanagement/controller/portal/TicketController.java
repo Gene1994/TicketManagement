@@ -1,7 +1,7 @@
-package com.genequ.ticketmanagement.web.controller;
+package com.genequ.ticketmanagement.controller.portal;
 
 
-import com.genequ.ticketmanagement.domain.Ticket;
+import com.genequ.ticketmanagement.pojo.Ticket;
 import com.genequ.ticketmanagement.service.impl.TicketServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;

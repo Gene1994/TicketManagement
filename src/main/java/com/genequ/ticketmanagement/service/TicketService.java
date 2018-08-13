@@ -1,6 +1,6 @@
 package com.genequ.ticketmanagement.service;
 
-import com.genequ.ticketmanagement.domain.Ticket;
+import com.genequ.ticketmanagement.pojo.Ticket;
 
 import java.util.Date;
 import java.util.List;

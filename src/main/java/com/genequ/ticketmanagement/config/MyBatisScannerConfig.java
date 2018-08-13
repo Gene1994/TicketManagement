@@ -4,6 +4,7 @@ import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+//是否可以删除
 @Configuration
 public class MyBatisScannerConfig {
     /**

@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class CustomerControllerTest {
+public class UserControllerTest {
     private String authorization = null;
     private String username = "1234";
     private String password = "1234";
@@ -45,14 +45,14 @@ public class CustomerControllerTest {
 
 //    @Test
 //    public void register() throws Exception {
-//        mockMvc.perform(MockMvcRequestBuilders.get("/customer/register"))
+//        mockMvc.perform(MockMvcRequestBuilders.get("/user/register"))
 //                .andExpect(status().isOk());
 //        //.andExpect(MockMvcResultMatchers.content().string("365"));  //测试接口返回内容
 //    }
 
     @Test
     public void success() throws Exception{
-        mockMvc.perform(MockMvcRequestBuilders.get("/customer/success")
+        mockMvc.perform(MockMvcRequestBuilders.get("/user/success")
                 .header("Authorization", authorization))
                 .andExpect(status().is(200));
     }

@@ -17,7 +17,7 @@
 </table>
 <div style="border: 1px solid red;">
     我是添加一张临时图片得到微信的media_id保存数据库!
-    <form action="/customer/uploadAvatar" enctype="multipart/form-data" method="post">
+    <form action="/user/uploadAvatar" enctype="multipart/form-data" method="post">
         <div style="display: none;">
             <input type="text" value="IMAGE" name="type"/>
         </div>
@@ -37,7 +37,7 @@
             "jpeg" : "/9j/4",
             "gif" : "R0lGOD",
             "png" : "iVBORw"
-        }
+        };
         var prvbox = document.getElementById(prvid);
         prvbox.innerHTML = "";
         if (window.FileReader) { // html5方案
@@ -50,7 +50,7 @@
                     } else {
                         showPrvImg(src);
                     }
-                }
+                };
                 fr.readAsDataURL(f);
             }
         } else { // 降级处理

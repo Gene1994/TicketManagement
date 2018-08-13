@@ -1,6 +1,6 @@
 package com.genequ.ticketmanagement.service.impl;
 
-import com.genequ.ticketmanagement.domain.Customer;
+import com.genequ.ticketmanagement.pojo.User;
 import com.genequ.ticketmanagement.exception.RegisterException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,22 +13,22 @@ import java.util.UUID;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CustomerServiceImplTest {
+public class UserServiceImplTest {
 
     @Autowired
-    CustomerServiceImpl customerService;
+    UserServiceImpl customerService;
 
     //已存在用户名
     @Test
     public void userNameExisted() {
-        Customer customer = new Customer();
-        customer.setId(UUID.randomUUID().toString());
-        customer.setUserName("1234");
-        customer.setPassword("1");
-        customer.setEmail("a@qq.com");
-        customer.setCellphone("12345678901");
+        User user = new User();
+        user.setId(UUID.randomUUID().toString());
+        user.setUserName("1234");
+        user.setPassword("1");
+        user.setEmail("a@qq.com");
+        user.setCellphone("12345678901");
         try {
-            customerService.register(customer);
+            customerService.register(user);
         } catch (RegisterException e) {
             Assert.assertEquals(1, e.getErrorCode());
         }
@@ -37,14 +37,14 @@ public class CustomerServiceImplTest {
     //已存在用户名
     @Test
     public void emailExisted() {
-        Customer customer = new Customer();
-        customer.setId(UUID.randomUUID().toString());
-        customer.setUserName("12343");
-        customer.setPassword("1");
-        customer.setEmail("123@q.com");
-        customer.setCellphone("12345678901");
+        User user = new User();
+        user.setId(UUID.randomUUID().toString());
+        user.setUserName("12343");
+        user.setPassword("1");
+        user.setEmail("123@q.com");
+        user.setCellphone("12345678901");
         try {
-            customerService.register(customer);
+            customerService.register(user);
         } catch (RegisterException e) {
             Assert.assertEquals(2, e.getErrorCode());
         }

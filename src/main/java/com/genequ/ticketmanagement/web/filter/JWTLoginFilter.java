@@ -1,6 +1,5 @@
 package com.genequ.ticketmanagement.web.filter;
 
-import com.genequ.ticketmanagement.service.impl.CustomerServiceImpl;
 import com.genequ.ticketmanagement.web.constant.ConstantKey;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -13,10 +12,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -32,7 +29,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    CustomerServiceImpl customerService;
+    UserServiceImpl customerService;
 
     public JWTLoginFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -51,7 +48,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest req,
                                             HttpServletResponse res,
                                             FilterChain chain,
-                                            Authentication auth) throws IOException, ServletException {
+                                            Authentication auth) {
         // builder the token
         String token = null;
         try {

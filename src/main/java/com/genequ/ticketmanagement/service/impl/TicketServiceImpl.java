@@ -1,12 +1,12 @@
 package com.genequ.ticketmanagement.service.impl;
 
-import com.genequ.ticketmanagement.domain.Order;
+import com.genequ.ticketmanagement.pojo.Order;
 import com.genequ.ticketmanagement.mapper.TicketMapper;
 import com.genequ.ticketmanagement.service.TicketService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.genequ.ticketmanagement.domain.Ticket;
+import com.genequ.ticketmanagement.pojo.Ticket;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Date;

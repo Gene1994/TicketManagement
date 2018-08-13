@@ -9,9 +9,9 @@ function login() {
             password: $('#password').val()
         },
         success: function (xhr, status) {
-            authorization = xhr.getResponseHeader('Authorization'
+            authorization = xhr.getResponseHeader('Authorization';
             $.ajax({
-                url: 'http://localhost:8080/customer/success',
+                url: 'http://localhost:8080/user/success',
                 type: 'GET',
                 headers: {
                     "Authorization": authorization

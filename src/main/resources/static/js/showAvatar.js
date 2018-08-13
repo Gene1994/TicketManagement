@@ -7,20 +7,20 @@ function showAvatar(file, prvid) {
         "jpeg" : "/9j/4",
         "gif" : "R0lGOD",
         "png" : "iVBORw"
-    }
+    };
     var prvbox = document.getElementById(prvid);
     prvbox.innerHTML = "";
     if (window.FileReader) { // html5方案
         for (var i = 0, f; f = file.files[i]; i++) {
             var fr = new FileReader();
             fr.onload = function(xhr) {
-                var src = xhr.getResponseHeader('AvatarUrl')
+                var src = xhr.getResponseHeader('AvatarUrl');
                 if (!validateImg(src)) {
                     alert(tip)
                 } else {
                     showPrvImg(src);
                 }
-            }
+            };
             fr.readAsDataURL(f);
         }
     } else { // 降级处理

@@ -1,6 +1,6 @@
 package com.genequ.ticketmanagement.mapper;
 
-import com.genequ.ticketmanagement.domain.Ticket;
+import com.genequ.ticketmanagement.pojo.Ticket;
 import com.genequ.ticketmanagement.util.myBooleanTypeHandler;
 import org.apache.ibatis.annotations.*;
 

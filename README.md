@@ -8,7 +8,7 @@
 
 提供API：
 
-*用户注册(/customer/register)、登录(/customer/login)、查看用户资料(/customer/myProfile)、上传头像(/customer/uploadAvatar)
+*用户注册(/user/register)、登录(/user/login)、查看用户资料(/user/myProfile)、上传头像(/user/uploadAvatar)
 
 *根据始发站、目的地和出发日查找可购买的车次信息(/ticket/search)
 
