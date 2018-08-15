@@ -64,5 +64,17 @@ public interface UserMapper {
 
     @Update("update user set username=#{username},password=#{password},email=#{email},phone=#{phone},question={question},answer=#{answer},role=#{role},create_time=#{createTime},update_time=now()) WHERE id =#{id}")
     int updateByPrimaryKeySelective(User user);
+
+    @Select("select question from user where username = #{username}")
+    String selectQuestionByUsername(@Param("username") String username);
+
+    @Select("SELECT count(1) from user where username=#{username} and question = #{question} and answer = #{answer}")
+    int checkAnswer(@Param("username")String username, @Param("question")String question, @Param("answer")String answer);
+
+    @Update("update user SET password = #{passwordNew},update_time = now() where username = #{username}")
+    int updatePasswordByUsername(@Param("username")String username, @Param("passwordNew")String passwordNew);
+
+    @Select("SELECT count(1) from user where password = #{password} and id = #{userId}")
+    int checkPassword(@Param("password")String password, @Param("userId")int userId);
 }
 
