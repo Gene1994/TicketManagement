@@ -44,9 +44,9 @@ public class TicketServiceImpl implements TicketService{
         return ticketMapper.findByTrainNumberStartTime(trainNumber, startTime);
     }
 
-    public void setIsOrdered(Order order, String orderInfo){
-        ticketMapper.setIsOrdered(order.getTicket().getId(), orderInfo);
-    }
+//    public void setIsOrdered(Order order, String orderInfo){
+////        ticketMapper.setIsOrdered(order.getTicket().getId(), orderInfo);
+//    }
 
     public Ticket findById(String ticketId){
         return ticketMapper.findById(ticketId);

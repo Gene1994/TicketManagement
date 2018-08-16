@@ -9,6 +9,7 @@ import com.genequ.ticketmanagement.service.IUserService;
 import com.genequ.ticketmanagement.util.MD5Util;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
