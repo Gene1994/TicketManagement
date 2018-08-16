@@ -7,10 +7,13 @@ import com.genequ.ticketmanagement.mapper.UserMapper;
 import com.genequ.ticketmanagement.pojo.User;
 import com.genequ.ticketmanagement.service.IUserService;
 import com.genequ.ticketmanagement.util.MD5Util;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @Service("iUserService")
@@ -40,6 +43,19 @@ public class UserServiceImpl implements IUserService {
 
 
     public ServerResponse<String> register(User user){
+        if (StringUtils.isBlank(user.getUsername())){
+            return ServerResponse.createByErrorMessage("用户名为空");
+        }
+        if (StringUtils.isBlank(user.getEmail())){
+            return ServerResponse.createByErrorMessage("邮箱为空");
+        }
+        if (!checkEmailFormat(user.getEmail())){
+            return ServerResponse.createByErrorMessage("邮箱格式错误");
+        }
+        if (!checkPhoneFormat(user.getPhone())){
+            return ServerResponse.createByErrorMessage("手机号码错误");
+        }
+
         ServerResponse validResponse = this.checkValid(user.getUsername(), Const.USERNAME);
         if(!validResponse.isSuccess()){
             return validResponse;
@@ -49,8 +65,10 @@ public class UserServiceImpl implements IUserService {
             return validResponse;
         }
         user.setRole(Const.Role.ROLE_CUSTOMER);
+
         //MD5加密
         user.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
+        user.setId((int)((Math.random()*9+1)*100000000));//生成9位随机ID
         int resultCount = userMapper.insert(user);
         if(resultCount == 0){
             return ServerResponse.createByErrorMessage("注册失败");
@@ -77,6 +95,29 @@ public class UserServiceImpl implements IUserService {
             return ServerResponse.createByErrorMessage("参数错误");
         }
         return ServerResponse.createBySuccessMessage("校验成功");
+    }
+
+    //验证邮箱格式
+    boolean checkEmailFormat(String email) {
+        Pattern emailPattern = Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
+        Matcher matcher = emailPattern.matcher(email);
+        if (matcher.find()) {
+            return true;
+        }
+        return false;
+    }
+
+    //验证手机号码格式
+    boolean checkPhoneFormat(String phoneNumber) {
+        boolean flag = false;
+        try {
+            Pattern phonePattern = Pattern.compile("^(((13[0-9])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8})|(0\\d{2}-\\d{8})|(0\\d{3}-\\d{7})$");
+            Matcher matcher = phonePattern.matcher(phoneNumber);
+            flag = matcher.matches();
+        } catch (Exception e) {
+            flag = false;
+        }
+        return flag;
     }
 
     public ServerResponse selectQuestion(String username){

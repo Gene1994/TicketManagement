@@ -56,7 +56,7 @@ public interface UserMapper {
     int checkUsername(@Param("username")String username);
 
     @Select("select count(1) from user where email = #{email}")
-    int checkEmail(@Param("username")String email);
+    int checkEmail(@Param("email")String email);
 
     @Select("select count(1) from user where email = #{email} and id != #{userId}")
     int checkEmailByUserId(@Param("email")String email, @Param("userId")int userId);

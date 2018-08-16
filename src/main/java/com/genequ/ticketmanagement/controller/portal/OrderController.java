@@ -1,73 +1,199 @@
 package com.genequ.ticketmanagement.controller.portal;
 
-import com.genequ.ticketmanagement.service.impl.OrderServiceImpl;
-import com.genequ.ticketmanagement.service.impl.TicketServiceImpl;
-import com.genequ.ticketmanagement.service.impl.UserServiceImpl;
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.internal.util.AlipaySignature;
+import com.alipay.demo.trade.config.Configs;
+import com.genequ.ticketmanagement.common.Const;
+import com.genequ.ticketmanagement.common.ResponseCode;
+import com.genequ.ticketmanagement.common.ServerResponse;
+import com.genequ.ticketmanagement.pojo.User;
+import com.genequ.ticketmanagement.service.IOrderService;
+import com.google.common.collect.Maps;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.Iterator;
+import java.util.Map;
 
 @Controller
-@RequestMapping("/order")
+@RequestMapping("/order/")
 public class OrderController {
-    @Autowired
-    private UserServiceImpl customerServiceImpl;
+
+    private static  final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     @Autowired
-    private TicketServiceImpl ticketServiceImpl;
+    private IOrderService iOrderService;
 
-    @Autowired
-    private OrderServiceImpl orderServiceImpl;
 
-//    @RequestMapping("/new")
-//    @Transactional//数据库事务
-////    public synchronized String newOrder(HttpServletRequest request) throws ParseException {
-//        User user = customerServiceImpl.getCustomerByJWT(request.getHeader("Authorization "));
-//        String trainNumber = request.getParameter("trainNumber").toString();
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        Date startTime = sdf.parse(request.getParameter("startTime").toString());
-//        //获得符合条件的票集合
-//        List<Ticket> ticketList = ticketServiceImpl.findByTrainNumberStartTime(trainNumber, startTime);
-//        int ticketNumber = Integer.parseInt(request.getParameter("ticketNumber").toString());
-//
-//        if (!orderServiceImpl.newOrder(ticketList, ticketNumber, user)) {
-//            return "fail";
-//        }
-//        return "success";
-//    }
-
-    //乐观锁（待实现）
-    @RequestMapping("/myOrder")
-    public String MyOrder(@RequestParam(required = true, defaultValue = "1") Integer page, HttpServletRequest request, Model model) {
-//        String jwt = request.getHeader("Authorization");
-//        User user = customerServiceImpl.getCustomerByJWT(jwt);
-//        List<Order> orderList = orderServiceImpl.findOrderByCustomer(user);
-//        PageHelper.startPage(page, 10);
-//        PageInfo<Order> pageInfo = new PageInfo<>(orderList);
-//        request.setAttribute("orderList", orderList);
-//        request.setAttribute("pageInfo", pageInfo);
-//        model.addAttribute("orderList", orderList);
-//        model.addAttribute("pageInfo", pageInfo);
-        return "myOrder";
-    }
-
-    /**
-     * 取消订单、退票
-     * @param request
-     * @return
-     */
-    @RequestMapping("/roll")
-    @Transactional
-    public synchronized String roll(HttpServletRequest request) {
-        String orderId = request.getAttribute("orderId").toString();
-        if (orderServiceImpl.roll(orderId)){
-            return "orderList";
+    @RequestMapping("create.do")
+    @ResponseBody
+    public ServerResponse create(HttpSession session, Integer shippingId){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user ==null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
-        return "fail";
+        return iOrderService.createOrder(user.getId(),shippingId);
     }
+
+
+    @RequestMapping("cancel.do")
+    @ResponseBody
+    public ServerResponse cancel(HttpSession session, Long orderNo){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user ==null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+        }
+        return iOrderService.cancel(user.getId(),orderNo);
+    }
+
+
+    @RequestMapping("get_order_cart_product.do")
+    @ResponseBody
+    public ServerResponse getOrderCartProduct(HttpSession session){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user ==null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+        }
+        return iOrderService.getOrderCartProduct(user.getId());
+    }
+
+
+
+    @RequestMapping("detail.do")
+    @ResponseBody
+    public ServerResponse detail(HttpSession session,Long orderNo){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user ==null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+        }
+        return iOrderService.getOrderDetail(user.getId(),orderNo);
+    }
+
+    @RequestMapping("list.do")
+    @ResponseBody
+    public ServerResponse list(HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user ==null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+        }
+        return iOrderService.getOrderList(user.getId(),pageNum,pageSize);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @RequestMapping("pay.do")
+    @ResponseBody
+    public ServerResponse pay(HttpSession session, Long orderNo, HttpServletRequest request){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user ==null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+        }
+        String path = request.getSession().getServletContext().getRealPath("upload");
+        return iOrderService.pay(orderNo,user.getId(),path);
+    }
+
+    @RequestMapping("alipay_callback.do")
+    @ResponseBody
+    public Object alipayCallback(HttpServletRequest request){
+        Map<String,String> params = Maps.newHashMap();
+
+        Map requestParams = request.getParameterMap();
+        for(Iterator iter = requestParams.keySet().iterator();iter.hasNext();){
+            String name = (String)iter.next();
+            String[] values = (String[]) requestParams.get(name);
+            String valueStr = "";
+            for(int i = 0 ; i <values.length;i++){
+
+                valueStr = (i == values.length -1)?valueStr + values[i]:valueStr + values[i]+",";
+            }
+            params.put(name,valueStr);
+        }
+        logger.info("支付宝回调,sign:{},trade_status:{},参数:{}",params.get("sign"),params.get("trade_status"),params.toString());
+
+        //非常重要,验证回调的正确性,是不是支付宝发的.并且呢还要避免重复通知.
+
+        params.remove("sign_type");
+        try {
+            boolean alipayRSACheckedV2 = AlipaySignature.rsaCheckV2(params, Configs.getAlipayPublicKey(),"utf-8",Configs.getSignType());
+
+            if(!alipayRSACheckedV2){
+                return ServerResponse.createByErrorMessage("非法请求,验证不通过,再恶意请求我就报警找网警了");
+            }
+        } catch (AlipayApiException e) {
+            logger.error("支付宝验证回调异常",e);
+        }
+
+        //todo 验证各种数据
+
+
+        //
+        ServerResponse serverResponse = iOrderService.aliCallback(params);
+        if(serverResponse.isSuccess()){
+            return Const.AlipayCallback.RESPONSE_SUCCESS;
+        }
+        return Const.AlipayCallback.RESPONSE_FAILED;
+    }
+
+
+    @RequestMapping("query_order_pay_status.do")
+    @ResponseBody
+    public ServerResponse<Boolean> queryOrderPayStatus(HttpSession session, Long orderNo){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user ==null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+        }
+
+        ServerResponse serverResponse = iOrderService.queryOrderPayStatus(user.getId(),orderNo);
+        if(serverResponse.isSuccess()){
+            return ServerResponse.createBySuccess(true);
+        }
+        return ServerResponse.createBySuccess(false);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

@@ -1,6 +1,5 @@
 package com.genequ.ticketmanagement.service.impl;
 
-import com.genequ.ticketmanagement.pojo.Order;
 import com.genequ.ticketmanagement.mapper.TicketMapper;
 import com.genequ.ticketmanagement.service.TicketService;
 import lombok.extern.slf4j.Slf4j;

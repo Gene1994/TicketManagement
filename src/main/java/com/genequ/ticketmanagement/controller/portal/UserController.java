@@ -8,9 +8,7 @@ import com.genequ.ticketmanagement.pojo.User;
 import com.genequ.ticketmanagement.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -32,7 +30,7 @@ public class UserController {
      */
     @RequestMapping(value = "login.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<User> login(String username, String password, HttpSession session){
+    public ServerResponse<User> login(String  username, String password, HttpSession session){
         ServerResponse<User> response = iUserService.login(username,password);
         if(response.isSuccess()){
             session.setAttribute(Const.CURRENT_USER,response.getData());
@@ -122,6 +120,7 @@ public class UserController {
         return response;
     }
 
+    //获取当前登录用户的详细信息，并强制登录
     @RequestMapping(value = "get_information.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> get_information(HttpSession session){

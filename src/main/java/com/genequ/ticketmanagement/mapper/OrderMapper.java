@@ -1,50 +1,32 @@
 package com.genequ.ticketmanagement.mapper;
 
 import com.genequ.ticketmanagement.pojo.Order;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Param;
 
-import java.util.Date;
 import java.util.List;
 
 public interface OrderMapper {
-    @Insert("INSERT INTO orderform (orderid,customerid,username,ticketid,trainnumber,checkin,checkout,starttime,endtime,seattype,seatnumber,price) VALUES(#{orderId}, #{customerId}, #{userName}, #{ticketId}, #{trainNumber}, #{checkin}, #{checkout}, #{startTime}, #{endTime}, #{seatType}, #{seatNumber}, #{price})")
-    void insert(@Param("orderId") String orderId, @Param("customerId") String customerId, @Param("userName") String userName, @Param("ticketId") String ticketId, @Param("trainNumber") String trainNumber, @Param("checkin") String checkin, @Param("checkout") String checkout, @Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("seatType") String seatType, @Param("seatNumber") String seatNumber, @Param("price")double price);
+    int deleteByPrimaryKey(Integer id);
 
-    @Select("SELECT * FROM orderform WHERE customerid = #{customerId}")
-    @Results({
-            //设置属性的属性 Mybatis
-            @Result(property = "orderId", column = "orderid"),
-            @Result(property = "user.id", column = "customerid"),
-            @Result(property = "user.userName", column = "username"),
-            @Result(property = "ticket.id", column = "ticketid"),
-            @Result(property = "ticket.trainNumber", column = "trainnumber"),
-            @Result(property = "ticket.checkin", column = "checkin"),
-            @Result(property = "ticket.checkout", column = "checkout"),
-            @Result(property = "ticket.startTime", column = "starttime"),
-            @Result(property = "ticket.endTime", column = "endtime"),
-            @Result(property = "ticket.seatType", column = "seattype"),
-            @Result(property = "ticket.seatNumber", column = "seatnumber"),
-            @Result(property = "ticket.price", column = "price"),
-    })
-    List<Order> findOrderByCustomerId(@Param("customerId") String customerId);
+    int insert(Order record);
 
-    @Select("SELECT * FROM orderform WHERE orderid = #{orderId}")
-    @Results({
-            @Result(property = "orderId", column = "orderid"),
-            @Result(property = "user.id", column = "customerid"),
-            @Result(property = "user.userName", column = "username"),
-            @Result(property = "ticket.id", column = "ticketid"),
-            @Result(property = "ticket.trainNumber", column = "trainnumber"),
-            @Result(property = "ticket.checkin", column = "checkin"),
-            @Result(property = "ticket.checkout", column = "checkout"),
-            @Result(property = "ticket.startTime", column = "starttime"),
-            @Result(property = "ticket.endTime", column = "endtime"),
-            @Result(property = "ticket.seatType", column = "seattype"),
-            @Result(property = "ticket.seatNumber", column = "seatnumber"),
-            @Result(property = "ticket.price", column = "price"),
-    })
-    Order findById(@Param("orderId") String orderId);
+    int insertSelective(Order record);
 
-    @Delete("DELETE FROM orderform WHERE orderid=#{orderId}")
-    void deleteById(@Param("orderId") String orderId);
+    Order selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(Order record);
+
+    int updateByPrimaryKey(Order record);
+
+    Order selectByUserIdAndOrderNo(@Param("userId")Integer userId,@Param("orderNo")Long orderNo);
+
+
+    Order selectByOrderNo(Long orderNo);
+
+
+
+    List<Order> selectByUserId(Integer userId);
+
+
+    List<Order> selectAllOrder();
 }
