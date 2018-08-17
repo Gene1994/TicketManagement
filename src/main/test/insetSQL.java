@@ -1,10 +1,7 @@
 import com.genequ.ticketmanagement.util.MD5Util;
 import org.junit.Test;
 
-
 import java.sql.*;
-import java.text.SimpleDateFormat;
-
 import java.util.Random;
 
 public class insetSQL {
@@ -24,18 +21,19 @@ public class insetSQL {
             Long startTime = System.currentTimeMillis();
             Random rand = new Random();
             int a,b,c,d;
+            //向user表中插入100000条数据
             for (int i = 1; i <= 100000; i++) {
                 a = rand.nextInt(10);
                 b = rand.nextInt(10);
                 c = rand.nextInt(10);
                 d = rand.nextInt(10);
-                pstm.setInt(1, (int)((Math.random()*9+1)*100000000));
+                pstm.setInt(1, 100000000+i);
                 pstm.setString(2,"gene"+i);
                 pstm.setString(3, MD5Util.MD5EncodeUtf8("123321"));
                 pstm.setString(4,"geneq"+i+"@hotmail.com");
                 pstm.setString(5, "188"+a+"88"+b+c+"66"+d);
-                pstm.setString(6,"go?"+i);
-                pstm.setString(7,"go!"+i);
+                pstm.setString(6,"go?");
+                pstm.setString(7,"go!");
                 pstm.setInt(8,0);
                 pstm.setString(9,"2018-08-16 21:04:54");
                 pstm.setString(10,"2018-08-16 21:04:54");
