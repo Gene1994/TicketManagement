@@ -28,6 +28,9 @@ public interface UserMapper {
     @ResultMap(value = "userMap")
     User selectByPrimaryKey(@Param("id") Integer id);
 
+    @Select("SELECT id FROM user WHERE username = #{username}")
+    String getIdByUsername(@Param("username")String username);
+
     @Select("SELECT" + USER_COLUMN_LIST + "FROM user WHERE email = #{email}")
     @ResultMap(value = "userMap")
     User findByEmail(@Param("email") String email);
