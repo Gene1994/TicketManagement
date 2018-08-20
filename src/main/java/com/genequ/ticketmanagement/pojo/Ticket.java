@@ -1,20 +1,36 @@
 package com.genequ.ticketmanagement.pojo;
 
 import lombok.Data;
+
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
 public class Ticket {
-    String id;
-    String trainNumber;
-    String checkin;
-    String checkout;
-    Date startTime;
-    Date endTime;
-    String seatType;
-    String seatNumber;
-    double price;
-    int amount;
-    boolean isOrdered = false;//数据库中 Y代表TRUE,N代表FALSE
-    String customerId;
+
+    private Integer id;
+
+    private String trainNumber;
+
+    private String checkIn;
+
+    private String checkOut;
+
+    private  Date startTime;
+
+    private  Date endTime;
+
+    private   String seatType;
+
+    private  String seatNumber;
+
+    private BigDecimal price;
+
+    private Integer stock;
+
+    private Integer status;
+
+    private Date createTime;
+
+    private Date updateTime;
 }

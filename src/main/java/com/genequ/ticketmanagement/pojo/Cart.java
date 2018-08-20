@@ -1,26 +1,30 @@
 package com.genequ.ticketmanagement.pojo;
 
+import lombok.Data;
+
 import java.util.Date;
 
+@Data
 public class Cart {
     private Integer id;
 
     private Integer userId;
 
-    private Integer productId;
+    private Integer ticketId;
 
     private Integer quantity;
 
+    //checked == 1为选中
     private Integer checked;
 
     private Date createTime;
 
     private Date updateTime;
 
-    public Cart(Integer id, Integer userId, Integer productId, Integer quantity, Integer checked, Date createTime, Date updateTime) {
+    public Cart(Integer id, Integer userId, Integer ticketId, Integer quantity, Integer checked, Date createTime, Date updateTime) {
         this.id = id;
         this.userId = userId;
-        this.productId = productId;
+        this.ticketId = ticketId;
         this.quantity = quantity;
         this.checked = checked;
         this.createTime = createTime;
@@ -47,14 +51,6 @@ public class Cart {
         this.userId = userId;
     }
 
-    public Integer getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
-
     public Integer getQuantity() {
         return quantity;
     }
@@ -71,6 +67,13 @@ public class Cart {
         this.checked = checked;
     }
 
+    public Integer getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(Integer ticketId) {
+        this.ticketId = ticketId;
+    }
     public Date getCreateTime() {
         return createTime;
     }

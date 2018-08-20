@@ -18,6 +18,7 @@ public @Data class Order {
 
     private Integer paymentType;
 
+    //邮费
     private Integer postage;
 
     private Integer status;
