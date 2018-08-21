@@ -2,6 +2,7 @@ package com.genequ.ticketmanagement.mapper;
 
 import com.genequ.ticketmanagement.pojo.Product;
 import com.genequ.ticketmanagement.pojo.Ticket;
+import com.genequ.ticketmanagement.util.TutorDynaSqlProvider;
 import com.genequ.ticketmanagement.util.myBooleanTypeHandler;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
@@ -113,7 +114,8 @@ public interface TicketMapper {
 
     int insertSelective(Ticket record);
 
-    int updateByPrimaryKeySelective(Ticket record);
+    @UpdateProvider(type = TutorDynaSqlProvider.class, method = "updateByPrimaryKeySelectiveSQL")
+    int updateByPrimaryKeySelective(Ticket ticket);
 
     int updateByPrimaryKey(Ticket record);
 

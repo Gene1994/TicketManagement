@@ -48,7 +48,7 @@ public class OrderServiceImpl implements IOrderService {
         /** 一定要在创建AlipayTradeService之前调用Configs.init()设置默认参数
          *  Configs会读取classpath下的zfbinfo.properties文件配置信息，如果找不到该文件则确认该文件是否在classpath目录
          */
-        Configs.init("zfbinfo.properties");
+        Configs.init("config/zfbinfo.properties");
 
         /** 使用Configs提供的默认参数
          *  AlipayTradeService可以使用单例或者为静态成员对象，不需要反复new
@@ -100,17 +100,15 @@ public class OrderServiceImpl implements IOrderService {
         }
         //mybatis 批量插入
         for (OrderItem orderItem :orderItemList){
-            orderItemMapper.batchInsert(orderItem);
+            orderItemMapper.insert(orderItem);
         }
 
-//8.20
         //生成成功,我们要减少我们产品的库存
         this.reduceProductStock(orderItemList);
         //清空一下购物车
         this.cleanCart(cartList);
 
         //返回给前端数据
-
         OrderVo orderVo = assembleOrderVo(order,orderItemList);
         return ServerResponse.createBySuccess(orderVo);
     }
@@ -142,9 +140,6 @@ public class OrderServiceImpl implements IOrderService {
         orderVo.setCloseTime(DateTimeUtil.dateToStr(order.getCloseTime()));
 
 
-        orderVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
-
-
         List<OrderItemVo> orderItemVoList = Lists.newArrayList();
 
         for(OrderItem orderItem : orderItemList){
@@ -159,9 +154,14 @@ public class OrderServiceImpl implements IOrderService {
     private OrderItemVo assembleOrderItemVo(OrderItem orderItem){
         OrderItemVo orderItemVo = new OrderItemVo();
         orderItemVo.setOrderNo(orderItem.getOrderNo());
-        orderItemVo.setProductId(orderItem.getProductId());
-        orderItemVo.setProductName(orderItem.getProductName());
-        orderItemVo.setProductImage(orderItem.getProductImage());
+        orderItemVo.setTicketId(orderItem.getTicketId());
+        orderItemVo.setTrainNumber(orderItem.getTrainNumber());
+        orderItemVo.setCheckIn(orderItem.getCheckIn());
+        orderItemVo.setCheckOut(orderItem.getCheckOut());
+        orderItemVo.setStartTime(DateTimeUtil.dateToStr(orderItem.getStartTime()));
+        orderItemVo.setEndTime(DateTimeUtil.dateToStr(orderItem.getEndTime()));
+        orderItemVo.setSeatType(orderItem.getSeatType());
+        orderItemVo.setSeatNumber(orderItem.getSeatNumber());
         orderItemVo.setCurrentUnitPrice(orderItem.getCurrentUnitPrice());
         orderItemVo.setQuantity(orderItem.getQuantity());
         orderItemVo.setTotalPrice(orderItem.getTotalPrice());
@@ -195,11 +195,13 @@ public class OrderServiceImpl implements IOrderService {
 
     private void reduceProductStock(List<OrderItem> orderItemList){
         for(OrderItem orderItem : orderItemList){
-            Ticket ticket = ticketMapper.selectByPrimaryKey(orderItem.getProductId());
-            product.setStock(product.getStock()-orderItem.getQuantity());
-            productMapper.updateByPrimaryKeySelective(product);
+            Ticket ticket = ticketMapper.selectByPrimaryKey(orderItem.getTicketId());
+            ticket.setStock(ticket.getStock()-orderItem.getQuantity());
+            ticketMapper.updateByPrimaryKeySelective(ticket);
         }
     }
+
+
 
 
     private Order assembleOrder(Integer userId,Integer shippingId,BigDecimal payment){
@@ -324,7 +326,7 @@ public class OrderServiceImpl implements IOrderService {
         return ServerResponse.createBySuccess(orderProductVo);
     }
 
-
+//8.21
     public ServerResponse<OrderVo> getOrderDetail(Integer userId,Long orderNo){
         Order order = orderMapper.selectByUserIdAndOrderNo(userId,orderNo);
         if(order != null){
@@ -363,26 +365,6 @@ public class OrderServiceImpl implements IOrderService {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public ServerResponse pay(Long orderNo,Integer userId,String path){
         Map<String ,String> resultMap = Maps.newHashMap();
         Order order = orderMapper.selectByUserIdAndOrderNo(userId,orderNo);
@@ -399,7 +381,7 @@ public class OrderServiceImpl implements IOrderService {
 
 
         // (必填) 订单标题，粗略描述用户的支付目的。如“xxx品牌xxx门店当面付扫码消费”
-        String subject = new StringBuilder().append("happymmall扫码支付,订单号:").append(outTradeNo).toString();
+        String subject = new StringBuilder().append("ticketmanagement扫码支付,订单号:").append(outTradeNo).toString();
 
 
         // (必填) 订单总金额，单位为元，不能超过1亿元
@@ -442,7 +424,7 @@ public class OrderServiceImpl implements IOrderService {
 
         List<OrderItem> orderItemList = orderItemMapper.getByOrderNoUserId(orderNo,userId);
         for(OrderItem orderItem : orderItemList){
-            GoodsDetail goods = GoodsDetail.newInstance(orderItem.getProductId().toString(), orderItem.getProductName(),
+            GoodsDetail goods = GoodsDetail.newInstance(orderItem.getTicketId().toString(), orderItem.getTrainNumber(),
                     BigDecimalUtil.mul(orderItem.getCurrentUnitPrice().doubleValue(),new Double(100).doubleValue()).longValue(),
                     orderItem.getQuantity());
             goodsDetailList.add(goods);

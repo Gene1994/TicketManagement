@@ -12,10 +12,10 @@ public class OrderVo {
     private Integer paymentType;
 
     private String paymentTypeDesc;
+
     private Integer postage;
 
     private Integer status;
-
 
     private String statusDesc;
 
@@ -32,8 +32,8 @@ public class OrderVo {
     //订单的明细
     private List<OrderItemVo> orderItemVoList;
 
-    private String imageHost;
     private Integer shippingId;
+
     private String receiverName;
 
     private ShippingVo shippingVo;
@@ -140,14 +140,6 @@ public class OrderVo {
 
     public void setOrderItemVoList(List<OrderItemVo> orderItemVoList) {
         this.orderItemVoList = orderItemVoList;
-    }
-
-    public String getImageHost() {
-        return imageHost;
-    }
-
-    public void setImageHost(String imageHost) {
-        this.imageHost = imageHost;
     }
 
     public Integer getShippingId() {

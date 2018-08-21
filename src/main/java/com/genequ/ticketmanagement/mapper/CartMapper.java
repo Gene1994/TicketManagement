@@ -1,15 +1,14 @@
 package com.genequ.ticketmanagement.mapper;
 
 import com.genequ.ticketmanagement.pojo.Cart;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 public interface CartMapper {
     String CART_COLUMN_LIST = " id, user_id, ticket_id, quantity, checked, create_time, update_time ";
+
+    @Delete("DELETE FROM CART WHERE id = #{id}")
     int deleteByPrimaryKey(Integer id);
 
     int insert(Cart record);

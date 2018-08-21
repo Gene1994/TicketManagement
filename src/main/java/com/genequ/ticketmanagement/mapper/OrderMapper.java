@@ -1,8 +1,11 @@
 package com.genequ.ticketmanagement.mapper;
 
 import com.genequ.ticketmanagement.pojo.Order;
+import com.genequ.ticketmanagement.util.TutorDynaSqlProvider;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.UpdateProvider;
 
 import java.util.List;
 
@@ -20,10 +23,13 @@ public interface OrderMapper {
 
     Order selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(Order record);
+    @UpdateProvider(type = TutorDynaSqlProvider.class, method = "updateByPrimaryKeySelectiveSQL")
+    int updateByPrimaryKeySelective(Order order);
 
     int updateByPrimaryKey(Order record);
 
+
+    @Select("SELECT" + ORDER_COLUMN_LIST + "from mmall_order where order_no = #{orderNo} and user_id = #{userId}")
     Order selectByUserIdAndOrderNo(@Param("userId")Integer userId,@Param("orderNo")Long orderNo);
 
 
@@ -31,6 +37,7 @@ public interface OrderMapper {
 
 
 
+    @Select("SELECT" + ORDER_COLUMN_LIST + "from order where user_id = #{userId} order by create_time desc")
     List<Order> selectByUserId(Integer userId);
 
 
