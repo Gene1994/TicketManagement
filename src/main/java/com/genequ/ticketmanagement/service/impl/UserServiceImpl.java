@@ -8,8 +8,12 @@ import com.genequ.ticketmanagement.pojo.User;
 import com.genequ.ticketmanagement.service.IUserService;
 import com.genequ.ticketmanagement.util.MD5Util;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
+import org.springframework.util.concurrent.ListenableFuture;
 
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -24,20 +28,23 @@ public class UserServiceImpl implements IUserService {
 
 
     @Override
-    public ServerResponse<User> login(String username, String password) {
+    @Async("asyncServiceExecutor")
+    public ListenableFuture<ServerResponse<User>> login(String username, String password) {
         int resultCount = userMapper.checkUsername(username);
         if(resultCount == 0 ){
-            return ServerResponse.createByErrorMessage("用户名不存在");
+//            return new AsyncResult<>(ServerResponse.createByErrorMessage("用户名不存在"));
         }
 
         String md5Password = MD5Util.MD5EncodeUtf8(password);
         User user  = userMapper.selectLogin(username,md5Password);
         if(user == null){
-            return ServerResponse.createByErrorMessage("密码错误");
+//            return new AsyncResult<>(ServerResponse.createByErrorMessage("密码错误"));
         }
 
         user.setPassword(org.apache.commons.lang3.StringUtils.EMPTY);
-        return ServerResponse.createBySuccess("登录成功",user);
+        LoggerFactory.getLogger(UserServiceImpl.class).info("*************************"+Thread.currentThread().toString()+username+"登录成功");
+//        return ServerResponse.createBySuccess("登录成功",user);
+        return new AsyncResult<>(ServerResponse.createBySuccess("登录成功",user));
     }
 
 

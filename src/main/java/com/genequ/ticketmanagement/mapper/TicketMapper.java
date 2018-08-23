@@ -114,7 +114,7 @@ public interface TicketMapper {
 
     int insertSelective(Ticket record);
 
-    @UpdateProvider(type = TutorDynaSqlProvider.class, method = "updateByPrimaryKeySelectiveSQL")
+    @UpdateProvider(type = TutorDynaSqlProvider.class, method = "updateTicketByPrimaryKeySelectiveSQL")
     int updateByPrimaryKeySelective(Ticket ticket);
 
     int updateByPrimaryKey(Ticket record);

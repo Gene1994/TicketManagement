@@ -7,7 +7,7 @@ import org.apache.ibatis.jdbc.SQL;
 public class TutorDynaSqlProvider {
 
     //TicketMapper
-    public String updateByPrimaryKeySelectiveSQL(final Ticket ticket){
+    public String updateTicketByPrimaryKeySelectiveSQL(final Ticket ticket){
         return new SQL(){{
             UPDATE("ticket");
             if (ticket.getId() != null){
@@ -46,7 +46,7 @@ public class TutorDynaSqlProvider {
             if (ticket.getCreateTime() != null){
                 SET("create_time = #{createTime}");
             }
-            if (ticket.getStock() != null){
+            if (ticket.getUpdateTime() != null){
                 SET("update_time = now()");
             }
             WHERE("id = #{id,jdbcType=INTEGER}");
@@ -54,7 +54,7 @@ public class TutorDynaSqlProvider {
     }
 
     //OrderMapper
-    public String updateByPrimaryKeySelectiveSQL(final Order order){
+    public String updateOrderByPrimaryKeySelectiveSQL(final Order order){
         return new SQL(){{
             UPDATE("order");
             if (order.getOrderNo() != null){

@@ -30,8 +30,8 @@ public class UserController {
      */
     @RequestMapping(value = "login.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<User> login(String  username, String password, HttpSession session){
-        ServerResponse<User> response = iUserService.login(username,password);
+    public ServerResponse<User> login(String  username, String password, HttpSession session) throws Exception{
+        ServerResponse<User> response = iUserService.login(username,password).get();
         if(response.isSuccess()){
             session.setAttribute(Const.CURRENT_USER,response.getData());
         }

@@ -23,16 +23,17 @@ public interface OrderMapper {
 
 //    Order selectByPrimaryKey(Integer id);
 
-    @UpdateProvider(type = TutorDynaSqlProvider.class, method = "updateByPrimaryKeySelectiveSQL")
+    @UpdateProvider(type = TutorDynaSqlProvider.class, method = "updateOrderByPrimaryKeySelectiveSQL")
     int updateByPrimaryKeySelective(Order order);
 
 //    int updateByPrimaryKey(Order record);
 
 
-    @Select("SELECT" + ORDER_COLUMN_LIST + "from mmall_order where order_no = #{orderNo} and user_id = #{userId}")
+    @Select("SELECT" + ORDER_COLUMN_LIST + "from order where order_no = #{orderNo} and user_id = #{userId}")
     Order selectByUserIdAndOrderNo(@Param("userId")Integer userId,@Param("orderNo")Long orderNo);
 
 
+    @Select("SELECT" + ORDER_COLUMN_LIST + "from order where order_no = #{orderNo}")
     Order selectByOrderNo(Long orderNo);
 
 
@@ -40,6 +41,6 @@ public interface OrderMapper {
     @Select("SELECT" + ORDER_COLUMN_LIST + "from order where user_id = #{userId} order by create_time desc")
     List<Order> selectByUserId(Integer userId);
 
-
+    @Select("SELECT" + ORDER_COLUMN_LIST + "from order")
     List<Order> selectAllOrder();
 }

@@ -2,12 +2,13 @@ package com.genequ.ticketmanagement.service;
 
 import com.genequ.ticketmanagement.common.ServerResponse;
 import com.genequ.ticketmanagement.pojo.User;
+import org.springframework.util.concurrent.ListenableFuture;
 
 import java.io.IOException;
 
 public interface IUserService {
 
-    ServerResponse<User> login(String username, String password);
+    ListenableFuture<ServerResponse<User>> login(String username, String password);
 
     ServerResponse<String> register(User user);
 
