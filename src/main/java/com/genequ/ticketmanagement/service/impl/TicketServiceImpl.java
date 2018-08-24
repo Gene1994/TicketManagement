@@ -1,18 +1,17 @@
 package com.genequ.ticketmanagement.service.impl;
 
 import com.genequ.ticketmanagement.mapper.TicketMapper;
-import com.genequ.ticketmanagement.service.TicketService;
-import lombok.extern.slf4j.Slf4j;
+import com.genequ.ticketmanagement.pojo.Ticket;
+import com.genequ.ticketmanagement.service.ITicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.genequ.ticketmanagement.pojo.Ticket;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Date;
 import java.util.List;
-@Slf4j
-@Service
-public class TicketServiceImpl implements TicketService{
+
+@Service("iTicketService")
+public class TicketServiceImpl implements ITicketService {
 
     @Autowired
     TicketMapper ticketMapper;
