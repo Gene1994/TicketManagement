@@ -27,62 +27,21 @@ public class TicketController {
     @Autowired
     ITicketService iTicketService;
 
-    @RequestMapping("index")
-    public String index() {
-        return "ticketSearch";
-    }
-
     @RequestMapping("detail.do")
     @ResponseBody
     public ServerResponse<TicketDetailVo> detail(Integer ticketId){
-        return iTicketService.getProductDetail(ticketId);
+        return iTicketService.getTicketDetailVo(ticketId);
     }
 
-    @RequestMapping("/search")
-    public String search(@RequestParam(required = true, defaultValue = "1") Integer page, HttpServletRequest request, Model model) {
-//        String checkin = ticket.getCheckin();
-//        String checkout = ticket.getCheckout();
-//        startTime = ticket.getStartTime();
-        String checkin = request.getParameter("checkin");
-        String checkout = request.getParameter("checkout");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//SimpleDateFormat线程不安全，解决方法：将对象由共享变为局部私有
-        try {
-            Date startTime = sdf.parse(request.getParameter("startTime"));
-            //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
-            PageHelper.startPage(page, 10);
-            List<Ticket> ticketList = iTicketService.search(checkin, checkout, startTime, theNextDay(startTime));
-            PageInfo<Ticket> pageInfo = new PageInfo<>(ticketList);
-            model.addAttribute("list", ticketList);
-            model.addAttribute("pageInfo", pageInfo);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "ticketList";
+    @RequestMapping("list.do")
+    @ResponseBody
+    public ServerResponse<PageInfo> list(@RequestParam(value = "checkIn",required = false)String checkIn,
+                                         @RequestParam(value = "checkOut",required = false)String checkOut,
+                                         @RequestParam(value = "Date",required = false)Date date,
+                                         @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                                         @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
+                                         @RequestParam(value = "orderBy",defaultValue = "") String orderBy){
+        return iTicketService.searchTicket(checkIn,checkOut,date,pageNum,pageSize,orderBy);
     }
 
-    private Date theNextDay(Date date) {
-        Calendar calendar = Calendar.getInstance();
-//        calendar.clear();//清除缓存
-        calendar.setTime(date);
-        calendar.add(Calendar.DAY_OF_MONTH, 1);// 今天+1天
-        return calendar.getTime();
-    }
-
-    //使用Converter类型转换，Controller方法的参数中可以直接使用Bean
-//    @Bean
-//    public Converter<String, Date> addNewConvert() {//String转Date
-//        return new Converter<String, Date>() {
-//            @Override
-//            public Date convert(String source) {
-//                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//                Date date = null;
-//                try {
-//                    date = sdf.parse((String) source);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//                return date;
-//            }
-//        };
-//    }
 }

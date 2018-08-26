@@ -250,7 +250,7 @@ public class OrderServiceImpl implements IOrderService {
         for(Cart cartItem : cartList){
             OrderItem orderItem = new OrderItem();
             Ticket ticket = ticketMapper.selectByPrimaryKey(cartItem.getTicketId());
-            if(Const.ProductStatusEnum.ON_SALE.getCode() != ticket.getStatus()){
+            if(Const.TicketStatusEnum.ON_SALE.getCode() != ticket.getStatus()){
                 return ServerResponse.createByErrorMessage("车次"+ticket.getTrainNumber()+"不是在线售卖状态");
             }
 

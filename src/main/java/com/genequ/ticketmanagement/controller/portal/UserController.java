@@ -20,7 +20,6 @@ public class UserController {
     @Autowired
     private IUserService iUserService;
 
-
     /**
      * 用户登录
      * @param username
@@ -130,34 +129,4 @@ public class UserController {
         }
         return iUserService.getInformation(currentUser.getId());
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

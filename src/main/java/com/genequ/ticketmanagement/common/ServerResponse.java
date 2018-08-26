@@ -17,6 +17,7 @@ public class ServerResponse<T> implements Serializable {
     private ServerResponse(int status){
         this.status = status;
     }
+
     private ServerResponse(int status,T data){
         this.status = status;
         this.data = data;

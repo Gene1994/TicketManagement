@@ -4,9 +4,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
-public @Data
-class TicketDetailVo {
-
+public @Data class TicketListVo {
     private String trainNumber;
 
     private String checkIn;
@@ -24,10 +22,4 @@ class TicketDetailVo {
     private BigDecimal price;
 
     private Integer stock;
-
-    private Integer status;
-
-    private String createTime;
-
-    private String updateTime;
 }

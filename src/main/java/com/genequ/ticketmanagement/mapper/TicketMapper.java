@@ -32,9 +32,13 @@ public interface TicketMapper {
     })
     Ticket selectByPrimaryKey(@Param("id")Integer id);
 
-    @Select("SELECT * FROM TICKET WHERE id = #{id}")
+    @Select("SELECT" + TICKET_COLUMN_LIST + "FROM TICKET WHERE id = #{id}")
     @ResultMap(value = "ticketMap")
     Ticket findById(@Param("id") String id);
+
+    @Select("SELECT" + TICKET_COLUMN_LIST + "FROM TICKET where status = 1 and check_in = #{checkIn} and check_out = #{checkOut} and start_time >= #{startTime} and start_time < #{theNextDay}")
+    @ResultMap(value = "ticketMap")
+    List<Ticket> search(@Param("checkIn") String checkIn, @Param("checkOut") String checkOut, @Param("startTime") Date startTime, @Param("theNextDay")Date theNextDay);
 
 //    @Select("SELECT * FROM TICKET  where checkin = #{checkin}  and checkout = #{checkout} and starttime >= #{startTime} and startTime < #{theNextDay}")
 //    @Results({
@@ -61,28 +65,6 @@ public interface TicketMapper {
 //    @Select("SELECT count(*) FROM TICKET  where checkin = #{checkin}  and checkout = #{checkout} and starttime >= #{startTime} and startTime < #{theNextDay}")
 //    Integer countByChecckinCheckout(@Param("checkin") String checkin, @Param("checkout") String checkout, @Param("startTime") Date startTime, @Param("theNextDay")Date theNextDay);
 
-
-    /**
-     * 根据出发地、目的地和出发时间查询可以预定的票并分组
-     * @param checkin
-     * @param checkout
-     * @param startTime
-     * @param theNextDay
-     * @return
-     */
-    @Select("SELECT trainnumber, checkin, checkout, starttime, endtime, seattype, seatnumber, price, count(trainnumber) FROM TICKET where isordered = 'N' group by trainnumber having checkin = #{checkin} and checkout = #{checkout} and starttime >= #{startTime} and starttime < #{theNextDay}")
-    @Results({
-            @Result(property = "trainNumber", column = "trainnumber"),
-            @Result(property = "checkin", column = "checkin"),
-            @Result(property = "checkout", column = "checkout"),
-            @Result(property = "startTime", column = "starttime"),
-            @Result(property = "endTime", column = "endtime"),
-            @Result(property = "seatType", column = "seattype"),
-            @Result(property = "seatNumber", column = "seatnumber"),
-            @Result(property = "price", column = "price"),
-            @Result(property = "amount", column = "count(trainnumber)")
-    })
-    List<Ticket> findByCheckinCheckout(@Param("checkin") String checkin, @Param("checkout") String checkout, @Param("startTime") Date startTime, @Param("theNextDay")Date theNextDay);
 
 
     /**
