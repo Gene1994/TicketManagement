@@ -10,7 +10,7 @@ import org.springframework.cache.annotation.EnableCaching;
 
 @SpringBootApplication
 @EnableCaching
-@MapperScan("com.genequ.ticketmanagement.mapper")
+@MapperScan(value = "com.genequ.ticketmanagement.mapper")
 public class TicketmanagementApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TicketmanagementApplication.class, args);
