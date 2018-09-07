@@ -1,44 +1,44 @@
 Manifest-Version: 1.0
-Class-Path: spring-jcl-5.0.4.RELEASE.jar netty-transport-4.1.22.Final.
- jar commons-lang-2.6.jar netty-common-4.1.22.Final.jar spring-webmvc-
- 5.0.4.RELEASE.jar jquery-3.1.1.jar snakeyaml-1.19.jar spring-jdbc-5.0
- .4.RELEASE.jar reactor-core-3.1.5.RELEASE.jar joda-time-2.3.jar netty
- -codec-4.1.22.Final.jar spring-boot-starter-json-2.0.0.RELEASE.jar hi
- bernate-validator-6.0.7.Final.jar log4j-to-slf4j-2.10.0.jar lettuce-c
- ore-5.0.2.RELEASE.jar spring-core-5.0.4.RELEASE.jar alipay-sdk-java20
- 161213173952.jar alipay-trade-sdk-20161215.jar spring-boot-starter-jd
- bc-2.0.0.RELEASE.jar jackson-datatype-jdk8-2.9.4.jar spring-context-5
- .0.4.RELEASE.jar spring-boot-starter-aop-2.0.0.RELEASE.jar ibatis-cor
- e-3.0.jar spring-data-commons-2.0.5.RELEASE.jar spring-web-5.0.4.RELE
- ASE.jar jul-to-slf4j-1.7.25.jar spring-boot-starter-data-redis-2.0.0.
- RELEASE.jar mybatis-spring-1.3.1.jar spring-boot-starter-tomcat-2.0.0
- .RELEASE.jar jsqlparser-0.9.4.jar mybatis-spring-boot-autoconfigure-1
- .3.0.jar tomcat-embed-core-8.5.28.jar attoparser-2.0.4.RELEASE.jar ja
- vax.mail-1.6.1.jar spring-boot-autoconfigure-2.0.0.RELEASE.jar mybati
- s-3.4.4.jar guava-18.0.jar spring-data-keyvalue-2.0.5.RELEASE.jar lom
- bok-1.16.20.jar spring-expression-5.0.4.RELEASE.jar activation-1.1.ja
- r netty-handler-4.1.22.Final.jar spring-boot-starter-web-2.0.0.RELEAS
- E.jar jboss-logging-3.3.2.Final.jar tomcat-embed-websocket-8.5.28.jar
-  spring-boot-starter-2.0.0.RELEASE.jar android-json-0.0.20131108.vaad
- in1.jar jackson-annotations-2.9.0.jar mchange-commons-java-0.2.11.jar
-  commons-logging-1.1.1.jar reactive-streams-1.0.2.jar spring-context-
- support-5.0.4.RELEASE.jar spring-oxm-5.0.4.RELEASE.jar mybatis-spring
- -boot-starter-1.3.0.jar spring-boot-starter-logging-2.0.0.RELEASE.jar
-  spring-tx-5.0.4.RELEASE.jar validation-api-2.0.1.Final.jar spring-da
- ta-redis-2.0.5.RELEASE.jar spring-boot-starter-thymeleaf-2.0.0.RELEAS
- E.jar logback-classic-1.2.3.jar jackson-databind-2.9.4.jar netty-reso
- lver-4.1.22.Final.jar spring-boot-starter-mail-2.0.0.RELEASE.jar c3p0
- -0.9.5.2.jar classmate-1.3.4.jar jackson-core-2.9.4.jar commons-colle
- ctions-3.2.1.jar commons-lang3-3.5.jar spring-boot-2.0.0.RELEASE.jar 
- spring-boot-devtools-2.0.0.RELEASE.jar spring-aop-5.0.4.RELEASE.jar j
- ackson-datatype-jsr310-2.9.4.jar log4j-api-2.10.0.jar jedis-2.9.0.jar
-  thymeleaf-3.0.9.RELEASE.jar jjwt-0.7.0.jar slf4j-api-1.7.25.jar java
- x.annotation-api-1.3.2.jar thymeleaf-extras-java8time-3.0.1.RELEASE.j
- ar commons-pool2-2.5.0.jar jackson-module-parameter-names-2.9.4.jar a
- spectjweaver-1.8.13.jar pagehelper-4.1.0.jar spring-beans-5.0.4.RELEA
- SE.jar thymeleaf-spring5-3.0.9.RELEASE.jar commons-configuration-1.10
- .jar mysql-connector-java-6.0.6.jar netty-buffer-4.1.22.Final.jar log
- back-core-1.2.3.jar unbescape-1.1.5.RELEASE.jar tomcat-embed-el-8.5.2
- 8.jar commons-net-3.1.jar HikariCP-2.7.8.jar bootstrap-3.3.7-1.jar
+Class-Path: commons-logging-1.1.1.jar bootstrap-3.3.7-1.jar spring-boo
+ t-starter-logging-2.0.0.RELEASE.jar netty-transport-4.1.22.Final.jar 
+ jul-to-slf4j-1.7.25.jar spring-webmvc-5.0.4.RELEASE.jar spring-data-k
+ eyvalue-2.0.5.RELEASE.jar spring-oxm-5.0.4.RELEASE.jar logback-classi
+ c-1.2.3.jar spring-web-5.0.4.RELEASE.jar spring-jcl-5.0.4.RELEASE.jar
+  pagehelper-4.1.0.jar spring-context-support-5.0.4.RELEASE.jar thymel
+ eaf-3.0.9.RELEASE.jar spring-boot-starter-thymeleaf-2.0.0.RELEASE.jar
+  commons-net-3.1.jar javax.mail-1.6.1.jar spring-boot-autoconfigure-2
+ .0.0.RELEASE.jar hibernate-validator-6.0.7.Final.jar spring-boot-devt
+ ools-2.0.0.RELEASE.jar jackson-datatype-jdk8-2.9.4.jar tomcat-embed-e
+ l-8.5.28.jar classmate-1.3.4.jar mybatis-spring-1.3.1.jar commons-poo
+ l2-2.5.0.jar spring-beans-5.0.4.RELEASE.jar tomcat-embed-websocket-8.
+ 5.28.jar snakeyaml-1.19.jar mybatis-spring-boot-autoconfigure-1.3.0.j
+ ar android-json-0.0.20131108.vaadin1.jar commons-lang3-3.5.jar spring
+ -boot-starter-jdbc-2.0.0.RELEASE.jar mybatis-spring-boot-starter-1.3.
+ 0.jar thymeleaf-extras-java8time-3.0.1.RELEASE.jar commons-lang-2.6.j
+ ar commons-collections-3.2.1.jar spring-tx-5.0.4.RELEASE.jar unbescap
+ e-1.1.5.RELEASE.jar logback-core-1.2.3.jar joda-time-2.3.jar guava-18
+ .0.jar lettuce-core-5.0.2.RELEASE.jar alipay-sdk-java20161213173952.j
+ ar alipay-trade-sdk-20161215.jar netty-handler-4.1.22.Final.jar sprin
+ g-boot-starter-aop-2.0.0.RELEASE.jar activation-1.1.jar mysql-connect
+ or-java-6.0.6.jar log4j-to-slf4j-2.10.0.jar jboss-logging-3.3.2.Final
+ .jar netty-common-4.1.22.Final.jar jackson-core-2.9.4.jar spring-boot
+ -starter-json-2.0.0.RELEASE.jar netty-buffer-4.1.22.Final.jar spring-
+ boot-starter-tomcat-2.0.0.RELEASE.jar jjwt-0.7.0.jar spring-context-5
+ .0.4.RELEASE.jar alipay-sdk-java20161213173952.jar alipay-trade-sdk-2
+ 0161215.jar log4j-api-2.10.0.jar reactive-streams-1.0.2.jar slf4j-api
+ -1.7.25.jar mybatis-3.4.4.jar spring-aop-5.0.4.RELEASE.jar jackson-an
+ notations-2.9.0.jar jackson-databind-2.9.4.jar netty-codec-4.1.22.Fin
+ al.jar spring-expression-5.0.4.RELEASE.jar spring-boot-starter-mail-2
+ .0.0.RELEASE.jar spring-data-commons-2.0.5.RELEASE.jar validation-api
+ -2.0.1.Final.jar HikariCP-2.7.8.jar spring-core-5.0.4.RELEASE.jar com
+ mons-configuration-1.10.jar spring-boot-starter-web-2.0.0.RELEASE.jar
+  spring-boot-2.0.0.RELEASE.jar spring-jdbc-5.0.4.RELEASE.jar attopars
+ er-2.0.4.RELEASE.jar aspectjweaver-1.8.13.jar tomcat-embed-core-8.5.2
+ 8.jar spring-data-redis-2.0.5.RELEASE.jar jackson-module-parameter-na
+ mes-2.9.4.jar jedis-2.9.0.jar lombok-1.16.20.jar reactor-core-3.1.5.R
+ ELEASE.jar spring-boot-starter-2.0.0.RELEASE.jar jsqlparser-0.9.4.jar
+  thymeleaf-spring5-3.0.9.RELEASE.jar spring-boot-starter-data-redis-2
+ .0.0.RELEASE.jar jquery-3.1.1.jar javax.annotation-api-1.3.2.jar nett
+ y-resolver-4.1.22.Final.jar jackson-datatype-jsr310-2.9.4.jar
 Main-Class: com.genequ.ticketmanagement.TicketmanagementApplication
 
